@@ -1,9 +1,9 @@
-🩺 Medical Background: Liver Disease Overview
-الخلفية الطبية: نظرة عامة على أمراض الكبد
+ Medical Background: Liver Disease Overview
 
-The AiLDS system is designed to navigate the complex progression of liver pathologies. To understand the logic of our models, it is essential to distinguish between the different types of liver stressors.
+This system is designed to navigate the complex progression of liver pathologies. To understand the logic of our models, it is essential to distinguish between the different types of liver stressors.
 
-1. Viral Hepatitis (التهاب الكبد الفيروسي)
+1. Viral Hepatitis:
+   
 1.1 Hepatitis C (The Primary Target)
 Hepatitis C is currently the most significant viral threat to liver health. It operates on RNA, making it biologically distinct from other types.
 
@@ -22,7 +22,8 @@ Hepatitis A & E: These are generally mild, self-limiting infections. The human b
 
 Hepatitis B: This virus operates on the DNA level. Finding reliable public data for Hepatitis B is extremely difficult due to strict confidentiality protocols. Since DNA markers can trace an individual's identity, ancestry, and family tree, there are severe legal and ethical restrictions on sharing such data online.
 
-2. Liver Fibrosis: The "Remaining Scar" (تليف الكبد)
+2. Liver Fibrosis:
+   
 Fibrosis represents the body's "faulty healing" process. When chronic inflammation from Hepatitis C persists, the liver attempts to repair itself. Instead of building healthy cells, the body generates tough, fibrous scar tissue.
 
 Stages of Progression:
@@ -39,9 +40,8 @@ Stage 3 (Many Septa): Advanced scarring with bridges of damaged tissue connectin
 Stage 4 (Cirrhosis): Complete liver scarring where the organ becomes hard and loses its shape; this is the highest risk of mortality.
 
 
-Shutterstock
-استكشاف
-3. Fatty Liver Disease (الكبد الدهني)
+3. Fatty Liver Disease
+   
 Non-Alcoholic Fatty Liver Disease (NAFLD/MASLD) is identified through biochemical markers rather than just physical measurements.
 
 
@@ -51,10 +51,11 @@ Rule-Based Detection: Our system focuses on the Biochemical Footprint (ALT, GGT,
 Metabolic Indicators: High levels of lipids and inflammation markers serve as a 95% accurate indicator of fatty liver without the need for physical biopsy.
 
 4. Liver Cancer Risk (سرطان الكبد)
-The final stage of the pipeline assesses the probability of Hepatocellular Carcinoma.
+   
+This module evaluates the probability of Hepatocellular Carcinoma based on 7 distinct pathological states.
 
 
-Risk Assessment: The model evaluates 7 pathological states and lifestyle factors.
+Epigenetics: The model demonstrates that lifestyle choices can "switch off" or amplify genetic risks.
 
 
-Lifestyle vs. Genetics: Our research highlights Epigenetics; a healthy lifestyle can significantly mitigate genetic risks, whereas smoking and alcohol can spike the risk to 99.8% regardless of genetic predisposition.
+Impact Factors: High-risk behaviors such as smoking and alcohol intake serve as the primary triggers, potentially spiking the risk to 99.8% regardless of genetic history.
