@@ -10,9 +10,9 @@ The content, models, and predictions provided by this repository are not a subst
 The target labels (Healthy vs. Sick) were inferred based on biochemical thresholds derived from clinical guidelines.
 
 ## 3. Data Imputation & The "Veto" Safety Net
-In scenarios where user input is incomplete, the system may impute "Normal" values to facilitate processing, or repace it with value zero 0 , or output error.
+In scenarios where user input is incomplete, the system may impute "Normal" values to facilitate processing, or repace it with value zero (0) , or output error.
 This imputation can theoretically lead to **False Negatives**.
-* [cite_start]**Mitigation:** A "Veto System" has been implemented to override favorable donor predictions if the separate **Fibrosis Model** detects high-risk stages (Stage 2-3-4) using independent markers (Platelets/Prothrombin). However, no safety system is fail-safe.
+* A "Veto System" has been implemented to override favorable donor predictions if the separate **Fibrosis Model** detects high-risk stages (Stage 2-3-4) using independent markers (Platelets/Prothrombin). However, no safety system is fail-safe.
 
 ## 4. Applicability
 This model is calibrated using specific demographic data and may not generalize perfectly to populations with significantly different genetic or environmental profiles.
