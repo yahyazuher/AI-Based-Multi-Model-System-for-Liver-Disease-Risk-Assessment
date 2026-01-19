@@ -44,5 +44,5 @@ To avoid "AI Hallucinations," the target variables for the **Fatty Liver Model**
 * **Justification:** The diagnosis is assigned only when biochemical markers confirm both lipid elevation and liver stress, creating a model that is clinically defensible.
 * 
 ---
-
+ 
 **This system is designed as a decision-support tool and does not replace professional medical diagnosis. The "Veto System" acts as a computational safeguard, not a guarantee of clinical safety.** 
