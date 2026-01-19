@@ -45,4 +45,4 @@ To avoid "AI Hallucinations," the target variables for the **Fatty Liver Model**
 * 
 ---
 
-**Disclaimer:** This system is designed as a decision-support tool and does not replace professional medical diagnosis. The "Veto System" acts as a computational safeguard, not a guarantee of clinical safety.
+**This system is designed as a decision-support tool and does not replace professional medical diagnosis. The "Veto System" acts as a computational safeguard, not a guarantee of clinical safety.** 
