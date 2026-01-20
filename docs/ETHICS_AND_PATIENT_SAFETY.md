@@ -55,7 +55,7 @@ The system applies **cross-model oversight**:
 
 This guarantees that **safety always dominates model autonomy**.
 
-📄 Related documentation:
+Related documentation:
 - `docs/Fibrosis_Model.md`
 - `docs/Donor_Eligibility_Model.md`
 
@@ -76,7 +76,7 @@ The following example illustrates the ethical logic using **one model only**.
 - The donor status is changed to **Rejected**
 - Potential harm is prevented
 
-📄 Model details:
+Model details:
 - `docs/FattyLiver_Model.md`  
 - Training data: `data/processed/FattyLiver_Learning_db.csv`
 
@@ -104,7 +104,7 @@ Patient privacy is treated as a **hard constraint**, not an optional feature.
 - Models operate on numerical arrays only
 - No personal identity can be reconstructed
 
-📄 Data handling details:
+Data handling details:
 - `docs/FattyLiver_DataEngineering.md`
 - `data/processed/`
 
@@ -120,7 +120,7 @@ established clinical guidelines.
 - Makes predictions explainable
 - Ensures clinical defensibility
 
-📄 Labeling logic:
+Labeling logic:
 - `docs/FattyLiver_Model.md`
 
 ---
@@ -135,7 +135,7 @@ The system is explicitly designed to avoid **fatalistic predictions**.
 
 This ensures **non-discrimination** and preserves patient agency.
 
-📄 Related model:
+Related model:
 - `docs/Cancer_Risk_Model.md`
 
 ---
