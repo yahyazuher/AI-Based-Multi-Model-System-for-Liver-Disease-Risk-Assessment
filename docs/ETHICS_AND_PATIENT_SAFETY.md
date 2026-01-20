@@ -27,7 +27,7 @@ The system integrates the **Fibrosis Model** as a supervisor (Veto Authority) ov
 Respecting patient confidentiality is paramount. This project adheres to strict de-identification protocols to ensure the AI learns biological patterns, not personal identities.
 
 ### Handling of Personally Identifiable Information (PII)
-* **Removal of Explicit Identifiers:** The raw dataset contained a sequence number (`SEQN`) for each patient. [cite_start]While this was used initially as a **Primary Key** to merge disparate datasets (Biochemistry, CBC, Cholesterol), it was strictly treated as an engineering utility.
+* **Removal of Explicit Identifiers:** The raw dataset contained a sequence number (`SEQN`) for each patient (docs/FattyLiver_DataEngineering.md and data/processed/FattyLiver_Learning_db.csv). [cite_start]While this was used initially as a **Primary Key** to merge disparate datasets (Biochemistry, CBC, Cholesterol), it was strictly treated as an engineering utility.
 * **The "Drop" Protocol:** Before the data enters the training phase (`.fit`), the `SEQN` column is programmatically dropped. The model acts purely on mathematical arrays of biological data, ensuring it is impossible to reverse-engineer the data to identify specific individuals.
 * **Attribute Encoding:** Demographic attributes like Gender (Sex) were converted to numerical binary formats (Male=1, Female=0) purely for statistical correlation, stripping away text-based identifiers .
 
