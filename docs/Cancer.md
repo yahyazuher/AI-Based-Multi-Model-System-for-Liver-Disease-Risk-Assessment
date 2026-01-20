@@ -9,7 +9,7 @@ Source: The_Cancer_data_1500.csv.
 Original Dataset: This data was obtained from the "Cancer Prediction Dataset" on Kaggle (by Rabie El Kharoua).
 
 
-URL: .
+URL: https://www.kaggle.com/datasets/rabieelkharoua/cancer-prediction-dataset?resource=download
 
 
 Size: 1,500 patient records.
