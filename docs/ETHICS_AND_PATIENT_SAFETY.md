@@ -56,8 +56,7 @@ The system applies **cross-model oversight**:
 This guarantees that **safety always dominates model autonomy**.
 
 Related documentation:
-- `docs/Fibrosis_Model.md`
-- `docs/Donor_Eligibility_Model.md`
+- `Hepatitis_Model.md`
 
 ---
 
@@ -104,10 +103,10 @@ Patient privacy is treated as a **hard constraint**, not an optional feature.
 - Models operate on numerical arrays only
 - No personal identity can be reconstructed
 
-Data handling details:
-- `docs/FattyLiver_DataEngineering.md`
-- `data/processed/`
-
+Model details:
+- `docs/FattyLiver_Model.md`  
+- Training data: `data/processed/FattyLiver_Learning_db.csv`
+  
 ---
 
 ## 6. Guideline-Based Labeling (No Heuristic Diagnosis)
