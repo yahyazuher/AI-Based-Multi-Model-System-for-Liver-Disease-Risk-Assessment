@@ -39,11 +39,11 @@ The system is intentionally designed to work **without physical measurements**
 
 | Model | Purpose | Training Data |
 |------|--------|---------------|
-| Fatty Liver Model | Detects active NAFLD using biochemical markers | `data/processed/FattyLiver_Learning_db.csv` |
-| Fibrosis Model | Detects liver scarring stages (1–4) | `data/processed/Fibrosis_Learning_db.csv` |
-| Donor Eligibility Model | Evaluates blood donation safety | `data/processed/Hepatitis_DonorTyper_db.csv` |
-| Hepatitis Models | Viral hepatitis risk analysis (only C type) | `data/processed/Hepatitis_db.csv` |
-| Liver Cancer Risk Model | Lifestyle + genetic risk assessment | `data/processed/Cancer_Learning_db.csv` |
+| Fatty Liver Model | Detects active NAFLD using biochemical markers | `data/processed/FattyLiver.csv` |
+|  | Detects liver scarring stages (1–4) | `data/processed/Fibrosis_Learning_db.csv` |
+|  | Evaluates blood donation safety | `data/processed/Hepatitis_DonorTyper_db.csv` |
+|  | Viral hepatitis risk analysis (only C type) | `data/processed/Hepatitis_db.csv` |
+| Cancer Model | Lifestyle + genetic risk assessment | `data/processed/The_Cancer_data_1500.csv` |
 | Supervisory Logic | Cross-model safety enforcement | _Rule-based (no training data)_ |
 
  Detailed documentation for each model is available under `docs/`.
