@@ -1,12 +1,23 @@
 # AI-Based Multi-Model System for Liver Disease Risk Assessment
 
-An integrated AI ecosystem designed to assess liver health through a pipeline of machine learning models and clinical rule-based logic. 
+An integrated AI ecosystem designed to assess liver health through a pipeline of machine learning models and clinical rule-based logic. The system leverages **Hepatitis C** clinical data to diagnose liver damage progression, specifically identifying **Fibrosis** and its critical end-stage, **Cirrhosis**, using a **Multi-Stage Classification System** (Stage 1 to 4). Additionally, the pipeline screens for **Blood Donor Eligibility**, detects **Fatty Liver Disease (NAFLD)**, and predicts **Liver Cancer Risk**.
 
-The system leverages **Hepatitis C** clinical data to diagnose liver damage progression, specifically identifying **Fibrosis** and its critical end-stage, **Cirrhosis**, using a **Multi-Stage Classification System** (Stage 1 to 4). Additionally, the pipeline screens for **Blood Donor Eligibility**, detects **Fatty Liver Disease (NAFLD)**, and predicts **Liver Cancer Risk**.
-
-
->  This system is for **research and educational purposes only**.  
+>  **Disclaimer:** This system is for **research and educational purposes only**.  
 > It does **not** replace professional medical diagnosis.
+
+---
+
+## Project Overview
+
+This repository implements a **multi-model architecture** powered by **XGBoost (Extreme Gradient Boosting)** algorithms to ensure high-performance classification and risk assessment.
+
+**Key System Features:**
+- **Specialized Modeling:** Each model focuses on a **specific liver-related condition** rather than a generic output.
+- **Interconnected Logic:** Models **do not act independently**; outputs act as flags for subsequent logic layers.
+- **Safety-First Veto System:** A built-in logic layer prevents unsafe decisions (e.g., flagging a high-risk patient as a donor).
+- **Clinical Grounding:** All predictions are strictly grounded in **clinical guidelines**.
+- **Non-Invasive Focus:** The core diagnostic models are designed to minimize reliance on physical measurements, focusing primarily on **routine blood analysis** biomarkers.
+---
 
 ##  Repository Structure
 
@@ -14,24 +25,10 @@ The system leverages **Hepatitis C** clinical data to diagnose liver damage prog
 |-----------|-------------|
 | `data/` | Contains dataset placeholders. **Note:** Raw medical data is not included for privacy/ethical reasons. |
 | `models/` | Serialized models organized by disease type (Fatty Liver, Fibrosis, Donor, Cancer). |
-| `training/` | Scripts used to train and validate the models (`.py` files). |
+| `training/` | Training scripts (`.ipynb`). **Fully optimized and ready for immediate execution on Google Colab.** |
 | `docs/` | Detailed documentation on methodology, medical logic, and ethical standards. |
 
 
-
----
-
-##  Project Overview
-
-This repository implements a **multi-model architecture** for liver disease analysis, where:
-
-- Each model focuses on a **specific liver-related condition**
-- Models **do not act independently**
-- A safety-first **Veto System** prevents unsafe decisions
-- All predictions are grounded in **clinical guidelines**
-
-The system is intentionally designed to work **without physical measurements**
-(e.g., weight, BMI), relying instead on **routine blood analysis**.
 
 ---
 
@@ -75,4 +72,5 @@ Core Logic: The model demonstrates that a healthy lifestyle can effectively "neu
 Critical Requirement (Positional Logic): The model processes data as an ordered mathematical matrix; therefore, inputs must be entered in the exact following order: ['Age', 'Gender', 'BMI', 'Smoking', 'GeneticRisk', 'PhysicalActivity', 'AlcoholIntake', 'CancerHistory']
 
 For detailed technical and medical information: regarding feature importance analysis, virtual clinic scenarios, and preventive prediction logic, please visit: ➔ `docs/Cancer_Risk_Model.md`
+---
 
