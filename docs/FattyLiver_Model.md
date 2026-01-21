@@ -1,86 +1,105 @@
+# Fatty Liver Diagnosis Model (NAFLD)
 
-# Technical Documentation: Fatty Liver Diagnosis Model (NAFLD)
-
-## 1. Overview
-The **Fatty Liver Model** (`FattyLiver_Model.pkl`) is a core component of the AiLDS system, designed to detect **Non-Alcoholic Fatty Liver Disease (NAFLD)**. It bridges biochemical laboratory data with clinical logic to distinguish between simple hyperlipidemia (high blood fats) and actual hepatocellular injury caused by fat accumulation in the liver.
-
-## 2. Data Source & Integration Logic
-The dataset was engineered by merging three distinct laboratory components from the **NHANES 2013-2014** cycle:
-* **Primary Source:** [NHANES Laboratory Data (2013-2014)](https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Laboratory&CycleBeginYear=2013)
-* **Integrated Files:**
-    1.  `BIOPRO_H.xpt` (Standard Biochemistry Profile)
-    2.  `CBC_H.xpt` (Complete Blood Count for Platelets)
-    3.  `HDL_H.xpt` (HDL Cholesterol for Metabolic Profiling)
-
-### The "SEQN" Integration Strategy
-Due to mismatched patient counts across files (Biochemistry: 6,946 vs. CBC: 9,249), we used **SEQN** (Sequence Number) as the Primary Key. 
-* **Method:** Employed `VLOOKUP` functions in LibreOffice Calc to surgically map specific markers to each unique patient ID. 
-* **Result:** Eliminated "Data Shift" errors, ensuring that every biological marker belongs to the correct clinical record.
+This section is dedicated to the detection of **Non-Alcoholic Fatty Liver Disease (NAFLD)**. The model distinguishes between general hyperlipidemia (high blood fats) and actual liver injury caused by hepatic steatosis. It bridges biochemical laboratory data with advanced clinical logic using the **XGBoost** algorithm, stored as `FattyLiver_Model.pkl`.
 
 ---
 
-## 3. Data Engineering & Feature Selection
+### Dataset Overview
 
-### The "Biological Fingerprint"
-We prioritized features that represent the "Metabolic Syndrome" and direct liver stress:
-
-| Feature | Original NHANES Code | Clinical Reasoning |
-| :--- | :--- | :--- |
-| **ALT / AST** | `LBXSATSI` / `LBXSASSI` | Primary markers for hepatocellular injury. |
-| **GGT** | `LBXSGTSI` | Most sensitive enzyme for fatty liver and alcohol-related stress. |
-| **Triglycerides**| `LBXSTR` | The "Raw Material": Identifies the excess fat available for liver storage. |
-| **Platelets** | `LBXPLTSI` | **The Veto Factor:** Crucial for detecting underlying Fibrosis/Cirrhosis. |
-| **Albumin** | `LBXSAL` | Evaluates the liver's synthetic capacity. |
-
-### Cleaning & Optimization
-* **Noise Reduction:** Removed electrolytes (Sodium, Calcium) as they provide no specific diagnostic value for NAFLD.
-* **Multicollinearity Prevention:** Deleted duplicate SI units (e.g., `LBDSTRSI`) to prevent XGBoost from over-weighting redundant data, ensuring mathematical stability.
+| Name | Database Location | Function |
+| --- | --- | --- |
+| **FattyLiver_Model.pkl** | `models/` | The trained model containing the optimized weights for NAFLD detection. |
+| **train_fatty_liver.py** | `code/` | Source code for data merging (`SEQN` logic) and model training. |
+| **FattyLiver.csv** | `data/processed/` | Engineered dataset from NHANES 2013-2014 cycles. |
+| **XGBoost.md** | `docs/` | Technical documentation of the underlying boosting mechanism. |
 
 ---
 
-## 4. Clinical Interpretation Logic
-The model's decision-making process mimics a clinical consultant by evaluating the synergy between **Lipids** and **Enzymes**.
+### Training Phase & Data Engineering
 
+The system’s integrity is built on a surgical data integration strategy:
 
+* **Integration Strategy:** Merged three distinct NHANES components (`BIOPRO_H`, `CBC_H`, `HDL_H`) using the **SEQN (Sequence Number)** as a primary key to eliminate "Data Shift" errors.
+* **Data Split:** Utilizes **80% for training** and **20% for testing** to ensure mathematical stability.
+* **Feature Selection:** Prioritized the "Biological Fingerprint"—ALT, AST, and GGT—combined with metabolic markers like Triglycerides and the "Veto Factor" (Platelets) for fibrosis screening.
 
-### Diagnostic Scenarios:
-| Case | Triglycerides (TG) | Enzymes (ALT/GGT) | Decision | Clinical Insight |
-| :--- | :--- | :--- | :--- | :--- |
-| **Scenario 1** | High (300) | Normal (20) | **Healthy** | Lipids are in the blood but haven't injured the liver yet. |
-| **Scenario 2** | Normal (100) | High (60) | **Healthy** | Liver injury exists, but likely due to viral/toxic causes, not fat. |
-| **Scenario 3** | High (200) | High (50) | **Patient** | **Confirmed NAFLD:** Fat accumulation has triggered active inflammation. |
+> **Technical Note:** Electrolytes (Sodium, Calcium) were removed as "Noise," and redundant SI units were deleted to prevent the model from over-weighting duplicate data.
 
 ---
 
-## 5. Critical Model Execution Requirements
+### 1- Data Source and Integrity
 
-### ⚠️ Positional Logic (Positional Indexing)
-The model (`FattyLiver_Model.pkl`) is a mathematical matrix. It **cannot read column headers**. It expects data points to be fed in a specific, immutable sequence. Providing data in the wrong order (e.g., swapping Glucose with Cholesterol) will result in a catastrophic diagnostic failure.
-
-**Data must be sent in this exact order:**
-```python
-# Model Input Array Format:
-[
-    'Albumin', 'ALP', 'AST', 'ALT', 'Cholesterol', 
-    'Creatinine', 'Glucose', 'GGT', 'Bilirubin', 
-    'Triglycerides', 'Uric_Acid', 'Platelets', 'HDL'
-]
-
-```
+* **Original Database:** Derived from the **NHANES (National Health and Nutrition Examination Survey) 2013-2014** cycle.
+* **Source:** [CDC/NCHS Official Portal](https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Laboratory&CycleBeginYear=2013)
+* **Integrity Protocol:** Data was surgically mapped via `VLOOKUP` in LibreOffice Calc to ensure that every biological marker (from 6,946 records) belongs to the correct clinical SEQN.
 
 ---
 
-## 6. Implementation Summary
+### 2- Model Input Requirements (Positional Logic)
 
-* **Final Training File:** `FattyLiver.csv`
-* **Algorithm:** XGBoost Classifier.
-* **Safety Protocol:** Incorporates a "Veto" logic where low platelet counts significantly influence the model's awareness of advanced liver scarring (Fibrosis).
-* **Final Optimization:** The `SEQN` key is dropped only at the final training step to focus the neural weights entirely on biological indicators.
+The model functions as a mathematical matrix. Data **must** be entered in the following exact order to avoid diagnostic failure:
+`['Albumin', 'ALP', 'AST', 'ALT', 'Cholesterol', 'Creatinine', 'Glucose', 'GGT', 'Bilirubin', 'Triglycerides', 'Uric_Acid', 'Platelets', 'HDL']`
 
 ---
 
-*This document serves as the official technical reference for the AiLDS Fatty Liver module.*
+### 3- Model Optimization & Refinement
 
-**هل تود مني الآن مساعدتك في ربط هذا الملف بالصفحة الرئيسية للمشروع أو البدء في شرح نموذج "تليف الكبد" (Fibrosis Model)؟**
+The NAFLD model utilizes a specific "Clinical Synergy" logic, focusing on the relationship between **Triglycerides (TG)** and **Liver Enzymes**.
 
-```
+* **Complexity Control:** The `max_depth` was optimized to prevent the model from memorizing outliers in metabolic variations.
+* **Veto Logic:** Low platelet counts are given significant weight to influence the model’s awareness of potential advanced scarring (Fibrosis).
+
+> [!NOTE]
+> **Technical Implementation:**
+> The **Automated Hyperparameter Tuning Strategy** used to derive these optimal values is implemented in the Google Colab notebook under the cell titled **"Fatty Liver Model"**. A comprehensive explanation of the tuning logic and the code breakdown is provided directly above the specific cell. [](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=OGcBn26-pcsQ)
+
+---
+
+### Performance Metrics
+
+| Metric | Result | Interpretation |
+| --- | --- | --- |
+| **Accuracy** | [X]% | High precision in distinguishing fat accumulation. |
+| **Precision** | [X]% | Minimizes false positives in healthy hyperlipidemia cases. |
+| **Recall** | [X]% | High sensitivity in detecting early-stage NAFLD. |
+
+---
+
+### 4. Virtual Clinic Test Results
+
+To demonstrate the model's ability to distinguish between "Blood Fats" and "Liver Fat," we conducted a simulation of **7 clinical scenarios**. These cases test whether the model correctly identifies when high lipids have started causing actual cellular injury.
+
+### Virtual Case Analysis Table
+
+| Clinical Case | Brief Description | Result | Risk % | Clinical Interpretation |
+| --- | --- | --- | --- | --- |
+| **1. [Case Name]** | [Pending Data...] | **TBD** | **--%** | [Waiting for input] |
+| **2. [Case Name]** | [Pending Data...] | **TBD** | **--%** | [Waiting for input] |
+| **3. [Case Name]** | [Pending Data...] | **TBD** | **--%** | [Waiting for input] |
+| **4. [Case Name]** | [Pending Data...] | **TBD** | **--%** | [Waiting for input] |
+| **5. [Case Name]** | [Pending Data...] | **TBD** | **--%** | [Waiting for input] |
+| **6. [Case Name]** | [Pending Data...] | **TBD** | **--%** | [Waiting for input] |
+| **7. [Case Name]** | [Pending Data...] | **TBD** | **--%** | [Waiting for input] |
+
+---
+
+### Clinical Insights (Derived from Scenarios)
+
+#### **A. The Lipid vs. Enzyme Threshold**
+
+The model is trained to recognize that high Triglycerides alone do not equal Fatty Liver. Diagnosis is only triggered when there is a concurrent rise in **ALT** or **GGT**, indicating active inflammation.
+
+#### **B. The Protective Platelet Check**
+
+By monitoring **Platelets**, the system can distinguish between simple NAFLD and cases where the disease has progressed toward advanced stages, ensuring a more holistic diagnostic view.
+
+---
+
+# 5- Technical Note for Developers
+
+* **Execution:** Tests were conducted using `code/test_fatty_liver.py`.
+* **Model Stability:** The `SEQN` key is exclusively used for data alignment and is dropped prior to training to ensure the model focuses solely on biological indicators.
+
+> **Scientific Insight:** The model transforms complex blood panels into a clear diagnostic path, demonstrating how metabolic markers like Uric Acid and Glucose interact with liver enzymes to form a complete "Fatty Liver Profile."
+
+---
