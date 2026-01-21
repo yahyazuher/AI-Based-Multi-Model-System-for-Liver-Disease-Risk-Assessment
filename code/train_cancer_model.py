@@ -6,44 +6,59 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pickle
-import os
+from google.colab import files  # Library to handle file uploads in Colab
 
-# ---  Liver Cancer Risk Assessment System ---
+print("--- Liver Cancer Risk Assessment System (XGBoost) ---")
 
-#  Instructions for Google Colab:
-# 1. Upload the training file "The_Cancer_data_1500_V2.csv" to your Colab storage.
-# 2. Ensure the filename matches exactly as written in the code below.
-# 3. Once execution is complete, "Liver_Cancer_Model.pkl" will be ready for download.
+# =========================================================
+#  NOTE: REQUIRED FILES
+# Please ensure you have the file "The_Cancer_data_1500.csv"
+# ready on your computer before running this step.
+# =========================================================
 
-FILE_NAME = "The_Cancer_data_1500_V2.csv"
+print("\n Please upload the dataset file: 'The_Cancer_data_1500.csv'")
+# This command opens the file upload widget in Colab
+uploaded = files.upload()
 
-# 1. Data Loading and Preparation
+# 1. Load Data
 try:
-    df = pd.read_csv(FILE_NAME)
-    print(f"✅ Dataset loaded successfully: {FILE_NAME}")
+    # Check if the file exists in the uploaded dictionary or current directory
+    if "The_Cancer_data_1500.csv" in uploaded.keys() or "The_Cancer_data_1500.csv" in pd.io.common.os.listdir():
+        df = pd.read_csv("The_Cancer_data_1500.csv")
+        print(" Cancer dataset loaded successfully.")
+    else:
+        raise FileNotFoundError
 except FileNotFoundError:
-    print(f"❌ Error: File '{FILE_NAME}' not found. Please upload it to your environment.")
-    raise
+    print(" Error: File 'The_Cancer_data_1500.csv' not found.")
+    print("Please re-run the cell and upload the correct file.")
+    # Stop execution if file is missing
+    raise SystemExit
 
-# Clean data by removing any null values to ensure model stability
+# Precautionary cleaning (Drop any rows with missing values)
 df = df.dropna()
-print(f"📊 Total records ready for analysis: {len(df)}")
+print(f" Total records ready for training: {len(df)}")
 
-# 2. Feature and Target Separation
-# Remove the 'Diagnosis' column from inputs as it is the target variable
+# ---------------------------------------------------------
+# 2. Data Preprocessing for AI
+# ---------------------------------------------------------
+# X = Features (Age, Smoking, Genetics, Alcohol, etc.)
+# We drop the 'Diagnosis' column because that is the Target
 X = df.drop(['Diagnosis'], axis=1)
+
+# y = Target (Does the patient have cancer? 0 or 1)
 y = df['Diagnosis']
 
-# Display column order to ensure compatibility with the inference system later
-print("\n📋 Input Features Order:")
-for i, col in enumerate(X.columns, 1):
-    print(f"{i}. {col}")
+# Print column names to verify features (Useful for web integration later)
+print("\n Features used by this model:")
+print(list(X.columns))
 
-# Split data: 80% for training and 20% for testing to evaluate accuracy
+# Split data: 80% Training - 20% Testing
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# 3. Machine Learning Model Construction (XGBoost)
-print("\n🧠 Training the model to detect cancer risk patterns...")
+# ---------------------------------------------------------
+# 3. Model Training
+# ---------------------------------------------------------
+print("\n Training XGBoost model on cancer patterns...")
 model = xgb.XGBClassifier(
     n_estimators=100,
     learning_rate=0.1,
@@ -53,25 +68,31 @@ model = xgb.XGBClassifier(
 
 model.fit(X_train, y_train)
 
-# 4. Model Performance Evaluation
+# ---------------------------------------------------------
+# 4. Results & Evaluation
+# ---------------------------------------------------------
 y_pred = model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 
-print(f"\n🎉 Final Model Accuracy: {accuracy * 100:.2f}%")
-print("-" * 40)
-print("📄 Detailed Classification Report:")
+print(f"\n Cancer Model Accuracy: {accuracy * 100:.2f}%")
+print("-" * 30)
+
+# Detailed Report
+print("Classification Report:")
 print(classification_report(y_test, y_pred))
 
-# Plot Confusion Matrix to visualize prediction quality
+# Plot Confusion Matrix
 plt.figure(figsize=(6, 5))
 cm = confusion_matrix(y_test, y_pred)
-sns.heatmap(cm, annot=True, fmt='d', cmap='Reds', cbar=False)
-plt.title('Confusion Matrix: Liver Cancer Risk')
-plt.xlabel('Predicted Diagnosis')
-plt.ylabel('Actual Diagnosis')
+sns.heatmap(cm, annot=True, fmt='d', cmap='Reds', cbar=False) # Red colormap for Cancer context
+plt.title('Confusion Matrix (Cancer Model)')
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
 plt.show()
 
-# 5. Save the Final Model
-MODEL_NAME = "Liver_Cancer_Model.pkl"
-pickle.dump(model, open(MODEL_NAME, "wb"))
-print(f"\n💾 Model successfully saved as: {MODEL_NAME}")
+# ---------------------------------------------------------
+# 5. Saving the Model
+# ---------------------------------------------------------
+# Saving with a unique name to distinguish it from the Fatty Liver model
+pickle.dump(model, open("Liver_Cancer_Model.pkl", "wb"))
+print("\n Cancer model saved as: Liver_Cancer_Model.pkl")
