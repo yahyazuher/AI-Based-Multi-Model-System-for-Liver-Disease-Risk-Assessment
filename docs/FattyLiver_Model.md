@@ -47,8 +47,8 @@ The dataset was reduced by over **50%** to eliminate statistical noise and preve
 The `FattyLiver_Model.pkl` file is a **Mathematical Matrix**. It does not interpret column headers; instead, it relies strictly on **Positional Indices** (the order of data).
 
 **Critical Execution Requirement:**
-Feeding data in the wrong sequence (e.g., placing Glucose in the Triglycerides slot) will lead to a total diagnostic failure. Data must be submitted in this exact order: 
-['Albumin', 'ALP', 'AST', 'ALT', 'Cholesterol','Creatinine', 'Glucose', 'GGT', 'Bilirubin', 'Triglycerides', 'Uric_Acid', 'Platelets', 'HDL']
+Feeding data in the wrong sequence (e.g., placing Glucose in the Triglycerides slot) will lead to a total diagnostic failure. Data must be submitted in this exact order, model input sequence (13 Features):
+['Albumin', 'ALP', 'AST', 'ALT', 'Cholesterol', 'Creatinine', 'Glucose', 'GGT', 'Bilirubin', 'Triglycerides', 'Uric_Acid', 'Platelets', 'HDL']
 
 ---
 ## **Model Optimization and Diagnostic Logic**
@@ -108,7 +108,7 @@ In XGBoost, `max_depth` determines the maximum number of levels (or "questions")
 > * **Level 1 (Depth 1):** Is Triglycerides > 150 mg/dL? *(If Yes, move deeper)*.
 > * **Level 2 (Depth 2):** Is ALT > 40 U/L? *(If Yes, move deeper)*.
 > * **Level 3 (Depth 3):** Is GGT > 40 U/L? *(If Yes, move deeper)*.
-> * **Level 4 (Depth 4):** Final threshold check  **Diagnosis: 🔴 PATIENT**.
+> * **Level 4 (Depth 4):** Final threshold check  **Diagnosis: PATIENT**.
 
 #### **B. `n_estimators=100`**
 
@@ -154,28 +154,3 @@ The model mimics a clinical consultant by evaluating the **synergy** between lip
 
 ---
 
-### Virtual Clinic: 7 Case Analysis
-
-The following clinical scenarios were designed to test the model's stability and its ability to distinguish between "Blood Fat" and "Liver Fat."
-
-| Case | Clinical Description | Result | Risk % | Clinical Interpretation |
-| --- | --- | --- | --- | --- |
-| **1** | [Pending Data...] | **TBD** | **--%** | [Awaiting Input] |
-| **2** | [Pending Data...] | **TBD** | **--%** | [Awaiting Input] |
-| **3** | [Pending Data...] | **TBD** | **--%** | [Awaiting Input] |
-| **4** | [Pending Data...] | **TBD** | **--%** | [Awaiting Input] |
-| **5** | [Pending Data...] | **TBD** | **--%** | [Awaiting Input] |
-| **6** | [Pending Data...] | **TBD** | **--%** | [Awaiting Input] |
-| **7** | [Pending Data...] | **TBD** | **--%** | [Awaiting Input] |
-
----
-
-### Technical Note for Developers
-
-* **Automated Tuning:** The **Automated Hyperparameter Tuning Strategy** used for this model is documented in the Colab notebook under the **"Fatty Liver Model"** cell.
-* **Dataset Cleaning:** The training file `FattyLiver_Learning_db.csv` is the processed version of the original NHANES data. The Colab code is responsible for the final removal of the `SEQN` column and non-numeric noise before training.
-* **Parallel Processing:** Training was executed with `n_jobs=-1` to optimize performance on multi-core processors.
-
-> **Scientific Insight:** The model identifies that lifestyle markers like **Uric Acid** and **Glucose** act as "amplifiers" for fatty liver risk when combined with elevated **GGT**, forming a complete metabolic profile for the patient.
-
----
