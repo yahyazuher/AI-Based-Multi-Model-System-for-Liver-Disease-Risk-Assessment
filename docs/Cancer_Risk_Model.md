@@ -84,8 +84,6 @@ model = xgb.XGBClassifier(
 
 ```
 
----
-
 > **Scientific Insight:** For a dataset of 1,500 records, a `max_depth` of **3** provides the optimal balance between "learning" and "generalizing." This prevents the model from becoming too rigid, ensuring the system remains robust and reliable when encountering new patients in a real-world clinical setting.
 
 ---
