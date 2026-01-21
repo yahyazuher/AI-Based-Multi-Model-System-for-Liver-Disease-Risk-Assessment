@@ -28,7 +28,7 @@ The system's efficiency depends on a data split of **80% for training** and **20
 
 ---
 
-### Data Source and Integrity
+### 1- Data Source and Integrity
 
 * **Original Database:** Obtained from the "Cancer Prediction Dataset" on **Kaggle** (by researcher *Rabie El Kharoua*).
 * **Data Link:** [Source on Kaggle](https://www.kaggle.com/datasets/rabieelkharoua/cancer-prediction-dataset?resource=download)
@@ -70,7 +70,7 @@ The model underwent a critical optimization phase where the `max_depth` paramete
 The following parameters were identified as the **"Gold Standard"** for this specific dataset (1,500 records) to achieve maximum stability and performance:
 
 ```python
-# The final optimized XGBoost configuration
+# The optimized XGBoost configuration
 model = xgb.XGBClassifier(
     n_estimators=100,      # Balanced number of trees to prevent complexity
     learning_rate=0.1,     # Optimal step size for stable convergence
