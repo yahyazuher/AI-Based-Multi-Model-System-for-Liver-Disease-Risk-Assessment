@@ -2,6 +2,8 @@
 
 This section is dedicated to the detection of **Non-Alcoholic Fatty Liver Disease (NAFLD)**. The model distinguishes between general hyperlipidemia (high blood fats) and actual liver injury caused by hepatic steatosis. It bridges biochemical laboratory data with advanced clinical logic using the **XGBoost** algorithm, stored as `fatty_liver_model.pkl`.
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=OGcBn26-pcsQ)
+
 ---
 
 ### Dataset Overview
