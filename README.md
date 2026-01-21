@@ -45,14 +45,20 @@ The system is intentionally designed to work **without physical measurements**
 | 5 | Cancer&nbsp;Model | `data/processed/The_Cancer_data_1500.csv` | `data/raw/The_Cancer_data_1500_V2.csv` | [Dataset](https://www.kaggle.com/datasets/rabieelkharoua/cancer-prediction-dataset) | 100% | 99% |
 
  Detailed documentation for each model is available under `docs/`.
+---
 
-Detailed Model Purposes & Clinical Utility
-Technical and clinical objectives for each of the six integrated modules:
+# Fatty Liver Diagnosis Model (NAFLD)
+Non-Alcoholic Fatty Liver Disease Diagnosis Model
 
-Fatty Liver Model: This model specializes in detecting Non-Alcoholic Fatty Liver Disease (NAFLD) by analyzing biochemical markers in the blood. Its primary purpose is to identify lipid accumulation in the liver at an early stage to prevent progression into chronic inflammation.
+This model analyzes the interplay between triglyceride levels and liver enzymes to identify inflammatory lipid accumulation. The system features a safety Veto protocol based on "Platelet counts" for the early detection of liver fibrosis markers associated with fatty liver.
 
-Fibrosis Model: Designed to classify liver fibrosis stages (F1 to F4). It analyzes the extent of liver tissue scarring, assisting clinicians in determining the severity of tissue damage and the urgency of therapeutic intervention.
+Core Logic: Connects the "Raw Material" (Triglycerides) with the "Alarm Signal" (ALT/GGT) to distinguish NAFLD from viral hepatitis.
 
+Critical Requirement (Positional Logic): The model processes data as an ordered mathematical matrix; therefore, inputs must be entered in the exact following order: ['Albumin', 'ALP', 'AST', 'ALT', 'Cholesterol', 'Creatinine', 'Glucose', 'GGT', 'Bilirubin', 'Triglycerides', 'Uric_Acid', 'Platelets', 'HDL']
+
+For detailed technical and medical information: regarding NHANES Data Integration, cleaning strategies, and clinical scenario analysis, please visit: ➔ `docs/FattyLiver_Model.md`
+
+---
 
 Shutterstock
 استكشاف
