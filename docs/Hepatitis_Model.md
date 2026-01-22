@@ -11,8 +11,8 @@ This repository hosts a multi-stage diagnostic framework dedicated to evaluating
 | **hepatitis_stage.pkl** | `models/` | Trained model to classify histological damage (Stage 1-4). |
 | **hepatitis_complications.pkl** | `models/` | Trained model to estimate the risk of Ascites. |
 | **hepatitis_status.pkl** | `models/` | Trained model to calculate survival/mortality probability. |
-| **train_models.py** | `code/` | Source code responsible for building and training the models. |
-| **predict.py** | `code/` | Inference engine for diagnosing new patient cases. |
+| **train_hepatitis_models.py** | `code/` | Source code responsible for building and training the 3 models. |
+| **test_hepatitis_models.py** | `code/` | Inference script for diagnosing the 7 cases (see details above). |
 | **Hepatitis.csv** | `data/processed` | The processed clinical dataset derived from Mayo Clinic records. |
 | **XGBoost.md** | `docs/` | Technical documentation explaining the mechanism of the XGBoost algorithm. |
 
