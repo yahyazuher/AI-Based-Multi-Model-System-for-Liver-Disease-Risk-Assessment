@@ -11,8 +11,8 @@ This section is dedicated to the initial triage of users, functioning as the sys
 | Name | Database Location | Function |
 | --- | --- | --- |
 | **gate_model.pkl** | `models/` | The trained model containing the final decision-making weights(Sick, Healthy). |
-| **train_gate_model.ipynb** | `code/` | Source code responsible for cleaning data and training the model. |
-| **test_gate_model.ipynb** | `code/` | Source code dedicated to testing the efficiency of the trained model. |
+| **train_gate_model.py** | `code/` | Source code responsible for cleaning data and training the model. Can be run directly in Google Colab |
+| **test_gate_model.py** | `code/` | Source code dedicated to testing the efficiency of the trained model. Can be run directly in Google Colab |
 | **Liver_Patient_Dataset_Cleaned_19k.csv** | `data/processed` | The cleaned training dataset containing ~19,000 unique records. |
 | **XGBoost.md** | `docs/` | Technical documentation explaining the mechanism of the XGBoost algorithm. |
 
@@ -93,7 +93,7 @@ To ensure the reliability of the **Gate Model** as the primary screening layer, 
 
 ## 1. Test Data Overview
 The testing dataset consists of **10 distinct profiles** with varying biochemical markers.
-* test_gate_model.ipynb inside `code/`, ore [![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=OGcBn26-pcsQ)
+* test_gate_model.py inside `code/`, ore [![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=OGcBn26-pcsQ)
 
 ### Cases Medical Analysis of The 10 Cases
 
@@ -175,7 +175,7 @@ This conservative bias aligns with safety-first principles in high-risk systems.
 Clearly normal cases were correctly identified based on values within standard reference ranges.
 By classifying these profiles as `1` (Healthy), the model triggered an **early exit**, preventing unnecessary downstream computation and validating the efficiency of the pipeline.
 
-> For more details, see `test_gate_model.ipynb` inside `code/` or [![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=OGcBn26-pcsQ)
+> For more details, see `test_gate_model.py` inside `code/` or [![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=OGcBn26-pcsQ)
 ---
 *The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and were generated with the assistance of large language models for documentation clarity only. They do not represent medical diagnosis or professional medical judgment.*
 
