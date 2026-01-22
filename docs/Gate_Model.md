@@ -93,7 +93,7 @@ To ensure the reliability of the **Gate Model** as the primary screening layer, 
 
 ## 1. Test Data Overview
 The testing dataset consists of **10 distinct profiles** with varying biochemical markers.
-* test_gate_model.py inside `code/`, ore 
+* test_gate_model.py inside `code/`, ore [![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=OGcBn26-pcsQ)
 
 ### Cases Medical Analysis of The 10 Cases
 
@@ -107,8 +107,10 @@ The testing dataset consists of **10 distinct profiles** with varying biochemica
 | **6** |  **Sick** | **Elderly Patient (75)** with critical enzyme levels and low proteins. |
 | **7** |  **Healthy** | All values are within the standard reference ranges for a young adult. |
 | **8** |  **Borderline** | **Slightly elevated Alkaline Phosphotase (180).** Medically ambiguous, but the model flags it as "Risk". |
-| **9** |  **Borderline** | **Senior (65)** with Alkphos (195). Age-related or pathologic? The model chooses safety (Sick). |
+| **9** |  **Borderline** | **Senior (65)** with Alkphos (195). The model chooses safety (Sick). |
 | **10** | **Healthy** | Perfect blood work. Young individual (18) with optimal liver function. |
+
+*The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and were generated with the assistance of large language models for documentation clarity only. They do not represent medical diagnosis or professional medical judgment.*
 
 ---
 
