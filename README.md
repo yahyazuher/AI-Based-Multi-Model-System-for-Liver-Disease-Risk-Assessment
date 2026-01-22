@@ -43,10 +43,11 @@ This repository implements a **multi-model architecture** powered by **XGBoost (
 | 4 | Hepatitis&nbsp;Model&nbsp;(C&nbsp;only) | `data/processed/Hepatitis.csv` | `data/raw/HepatitisC.csv` | [Dataset](https://www.kaggle.com/datasets/rabieelkharoua/cancer-prediction-dataset) | 100% |
 | 5 | Cancer&nbsp;Model | `data/processed/The_Cancer_data_1500.csv` | `data/raw/The_Cancer_data_1500_V2.csv` | [Dataset](https://www.kaggle.com/datasets/rabieelkharoua/cancer-prediction-dataset) | 94% |
 
- Detailed documentation for each model is available under `docs/`.
+Detailed documentation for each model is available under `docs/`.
+
 ---
 
-# 1. Fatty Liver Diagnosis Model (NAFLD)
+## 1. Fatty Liver Diagnosis Model (NAFLD)
 Non-Alcoholic Fatty Liver Disease Diagnosis Model
 
 This model analyzes the interplay between triglyceride levels and liver enzymes to identify inflammatory lipid accumulation. The system features a safety Veto protocol based on "Platelet counts" for the early detection of liver fibrosis markers associated with fatty liver.
@@ -55,19 +56,28 @@ This model analyzes the interplay between triglyceride levels and liver enzymes 
 
 Core Logic: Connects the "Raw Material" (Triglycerides) with the "Alarm Signal" (ALT/GGT) to distinguish NAFLD from viral hepatitis.
 
-Critical Requirement (Positional Logic): The model processes data as an ordered mathematical matrix; therefore, inputs must be entered in the exact following order: ['Albumin', 'ALP', 'AST', 'ALT', 'Cholesterol', 'Creatinine', 'Glucose', 'GGT', 'Bilirubin', 'Triglycerides', 'Uric_Acid', 'Platelets', 'HDL']
+Critical Requirement (Positional Logic): The model processes data as an ordered mathematical matrix; therefore, inputs must be entered in the exact following order: `['Albumin', 'ALP', 'AST', 'ALT', 'Cholesterol', 'Creatinine', 'Glucose', 'GGT', 'Bilirubin', 'Triglycerides', 'Uric_Acid', 'Platelets', 'HDL']`.
 
 For detailed technical and medical information: regarding NHANES Data Integration, cleaning strategies, and clinical scenario analysis, please visit: ➔ `docs/FattyLiver_Model.md`
 
 ---
+## 2. Hepatitis C (HCV) Diagnostic & Prognostic Framework
+
+This ensemble framework assesses liver fibrosis progression and calculates survival risk for **Hepatitis C (HCV)** patients. It integrates structural liver damage with functional outcomes using weighted **XGBoost** architectures to provide a multi-dimensional health assessment.
+
+**(Trained Models):** `hepatitis_stage.pkl`, `hepatitis_complications.pkl`, `hepatiti_status.pkl` (all in `models/` directory).
+
+**Core Logic:** The framework employs a **hierarchical decision-making process** where the predicted histological stage acts as a high-weight input for the final survival probability. This mirrors clinical reality: physical scarring (detected by the Stage model) is a primary driver of functional failure and mortality risk.
+
+**Critical Requirement (Positional Logic):** The system processes clinical markers as a strict mathematical matrix. Inputs must be entered in the exact 15-feature order: `['Bilirubin', 'Cholesterol', 'Albumin', 'Copper', 'Alk_Phos', 'SGOT', 'Tryglicerides', 'Platelets', 'Prothrombin', 'Age', 'Sex', 'Ascites', 'Hepatomegaly', 'Spiders', 'Edema']`.
+
+**For detailed technical and medical information:** regarding the **"Structural-Functional Dissociation"** paradox, the 47% stage accuracy disclaimer, and virtual clinic validation, please visit: ➔ `docs/Hepatitis_Model.md`
 
 ---
 
 ---
 
----
-
-# 5. Liver Cancer Risk Assessment Model
+## 5. Liver Cancer Risk Assessment Model
 
 This model evaluates the probability of developing Hepatocellular Carcinoma (HCC) by analyzing the complex interplay between genetic predisposition and environmental triggers. It utilizes XGBoost weights to determine the impact of each analytical factor.
 
@@ -75,7 +85,7 @@ This model evaluates the probability of developing Hepatocellular Carcinoma (HCC
 
 Core Logic: The model demonstrates that a healthy lifestyle can effectively "neutralize" genetic predisposition; hereditary risk remains a "potential" rather than an "inevitable fate" without environmental catalysts (e.g., smoking and alcohol).
 
-Critical Requirement (Positional Logic): The model processes data as an ordered mathematical matrix; therefore, inputs must be entered in the exact following order: ['Age', 'Gender', 'BMI', 'Smoking', 'GeneticRisk', 'PhysicalActivity', 'AlcoholIntake', 'CancerHistory']
+Critical Requirement (Positional Logic): The model processes data as an ordered mathematical matrix; therefore, inputs must be entered in the exact following order: `['Age', 'Gender', 'BMI', 'Smoking', 'GeneticRisk', 'PhysicalActivity', 'AlcoholIntake', 'CancerHistory']`.
 
 For detailed technical and medical information: regarding feature importance analysis, virtual clinic scenarios, and preventive prediction logic, please visit: ➔ `docs/Cancer_Risk_Model.md`
 
