@@ -16,8 +16,8 @@ This framework is specifically designed and optimized for Hepatitis C (HCV) diag
 | **hepatitis_stage.pkl** | `models/` | Trained model to classify histological damage (Stage 1-4). |
 | **hepatitis_complications.pkl** | `models/` | Trained model to estimate the risk of Ascites. |
 | **hepatitis_status.pkl** | `models/` | Trained model to calculate survival/mortality probability. |
-| **train_hepatitis_models.py** | `code/` | Source code responsible for building and training the 3 models. |
-| **test_hepatitis_models.py** | `code/` | Inference script for diagnosing the 7 cases (see details above). |
+| **train_hepatitis_models.py** | `code/` | Source code responsible for building and training the 3 models.Can be run directly in Google Colab |
+| **test_hepatitis_models.py** | `code/` | Inference script for diagnosing the 7 cases (see details above).Can be run directly in Google Colab |
 | **Hepatitis.csv** | `data/processed` | The processed clinical dataset derived from Mayo Clinic records. |
 | **XGBoost.md** | `docs/` | Technical documentation explaining the mechanism of the XGBoost algorithm. |
 
@@ -105,6 +105,8 @@ The predictive logic of the **AiLDS** is divided into three integrated diagnosti
 | **`hepatitis_complications.pkl`** | Blood Tests & Physical Signs (excluding 'Ascites') | Probability: **0.0 to 1.0** | Estimates the immediate risk of fluid accumulation (Ascites). |
 | **`hepatitis_status.pkl`** | Blood Tests + **Predicted Stage** (from Model 1) | Probability: **0.0 to 1.0** | Calculates the ultimate mortality risk (Survival vs. Death). |
 
+*The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and were generated with the assistance of large language models for documentation clarity only. They do not represent medical diagnosis or professional medical judgment.*
+
 ---
 
 ### 2. Understanding the `.pkl` Output
@@ -122,7 +124,7 @@ When interacting with these serialized models programmatically, the outputs are 
 
 ---
 
-### 3. Workflow & Double Verification Logic
+### 3. Workflow And Double Verification Logic
 
 This models engineered as a **Clinical Decision Support Tool**. To ensure the highest level of safety, the system follows a strict execution sequence and a custom verification protocol.
 
@@ -136,7 +138,7 @@ The diagnostic architecture of the system follows a strictly hierarchical execut
 
 This dependency ensures that the structural state of the liver is prioritized as a primary factor before the system evaluates functional survival outcomes, mirroring real-world clinical decision-making.
 
-#### **B. The Double Verification Protocol (High-Risk Stages)**
+#### **B. The Double Verification Protocol **
 
 Because the transition between Stage 3 (Advanced Fibrosis) and Stage 4 (Cirrhosis) is clinically critical, the system implements a **Double Verification Logic**.
 
@@ -263,6 +265,8 @@ To demonstrate the practical application of the model, a **"Virtual Clinic"** si
 | **6. Active Injury** | Stage 4 with high Enzymes (SGOT). | **Stage 4** | **92.5%** | High risk due to ongoing active inflammation. |
 | **7. The Geriatric Case** | Age 70, Coagulation issues. | **Stage 4** | **98.9%** | Demonstrates the compounded risk of Age + Fibrosis. |
 
+*The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and were generated with the assistance of large language models for documentation clarity only. They do not represent medical diagnosis or professional medical judgment.*
+
 ---
 
 ### Clinical Insights
@@ -289,3 +293,7 @@ Case 7 (**The Geriatric Case**) demonstrates the model's sensitivity to demograp
 #### **E. Baseline Normalization (Case 1 & 3)**
 
 Cases 1 and 3 serve as the "Control Group". The low risk in Case 1 (**1.4%**) validates that the model does not produce "False Positives" for healthy individuals. Case 3 shows that the model can distinguish between **fibrosis progression** and **functional failure**, keeping the risk low (**2.7%**) as long as the liver's synthetic function (Albumin/Bilirubin) remains intact.
+
+---
+*The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and were generated with the assistance of large language models for documentation clarity only. They do not represent medical diagnosis or professional medical judgment.*
+
