@@ -45,7 +45,7 @@ The following transformations were applied:
 
 The goal was to predict specific mortality risk. The original multi-class status was mapped to a binary format:
 
-* **Original Values:**
+ **Original Values:**
 * `C` (Censored) & `CL` (Censored due to Liver Transplant)  Considered **Stable**.
 * `D` (Death)  Considered **Critical Event**.
 
@@ -77,22 +77,91 @@ Unlike binary features, Edema has graduated severity levels. We applied **Ordina
 * **`N` (No Edema):** Mapped to **0.0**
 * **`S` (Slight Edema):** Mapped to **0.5** (Edema resolvable with diuretics)
 * **`Y` (Severe Edema):** Mapped to **1.0** (Edema resistant to diuretics)
+---
+_____________________________________
+إليك تنسيق احترافي ومنظم للقسمين بحيث يكمل كل منهما الآخر دون تكرار للمعلومات، مما يجعل "المنطق البرمجي" (Logic) الخاص بمشروعك واضحاً جداً لأي شخص يقرأه على GitHub:
 
 ---
 
-### **Summary of Data Flow**
+# AiLDS: AI Liver Disease Diagnosis System
 
-```mermaid
-graph LR
-    A[Raw Data: data/raw/cirrhosis.csv] --> B(Feature Engineering & Cleaning)
-    B --> C{Mapping Logic}
-    C --> D[Age Conversion]
-    C --> E[Status Re-classification]
-    C --> F[Categorical Encoding]
-    F --> G[Processed Data: data/processed/Hepatitis.csv]
-    G --> H[XGBoost Training Pipeline]
+This repository hosts a multi-stage diagnostic framework dedicated to evaluating the progression of **Liver Fibrosis** and predicting the probability of critical complications and mortality. The system leverages an ensemble of **XGBoost** training models to transform complex clinical biomarkers into actionable diagnostic insights. By analyzing specific "feature weights" acquired during the training phase, AiLDS provides a precise determination of the risk levels associated with each patient's profile.
 
-```
+---
+
+## Model Architecture & Integration
+
+The predictive logic of the **AiLDS** is divided into three integrated diagnostic layers. Each layer acts as an independent specialized component, utilizing specific clinical features derived from the processed dataset to provide a comprehensive health assessment.
+
+### 1. Model Breakdown & Feature Selection
+
+| Model File | Input Features (Columns) | Target Output | Clinical Significance |
+| --- | --- | --- | --- |
+| **`hepatitis_stage.pkl`** | Core Blood Tests (Bilirubin, Albumin, SGOT, etc.) | Discrete Class: **1, 2, 3, 4** | Determines the level of histological liver scarring (Fibrosis). |
+| **`hepatitis_complications.pkl`** | Blood Tests & Physical Signs (excluding 'Ascites') | Probability: **0.0 to 1.0** | Estimates the immediate risk of fluid accumulation (Ascites). |
+| **`hepatitis_status.pkl`** | Blood Tests + **Predicted Stage** (from Model 1) | Probability: **0.0 to 1.0** | Calculates the ultimate mortality risk (Survival vs. Death). |
+
+---
+
+### 2. Understanding the `.pkl` Output
+
+When interacting with these serialized models programmatically, the outputs are processed based on the task type:
+
+* **Classification Output (Stage Model):** Returns a discrete numerical class representing the fibrosis stage.
+> **Example:** An output of `3` corresponds to **Stage 4 (Cirrhosis)** in the clinical mapping.
+
+
+* **Probability Output (Complications & Status Models):** We utilize the `predict_proba` function to retrieve a continuous value representing clinical confidence.
+> **Example:** A result of `0.92` indicates a **92% probability** of a critical event or complication.
+
+
+
+---
+
+### 3. System Workflow & Double Verification Logic
+
+AiLDS is engineered as a **Clinical Decision Support Tool**. To ensure the highest level of safety, the system follows a strict execution sequence and a custom verification protocol.
+
+#### **A. Sequence of Execution**
+
+The system logic is hierarchical. The predicted output of the **Stage Model** is critical because it serves as a high-weight feature for the final **Status Model**.
+
+1. **Input Labs**  **Stage Prediction**.
+2. **Input Labs + Predicted Stage**  **Mortality Risk Calculation**.
+
+#### **B. The Double Verification Protocol (High-Risk Stages)**
+
+Because the transition between Stage 3 (Advanced Fibrosis) and Stage 4 (Cirrhosis) is clinically critical, the system implements a **Double Verification Logic**.
+
+* **Trigger:** If the Stage Model predicts a high-risk result (**Stage 3 or 4**), the system automatically re-runs the inference engine.
+* **Requirement:** The model must return the **exact same result twice in a row**.
+* **Safety Net:** If the two consecutive results are not identical, the system flags a "Verification Mismatch," preventing a potentially false high-risk diagnosis from being presented to the user.
+
+---
+
+### 4. Clinical Interpretation
+
+The system categorizes results based on a probability threshold to assist in rapid triage:
+
+* **🟢 Green Flag (Stable):** If the Mortality Probability is **< 50%**, the case is classified as stable with a recommendation for routine clinical monitoring.
+* **🔴 Red Flag (Critical):** If the Mortality Probability is **> 50%**, the case is flagged as critical, requiring immediate medical intervention and further diagnostic confirmation.
+
+---
+
+### 5. Mathematical Validation
+
+To complement the AI's predictive power, the system integrates established clinical scoring systems to provide a "ground truth" reference:
+
+* **APRI Score (AST to Platelet Ratio Index):** Assesses the likelihood of significant fibrosis.
+
+
+* **ALBI Score (Albumin-Bilirubin Grade):** Evaluates liver functional reserve.
+
+
+
+---
+
+Would you like me to prepare a professional `requirements.txt` file listing the specific versions of `xgboost`, `scikit-learn`, and `pandas` required to run these models on your system?
 ---
 
 ### 2- Model Input Requirements
