@@ -3,7 +3,7 @@ AI Liver Disease Diagnosis System (Inference Script)
 Created by: Yahya
 Description: This script loads trained XGBoost models to perform a full 
              diagnostic sweep for liver patients, including clinical scores 
-             (APRI/ALBI), AI staging, and survival risk.
+             (APRI/ALBI), AI staging with double verification, and survival risk.
 """
 
 import pandas as pd
@@ -16,7 +16,7 @@ class LiverDiseasePredictor:
     def __init__(self, model_path='/content'):
         self.model_path = model_path
         self.models = {}
-        # Define the exact feature order expected by the models
+        # ترتيب الأعمدة المتوقع للموديلات
         self.input_cols = [
             'Bilirubin', 'Cholesterol', 'Albumin', 'Copper', 'Alk_Phos', 'SGOT',
             'Tryglicerides', 'Platelets', 'Prothrombin', 'Age', 'Sex',
@@ -29,7 +29,7 @@ class LiverDiseasePredictor:
         ]
 
     def load_models(self):
-        """Loads the three saved .pkl models from the specified path."""
+        """تحميل ملفات الـ pkl من المسار المحدد."""
         filenames = {
             'stage': 'hepatitis_stage.pkl',
             'comp': 'hepatitis_complications.pkl',
@@ -39,21 +39,19 @@ class LiverDiseasePredictor:
             for key, name in filenames.items():
                 with open(os.path.join(self.model_path, name), 'rb') as f:
                     self.models[key] = pickle.load(f)
-            print("✅ All models loaded successfully from environment.\n")
+            print(" All models loaded successfully from environment.\n")
             return True
         except FileNotFoundError as e:
-            print(f"❌ Error: Model files not found. Please ensure .pkl files are in {self.model_path}")
+            print(f" Error: Model files not found. Please ensure .pkl files are in {self.model_path}")
             return False
 
     @staticmethod
     def calculate_clinical_scores(row):
-        """Calculates traditional medical scores: APRI and ALBI."""
-        # APRI Calculation
+        """حساب المعادلات الطبية التقليدية: APRI و ALBI."""
         ast = row['SGOT']
         plat = row['Platelets'] if row['Platelets'] > 0 else 1
         apri = ((ast / 40) / plat) * 100
 
-        # ALBI Calculation
         bili = row['Bilirubin'] if row['Bilirubin'] > 0 else 0.1
         alb = row['Albumin']
         albi = (math.log10(bili * 17.1) * 0.66) + ((alb * 10) * -0.085)
@@ -61,7 +59,7 @@ class LiverDiseasePredictor:
         return apri, albi
 
     def run_diagnosis(self, patients_list):
-        """Processes a list of patients and prints detailed AI diagnostic reports."""
+        """تشغيل التشخيص الكامل مع منطق التحقق للمراحل المتقدمة."""
         if not self.models and not self.load_models():
             return
 
@@ -71,10 +69,7 @@ class LiverDiseasePredictor:
             patient_row = df_test.iloc[[i]]
             patient_data = df_test.iloc[i]
 
-            print(f"🔷 Patient Case #{i+1}")
-            print("-" * 40)
-
-            # 1. Clinical Scores
+            # 1. المعادلات الطبية
             apri, albi = self.calculate_clinical_scores(patient_data)
             apri_status = "Healthy" if apri < 0.5 else "Likely Cirrhosis" if apri > 1.5 else "Inconclusive"
             
@@ -82,27 +77,45 @@ class LiverDiseasePredictor:
             elif albi <= -1.39: albi_grade = "Grade 2 (Moderate)"
             else: albi_grade = "Grade 3 (Severe Failure)"
 
-            print(f"1️⃣ Clinical Scores:")
+            # --- بداية التشخيص والعرض ---
+            print(f" Patient Case #{i+1}")
+            print("-" * 40)
+            print(f"1️ Clinical Scores:")
             print(f"   • APRI: {apri:.2f} ({apri_status})")
             print(f"   • ALBI: {albi:.2f} ({albi_grade})")
 
-            # 2. AI Stage Diagnosis
+            # 2. AI Stage Diagnosis مع شرط التحقق (Double Verification)
             stage_pred = self.models['stage'].predict(patient_row)[0]
             stage = stage_pred + 1
-            print(f"2️⃣ AI Diagnosis: Stage {stage}")
+            
+            is_verified = True
+            # إذا كانت المرحلة 3 أو 4، نطبق شرط إعادة التحقق
+            if stage >= 3:
+                second_check = self.models['stage'].predict(patient_row)[0] + 1
+                if stage != second_check:
+                    is_verified = False
+            
+            if not is_verified:
+                print(f"2️ AI Diagnosis: [ERROR] Verification Mismatch for High Risk Stage.")
+                print("=" * 40 + "\n")
+                continue # ننتقل للمريض التالي ولا نعرض بقية النتائج
 
-            # 3. Complications Risk (Ascites)
+            # عرض النتيجة في حال كانت المرحلة 1 أو 2، أو إذا تم التحقق من 3 و 4
+            v_msg = " (Double-Verified ✅)" if stage >= 3 else ""
+            print(f"2️ AI Diagnosis: Stage {stage}{v_msg}")
+
+            # 3. توقع المضاعفات (Ascites)
             row_no_ascites = patient_row.drop(columns=['Ascites'], errors='ignore')
             ascites_risk = self.models['comp'].predict_proba(row_no_ascites)[:, 1][0]
-            print(f"3️⃣ Ascites Risk: {ascites_risk*100:.1f}%")
+            print(f"3️ Ascites Risk: {ascites_risk*100:.1f}%")
 
-            # 4. Survival Probability
+            # 4. النتيجة النهائية وخطر الوفاة
             row_status = patient_row.copy()
             row_status['Stage'] = stage
-            row_status = row_status[self.status_order] # Reorder to match training
+            row_status = row_status[self.status_order]
             
             death_risk = self.models['status'].predict_proba(row_status)[:, 1][0]
-            print(f"4️⃣ Survival Risk Analysis: {death_risk*100:.1f}% Mortality Probability")
+            print(f"4️ Survival Risk Analysis: {death_risk*100:.1f}% Mortality Probability")
 
             if death_risk > 0.5:
                 print("   🔴 SUMMARY: CRITICAL CASE - Immediate intervention required.")
@@ -112,7 +125,7 @@ class LiverDiseasePredictor:
             print("=" * 40 + "\n")
 
 if __name__ == "__main__":
-    # Sample Dataset: 7 Patients for testing
+    # بيانات الاختبار لـ 7 مرضى
     test_data = [
         [0.7, 242.0, 4.08, 73.0, 5890.0, 56.76, 118.0, 300.0, 10.6, 53.0, 1, 0, 0, 0, 0],
         [3.2, 562.0, 3.08, 79.0, 2276.0, 144.15, 88.0, 251.0, 11.0, 53.0, 0, 0, 0, 1, 0],
