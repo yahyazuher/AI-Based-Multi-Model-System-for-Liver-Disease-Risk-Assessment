@@ -11,8 +11,8 @@ This section is dedicated to the detection of **Non-Alcoholic Fatty Liver Diseas
 | Name | Database Location | Function |
 | --- | --- | --- |
 | **fatty_liver_model.pkl** | `models/` | The trained model containing the optimized weights for NAFLD detection. |
-| **train_fatty_liver.py** | `code/` | Source code for data merging (`SEQN` logic) and model training. |
-| **test_fatty_liver.py** | `code/` | Source code dedicated to testing and evaluating the model performance. |
+| **train_fatty_liver.py** | `code/` | Source code for data merging (`SEQN` logic) and model training.Can be run directly in Google Colab |
+| **test_fatty_liver.py** | `code/` | Source code dedicated to testing and evaluating the model performance.Can be run directly in Google Colab |
 | **FattyLiver.csv** | `data/processed/` | Engineered dataset from NHANES 2013-2014 cycles containing 6,533 patient records. |
 | **XGBoost.md** | `docs/` | Technical documentation of the underlying boosting mechanism. |
 
@@ -155,6 +155,8 @@ The model mimics a clinical consultant by evaluating the **synergy** between lip
 | **2** | Normal (100) | High (60) | **Not Fatty Liver** | Injury exists, but likely due to viral or toxic causes, not liver fat. |
 | **3** | High (200) | High (50) | **🔴 Patient** | **Confirmed NAFLD:** Fat accumulation has triggered inflammation. |
 
+*The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and were generated with the assistance of large language models for documentation clarity only. They do not represent medical diagnosis or professional medical judgment.*
+
 ---
 I apologize for the confusion. I will strictly follow the **7 clinical scenarios** provided in your table.
 
@@ -176,6 +178,8 @@ The following table represents the final diagnostic output for the 7 simulated p
 | 6 | **Non-Fatty Injury** | Low Fats (105) + Very High Enzymes (160) | **Not Fatty Liver** |
 | 7 | **Moderate/Borderline Risk** | Crossed Thresholds (152 / 41) | 🔴 **PATIENT (NAFLD)** |
 
+*The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and were generated with the assistance of large language models for documentation clarity only. They do not represent medical diagnosis or professional medical judgment.*
+
 ---
 
 ###  Analytical Breakdown of Diagnostic Logic
@@ -194,6 +198,8 @@ Case 6 represents a critical test for the model. The patient has extremely high 
 #### **C. Borderline Sensitivity (Case 7)**
 
 The model shows high precision in **Case 7**, where the patient only slightly exceeded the thresholds (ALT 41 vs limit 40, Triglycerides 152 vs limit 150). The model successfully captured this as a **Patient** case, proving its sensitivity to early-stage risks.
+
+*The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and were generated with the assistance of large language models for documentation clarity only. They do not represent medical diagnosis or professional medical judgment.*
 
 ---
 
