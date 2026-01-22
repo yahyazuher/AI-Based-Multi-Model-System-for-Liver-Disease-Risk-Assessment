@@ -1,5 +1,9 @@
-# Hepatitis Diagnostic & Prognostic Framework
-This specialized framework is dedicated to evaluating the progression of Liver Fibrosis and predicting the probability of critical complications, such as Ascites, and overall mortality. The system utilizes an ensemble of XGBoost models, with its core logic distributed across three specialized serialized files: hepatitis_stage.pkl, hepatitis_complications.pkl, and hepatitis_status.pkl. By analyzing clinical input values through optimized "feature weights," the framework provides a precise determination of the risk levels associated with key biomarkers.
+# Hepatitis C (HCV) Diagnostic & Prognostic Framework 
+
+
+This specialized framework is dedicated to evaluating the progression of Liver Fibrosis in Hepatitis C patients and predicting the probability of critical complications, such as Ascites, and overall mortality. The system utilizes an ensemble of XGBoost models, with its core logic distributed across three specialized serialized files: `hepatitis_stage.pkl`, `hepatitis_complications.pkl`, and `hepatiti_status.pkl`(all in models/ directory). By analyzing clinical input values through optimized "feature weights," the framework provides a precise determination of the risk levels associated with key biomarkers.
+
+This framework is specifically designed and optimized for Hepatitis C (HCV) diagnostic patterns. It is not intended for use with other types of hepatitis (A, B, D, or E), as the biochemical markers and progression rates vary significantly across different viral strains.
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=OGcBn26-pcsQ)
 
@@ -35,6 +39,8 @@ After completing the training on  records and testing on  unseen records, the mo
 | **`hepatitis_complications.pkl`** | $92.86\%$ %|  High Reliability |
 | **`hepatiti_status.pkl`** | $79.76\%$ % | Moderate-High Reliability |
 | **`hepatitis_stage.pkl`** | $< 49\%$ % | Academic Use Only |
+
+The logic used to generate these results, including the $80/20$ split and XGBoost configurations, can be found in the source script: code/train_hepatitis_models.py or executed directly via the Colab environment:[![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=OGcBn26-pcsQ)
 
 #### **Stability & Clinical Disclaimer**
 
