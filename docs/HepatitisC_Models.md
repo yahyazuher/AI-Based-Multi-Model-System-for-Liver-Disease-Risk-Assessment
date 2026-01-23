@@ -1,7 +1,7 @@
 # Hepatitis C (HCV) Diagnostic & Prognostic Framework 
 
 
-This specialized framework is dedicated to evaluating the progression of Liver Fibrosis in Hepatitis C patients and predicting the probability of critical complications, such as Ascites, and overall mortality. The system utilizes an ensemble of XGBoost models, with its core logic distributed across three specialized serialized files: `hepatitis_stage.pkl`, `hepatitis_complications.pkl`, and `hepatiti_status.pkl`(all in models/ directory). By analyzing clinical input values through optimized "feature weights," the framework provides a precise determination of the risk levels associated with key biomarkers.
+This specialized framework is dedicated to evaluating the progression of Liver Fibrosis in Hepatitis C patients and predicting the probability of critical complications, such as Ascites, and overall mortality. The system utilizes an ensemble of XGBoost models, with its core logic distributed across three specialized serialized files: `hepatitisC_stage_model.pkl`, `hepatitisC_complications.pkl`, and `hepatitiC_status_model.pkl`(all in models/ directory). By analyzing clinical input values through optimized "feature weights," the framework provides a precise determination of the risk levels associated with key biomarkers.
 
 This framework is specifically designed and optimized for Hepatitis C (HCV) diagnostic patterns. It is not intended for use with other types of hepatitis (A, B, D, or E), as the biochemical markers and progression rates vary significantly across different viral strains.
 
@@ -13,11 +13,11 @@ This framework is specifically designed and optimized for Hepatitis C (HCV) diag
 
 | Name | Database Location | Function |
 | --- | --- | --- |
-| **hepatitis_stage.pkl** | `models/` | Trained model to classify histological damage (Stage 1-3). |
-| **hepatitis_complications.pkl** | `models/` | Trained model to estimate the risk of Ascites. |
-| **hepatitis_status.pkl** | `models/` | Trained model to calculate survival/mortality probability. |
-| **train_hepatitis_models.py** | `code/` | Source code responsible for building and training the 3 models.Can be run directly in Google Colab |
-| **test_hepatitis_models.py** | `code/` | Inference script for diagnosing the 7 cases (see details above).Can be run directly in Google Colab |
+| **hepatitisC_stage_model.pkl** | `models/` | Trained model to classify histological damage (Stage 1-3). |
+| **hepatitisC_complications.pkl** | `models/` | Trained model to estimate the risk of Ascites. |
+| **hepatitiC_status_model.pkl** | `models/` | Trained model to calculate survival/mortality probability. |
+| **train_hepatitisC_models** | `code/` | Source code responsible for building and training the 3 models.Can be run directly in Google Colab |
+| **test_hepatitisC_models** | `code/` | Inference script for diagnosing the 7 cases (see details above).Can be run directly in Google Colab |
 | **Hepatitis.csv** | `data/processed` | The processed clinical dataset derived from Mayo Clinic records. |
 | **XGBoost.md** | `docs/` | Technical documentation explaining the mechanism of the XGBoost algorithm. |
 
