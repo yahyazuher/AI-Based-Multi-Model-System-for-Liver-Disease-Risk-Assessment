@@ -111,9 +111,13 @@ The system relies on three specialized models, each requiring a strict mathemati
 * **Required Feature Order:**
 `['Bilirubin', 'Cholesterol', 'Albumin', 'Copper', 'Alk_Phos', 'SGOT', 'Tryglicerides', 'Platelets', 'Prothrombin', 'Age', 'Sex', 'Ascites', 'Hepatomegaly', 'Spiders', 'Edema', 'APRI', 'ALBI_Score', 'Bili_Alb_Ratio']`
 
-> **System Note:** The inference engine automatically handles the calculation of derived features (such as `APRI` and `ALBI_Score`). The user interface inputs are mapped to these strict vectors internally.
 
-**For detailed technical and medical information:** regarding the **"Structural-Functional Dissociation"** paradox, the stage accuracy disclaimer, and virtual clinic validation, please visit: ➔ `docs/HepatitisC_Models.md`
+> **Developer Note & Reproducibility:**
+> For the exact mathematical implementations of derived features (such as APRI and ALBI scores) and the complete training pipeline, please refer to the source code:
+> * **Training Logic:** `code/train_HC_models.py` (Contains feature engineering & model serialization).
+> * **Testing & Validation:** `code/test_HC_models.py` (Contains the inference engine and the 7-case validation suite).
+
+**For comprehensive technical details, performance metrics, and clinical validation analysis, please refer to:** ➔ `docs/HepatitisC_Models.md`
 
 ---
 
