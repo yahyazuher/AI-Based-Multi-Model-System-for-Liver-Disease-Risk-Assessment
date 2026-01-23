@@ -319,7 +319,6 @@ The inference engine (`ailds_api.py`) automatically maps the base variables abov
 
 > *The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges. They do not represent medical diagnosis or professional medical judgment.*
 
----
 
 ### Clinical Insights & Logic Validation
 
