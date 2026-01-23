@@ -13,7 +13,7 @@ This framework is specifically designed and optimized for Hepatitis C (HCV) diag
 
 | Name | Database Location | Function |
 | --- | --- | --- |
-| **hepatitis_stage.pkl** | `models/` | Trained model to classify histological damage (Stage 1-4). |
+| **hepatitis_stage.pkl** | `models/` | Trained model to classify histological damage (Stage 1-3). |
 | **hepatitis_complications.pkl** | `models/` | Trained model to estimate the risk of Ascites. |
 | **hepatitis_status.pkl** | `models/` | Trained model to calculate survival/mortality probability. |
 | **train_hepatitis_models.py** | `code/` | Source code responsible for building and training the 3 models.Can be run directly in Google Colab |
