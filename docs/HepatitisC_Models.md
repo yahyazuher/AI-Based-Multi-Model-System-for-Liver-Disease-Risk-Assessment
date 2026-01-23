@@ -40,7 +40,7 @@ After completing the training on  records and testing on  unseen records, the mo
 | **`hepatiti_status.pkl`** | $71.43\%$ % | Moderate-High Reliability |
 | **`hepatitis_stage.pkl`** | $< 62.50\%$ % | Academic Use Only |
 
-The logic used to generate these results, including the $80/20$ split and XGBoost configurations, can be found in the source script: code/train_HC_models or executed directly via the Colab environment:[![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=OGcBn26-pcsQ)
+The logic used to generate these results, including the $80/20$ split and XGBoost configurations, can be found in the source script: `code/train_HC_models` or executed directly via the Colab environment:[![Open In Colab](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=Zo1yhFCSZM3Z)]
 
 ---
 
@@ -343,7 +343,7 @@ While most cases showed negligible Ascites risk (<5%), **Case 5** triggered a ma
 
 In **Case 7**, the patient's advanced age (70 years) significantly amplified the mortality risk to **92.0%**, despite having a similar structural profile to Case 3. This confirms the XGBoost architecture weights **Age** as a critical non-linear multiplier for prognosis.
 
-The logic used to generate these results, can be found in: code/test_HC_models or executed directly via the Colab environment:[![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=OGcBn26-pcsQ)
+The logic used to generate these results, can be found in: `code/test_HC_models` or executed directly via the Colab environment:[![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=OGcBn26-pcsQ)
 
 ---
 *The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and were generated with the assistance of large language models for documentation clarity only. They do not represent medical diagnosis or professional medical judgment.*
