@@ -32,7 +32,7 @@ This project presents a **multi-model AI system** designed to assess liver healt
 * Specialized models for each liver-related condition.
 * Sequential logic between models with a safety protocol to prevent incorrect decisions.
 * Relies on routine blood markers to minimize invasive testing.
-* All predictions are based on **clinical guidelines**.
+* **Clinical Basis:** The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and standard medical guidelines.
 
 ---
 
