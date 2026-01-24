@@ -22,11 +22,10 @@ To ensure our XGBoost model remains a "smart learner," we implemented the follow
 
 1. **Controlled Depth (`max_depth=4`):** We limit how deep each tree can grow to prevent the model from capturing overly specific outliers.
 2. **Data Sampling (`subsample=0.8`):** The model trains on different subsets of the data, forcing it to find robust patterns that exist across the entire dataset.
-3. **Regularization:** We apply mathematical penalties ( and ) to discourage unnecessary complexity in the decision trees.
-
+3. The model applies L1 and L2 regularization to penalize over-complex trees and ensure better generalization.
 
 <div align="center">
-  <hr style="width: 100%; border: none; height: 0.4px; background-color: rgba(255, 255, 255, 0.5);">
+  <hr style="width: 100%; border: none; height: 0.4px; background-color: rgba(255, 255, 255, 0.3);">
 </div>
 
 
@@ -49,15 +48,15 @@ It applies **L1 (Lasso)** and **L2 (Ridge)** regularization. In simple terms, th
 
 Medical data often contains missing values (e.g., a patient didn't take a specific lab test).
 
-* **How it works:** XGBoost treats "missing values" as information, not errors. During training, the algorithm learns a **"Default Direction"** for each node in the tree.
-* **The Mechanism:** If a future patient has a missing value for a specific test, the model automatically sends them down the "default path" that was statistically determined to minimize error during training. This removes the need for complex imputation techniques (like filling with averages) which can sometimes introduce noise.
+* XGBoost treats "missing values" as information, not errors. During training, the algorithm learns a **"Default Direction"** for each node in the tree.
+* If a future patient has a missing value for a specific test, the model automatically sends them down the "default path" that was statistically determined to minimize error during training. This removes the need for complex imputation techniques (like filling with averages) which can sometimes introduce noise.
 
 ### **3. Parallel Processing**
 
 While Boosting is inherently sequential (Tree 2 must wait for Tree 1), XGBoost achieves speed through **Parallel Feature Splitting**.
 
-* **The Innovation:** The most time-consuming part of building a tree is sorting data to find the best "split point." XGBoost stores the data in compressed, pre-sorted columns (Block Structure).
-* **Result:** This allows the algorithm to use multiple CPU cores to search for the best split points simultaneously. This makes training significantly faster than traditional methods like sklearn's GBM.
+* The most time-consuming part of building a tree is sorting data to find the best "split point." XGBoost stores the data in compressed, pre-sorted columns (Block Structure).
+* This allows the algorithm to use multiple CPU cores to search for the best split points simultaneously. This makes training significantly faster than traditional methods like sklearn's GBM.
 
 ### **4. Tree Pruning**
 
@@ -76,7 +75,7 @@ The Liver Cancer diagnostic model was specifically optimized to account for the 
 
 * Tree Depth Constraint (max_depth = 3): With a constrained sample size, deep trees (high max_depth) pose a high risk of Overfitting, where the model captures noise and specific outliers rather than generalized medical patterns. By restricting the depth to 3, we ensured that the XGBoost algorithm focuses on the most prominent and statistically significant diagnostic features.
 
-* The Result: This approach achieved the highest Validation Accuracy by promoting model simplicity. It prevented the algorithm from "memorizing" individual patient cases, ensuring that the diagnostic logic is stable and can be generalized to new clinical samples effectively.
+* This approach achieved the highest Validation Accuracy by promoting model simplicity. It prevented the algorithm from "memorizing" individual patient cases, ensuring that the diagnostic logic is stable and can be generalized to new clinical samples effectively.
 ---
 ## **Automated Hyperparameter Tuning**
 
