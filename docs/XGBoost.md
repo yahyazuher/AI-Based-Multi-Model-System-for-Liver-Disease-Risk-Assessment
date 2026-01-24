@@ -78,7 +78,7 @@ The Liver Cancer diagnostic model was specifically optimized to account for the 
 
 * The Result: This approach achieved the highest Validation Accuracy by promoting model simplicity. It prevented the algorithm from "memorizing" individual patient cases, ensuring that the diagnostic logic is stable and can be generalized to new clinical samples effectively.
 ---
-## **Automated Hyperparameter Tuning Strategy**
+## **Automated Hyperparameter Tuning**
 
 To achieve the highest diagnostic accuracy, we utilize an exhaustive **Grid Search** approach within the Google Colab environment. This process automates the selection of optimal settings for the XGBoost algorithm.
 
@@ -105,6 +105,6 @@ param_grid = {
 Since we apply **5-fold Cross-Validation** (`cv=5`), each combination is trained 5 times on different data subsets. 
 **Total Training Iterations** = $54 \times 5 = 270$ individual fits.
 
-> To see more about Hyperparameter Tuning Strategy : [![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=TCOPEuAyyDg-)
+> To see more about Automated Hyperparameter Tuning strategy : [![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=TCOPEuAyyDg-)
 
 ---
