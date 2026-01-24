@@ -64,13 +64,76 @@ Traditional algorithms use a "greedy" approach, stopping the tree growth as soon
 
 * If a branch has a negative gain but is followed by a highly positive gain, XGBoost keeps it. If the total gain is negative after checking the full depth, it removes (prunes) the branch.
 
+
+---
+
+## **Models Training Strategy**
+
+To ensure the system acts as a "Smart Clinician" rather than a "Rote Learner," I implemented a strict data separation and feature dropping protocol. This prevents the model from "cheating" by seeing the answers or irrelevant metadata during the learning phase.
+
+### **1. The 80/20 Validation Framework**
+
+* **80% Training Set:** Acts as the "Academic Curriculum," where the XGBoost algorithm learns complex patterns between biomarkers.
+* **20% Testing Set:** Acts as the "Unseen Exam." These records are hidden from the model during training to measure its real-world diagnostic accuracy.
+
+
+### **2. Maximizing Data Utility**
+
+While the standard 80/20 split was used for validation, a strategic decision was made to **retrain** the following models on the **100% full dataset** before final deployment. This approach was specifically chosen for the models that faced the highest complexity in clinical pattern recognition.
+
+#### **Performance-Driven Retraining Logic**
+
+| Model File | Accuracy (Validation) | Reliability Status | Strategic Action |
+| --- | --- | --- | --- |
+| `hepatitisC_stage_model.pkl` | **62.50%** | **Academic Use** | Full Dataset Integration |
+| `hepatitisC_status_model.pkl` | **71.43%** | **Moderate-High Reliability** | Full Dataset Integration |
+
+### **Why 100% Data was used for these specific models?**
+
+1. The analytical values for different stages and statuses in these datasets were significantly close and overlapping. In such "high-proximity" data environments, the model needs to see every possible variation to establish a more stable decision boundary.
+2. Because these models showed lower initial confidence (62.50% and 71.43%), withholding 20% of the data for testing in the final version would have meant losing valuable clinical cases. By merging the test set back into the training phase, we provided the XGBoost engine with the **maximum possible knowledge base**.
+3. **Real-World Deployment Readiness:** To ensure the system performs reliably in a real clinical setting without "missing" subtle patterns, utilizing the full training file was essential. This ensures that no potential diagnostic insight from the original dataset is wasted.
+
+---
+
+### **Feature Selection & Dropped Columns**
+
+Each of the six models within the AiLDS ecosystem underwent a rigorous feature selection process. Columns that could lead to **Overfitting** or **Data Leakage** were intentionally removed:
+
+| Model Name | Training Dataset | Dropped Columns | Technical Justification |
+| --- | --- | --- | --- |
+| **1. Gate Model** | `Liver_Patient_Dataset...` | **Target Label** | Separating the final diagnosis from features to ensure honest pattern recognition. |
+| **2. Cancer Risk** | `The_Cancer_data_1500.csv` | **Diagnosis** | Primary target removal to prevent the model from seeing the answer key. |
+| **3. Complications** | `HepatitisC.csv` | **ID, N_Days, Status, Stage** | IDs are random noise; `Status/Stage` provide direct hints (leakage) about Ascites risk. |
+| **4. Staging Model** | `hepatitisC_Stage.csv` | **Stage** | Removed the stage column as it is the target variable for multi-class classification. |
+| **5. Status Model** | `hepatitisC_status.csv` | **Status, Stage** | `Stage` was dropped because it introduced high noise and low-accuracy patterns that hindered mortality prediction. |
+| **6. Fatty Liver** | `FattyLiver.csv` | **Diagnosis, SEQN** | `SEQN` (Patient Sequence) is metadata; its removal forces the model to focus only on ALT/GGT/Triglycerides. |
+
+---
+
+### **Why These Columns Were Dropped?**
+
+1. **Metadata Removal (IDs/SEQN):** If left in, the model might associate a specific row number with a disease. This leads to 100% accuracy on training but total failure on new patients.
+2. **Preventing Data Leakage:** Including clinical stages in a status prediction model is like giving a student the answer in the margin of the question. We forced the model to look at **Raw Blood Chemistry** instead of previous diagnoses.
+3. **Ensuring Clinical Logic:** By dropping these columns, the XGBoost engine is forced to find the mathematical relationship between biomarkers (like Albumin and Bilirubin) and the medical outcome.
+
 ---
 
 ### **Projects Technical Implementation**
+
+#### 1- Data Balancing Strategy
+
+In medical diagnostics, datasets are often heavily skewed, instance, the number of patients diagnosed with **Ascites** is significantly lower than healthy individuals. A standard model would likely develop a "Majority Bias," predicting everyone as healthy to achieve high accuracy while failing to detect actual cases.
+
+**The Solution:**
+Instead of manual oversampling, we implemented a dynamic class-weighting mechanism. The code programmatically calculates the ratio between the two classes (On: `data/raw/Liver_Patient_Dataset_Cleaned_19k.csv` file) to determine the `scale_pos_weight` parameter:
+
+ By assigning a higher weight to the minority class (the patients), the **XGBoost** algorithm becomes hyper-sensitive to positive cases. It forces the loss function to penalize the misclassification of a **sick** patient more heavily than a **healthy** one, ensuring the model is clinically reliable.
+
+* **Implementation:** This logic is fully automated in `code/train_gate_model.py` and demonstrated in this [Google Colab Notebook](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=OGcBn26-pcsQ).
+
 ---
----
----
-#### 4- Cancer Risk Model
+#### 2- Cancer Risk Model
 The Liver Cancer diagnostic model was specifically optimized to account for the Limited-scale Clinical Dataset used in this study. To ensure the model remains robust and reliable for sensitive cancer detection, the following configuration was implemented:
 
 * Tree Depth Constraint (max_depth = 3): With a constrained sample size, deep trees (high max_depth) pose a high risk of Overfitting, where the model captures noise and specific outliers rather than generalized medical patterns. By restricting the depth to 3, we ensured that the XGBoost algorithm focuses on the most prominent and statistically significant diagnostic features.
