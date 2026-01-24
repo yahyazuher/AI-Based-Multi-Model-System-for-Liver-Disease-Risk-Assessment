@@ -66,7 +66,7 @@ Traditional algorithms use a "greedy" approach, stopping the tree growth as soon
 
 ---
 
-### **Projects-Specific Optimization**
+### **Projects Technical Implementation**
 ---
 ---
 ---
