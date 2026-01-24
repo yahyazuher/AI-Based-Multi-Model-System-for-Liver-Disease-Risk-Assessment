@@ -22,10 +22,11 @@ An integrated AI ecosystem designed to assess liver health through a pipeline of
 
 This project presents a **multi-model AI system** designed to assess liver health. The system works as follows:
 
-* It first analyzes lab results to determine whether the user needs further assessment by subsequent models. Healthy users are excluded to save resources and avoid unnecessary processing.
-* Diagnoses **liver fibrosis (Fibrosis)** and **cirrhosis (Cirrhosis)** at different stages.
+* It first analyzes lab results using Gate Model to determine whether the user needs further assessment by subsequent models. Healthy users are excluded to save resources and avoid unnecessary processing.
+* Diagnoses Stage Model **liver fibrosis** and **cirrhosis** at different stages.
 * Detects **Non-Alcoholic Fatty Liver Disease (NAFLD)**.
 * Predicts the **risk of liver cancer (Hepatocellular Carcinoma)**.
+* The Status Model estimates the probability of mortality risk.
 
 **System Features:**
 
@@ -44,7 +45,8 @@ This project presents a **multi-model AI system** designed to assess liver healt
 | 3 |     HepatitisC&nbsp;Models <br> 3 Specialized Models | `data/processed/HepatitisC_Stage_model.csv` `data/processed/HepatitisC_status_model.csv` `data/processed/HepatitisC_complications.csv` | `data/raw/cirrhosis.csv` `data/processed/master8323pationt.csv` | [Dataset](https://www.kaggle.com/datasets/fedesoriano/cirrhosis-prediction-dataset) |
 | 4 | Cancer&nbsp;Model | `data/processed/The_Cancer_data_1500.csv` | `data/raw/The_Cancer_data_1500_V2.csv` | [Dataset](https://www.kaggle.com/datasets/rabieelkharoua/cancer-prediction-dataset) |
 
----
+<p align="center"> <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" width="1000"> </p>
+
 ## 1. The Gate Model: First Line 
 
 The Gate Model serves as the **first line of defense** in the system, performing binary classification to separate healthy users from potential liver patients. It relies on an **XGBoost-trained model** (`gate_model.pkl`) that interprets biochemical input values using learned weights from a rigorously cleaned dataset, ensuring resource-efficient pre-screening before activating complex sub-models.
@@ -58,7 +60,7 @@ The Gate Model serves as the **first line of defense** in the system, performing
 
 For more information on dataset preparation, model training, and testing methodology, please visit: ➔ `docs/Gate_Model.md`
 
----
+<p align="center"> <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" width="1000"> </p>
 
 ## 2. Fatty Liver Diagnosis Model (NAFLD)
 Non-Alcoholic Fatty Liver Disease Diagnosis Model
@@ -73,7 +75,8 @@ Critical Requirement (Positional Logic): The model processes data as an ordered 
 
 For detailed technical and medical information: regarding NHANES Data Integration, cleaning strategies, and clinical scenario analysis, please visit: ➔ `docs/FattyLiver_Model.md`
 
----
+<p align="center"> <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" width="1000"> </p>
+
 ## 3. Hepatitis C (HCV) Diagnostic & Prognostic Framework
 
 This ensemble framework assesses liver fibrosis progression and calculates survival risk for **Hepatitis C (HCV)** patients. It integrates structural liver damage with functional outcomes using weighted **XGBoost** architectures to provide a multi-dimensional health assessment.
@@ -112,14 +115,14 @@ The system relies on three specialized models, each requiring a strict mathemati
 `['Bilirubin', 'Cholesterol', 'Albumin', 'Copper', 'Alk_Phos', 'SGOT', 'Tryglicerides', 'Platelets', 'Prothrombin', 'Age', 'Sex', 'Ascites', 'Hepatomegaly', 'Spiders', 'Edema', 'APRI', 'ALBI_Score', 'Bili_Alb_Ratio']`
 
 
-> **Developer Note & Reproducibility:**
+> **Note:**
 > For the exact mathematical implementations of derived features (such as APRI and ALBI scores) and the complete training pipeline, please refer to the source code:
 > * **Training Logic:** `code/train_HC_models.py` (Contains feature engineering & model serialization).
 > * **Testing & Validation:** `code/test_HC_models.py` (Contains the inference engine and the 7-case validation suite).
 
 **For comprehensive technical details, performance metrics, and clinical validation analysis, please refer to:** ➔ `docs/HepatitisC_Models.md`
 
----
+<p align="center"> <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" width="1000"> </p>
 
 ## 4. Liver Cancer Risk Assessment Model
 
@@ -133,7 +136,8 @@ Critical Requirement (Positional Logic): The model processes data as an ordered 
 
 For detailed technical and medical information: regarding feature importance analysis, virtual clinic scenarios, and preventive prediction logic, please visit: ➔ `docs/Cancer_Risk_Model.md`
 
----
+<p align="center"> <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" width="1000"> </p>
+
 *The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and were generated with the assistance of large language models for documentation clarity only. They do not represent medical diagnosis or professional medical judgment.*
 
----
+<p align="center"> <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" width="1000"> </p>
