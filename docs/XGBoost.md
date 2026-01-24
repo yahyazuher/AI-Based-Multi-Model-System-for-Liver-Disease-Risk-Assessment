@@ -93,4 +93,5 @@ The algorithm evaluates every possible combination of parameters defined in the 
 Since we apply **5-fold Cross-Validation** (`cv=5`), each combination is trained 5 times on different data subsets. 
 **Total Training Iterations** = $54 \times 5 = 270$ individual fits.
 
+> To see Example about Hyperparameter Tuning Strategy: 
 ---
