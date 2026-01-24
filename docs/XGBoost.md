@@ -2,7 +2,6 @@
 
 XGBoost (eXtreme Gradient Boosting) is the core engine used in this project for analyzing medical data. Unlike standard AI models that might try to guess an outcome in a single attempt, XGBoost adopts a smarter, sequential approach akin to a team of doctors analyzing a patient's file one by one. In this analogy, the first tree makes an initial diagnosis, the second tree identifies and corrects the first one's mistakes, and the third focuses exclusively on the remaining errors. This process repeats hundreds of times, and the final result is a combination of all these "opinions," leading to a highly accurate prediction.
 
-## **Boosting" Technique**
 The power of this model lies in Gradient Boosting, a technique that builds many simple trees in a sequence rather than creating one giant, complex tree.  The process begins by building a Decision Tree to predict a target, such as Cancer Risk, followed by calculating the error—the difference between that prediction and the actual value. A new Decision Tree is then constructed specifically to fix that error and is added to the model. This cycle ensures that every new tree addresses previous flaws, making the model progressively smarter than it was before.
 
 ---
@@ -11,13 +10,16 @@ The power of this model lies in Gradient Boosting, a technique that builds many 
 
 Below is a detailed breakdown of the internal mechanisms that make XGBoost superior for this medical diagnostic project:
 
-### **1. Regularization (Preventing Overfitting)**
+Overfitting: This happens when the model memorizes training data instead of understanding the general patterns within it. Imagine a student who memorizes past exam questions verbatim; if a new question comes up with a similar idea but phrased differently, they will fail to answer it because they "memorized" it and did not "understand" it.
 
-Unlike standard Gradient Boosting, which focuses solely on minimizing the error (Loss Function), XGBoost optimizes an objective function that includes a **regularization term**.
+### **1. Regularization **
+Prevents Overfitting, unlike standard Gradient Boosting, which focuses solely on minimizing the error (Loss Function), XGBoost optimizes an objective function that includes a **regularization term**.
+$$Obj(\Theta) = L(\Theta) + \Omega(\Theta)$$
 
 
-* **(Loss):** Measures how well the model fits the training data.
-* ** (Regularization):** Measures the complexity of the trees.
+
+* **$$L(\Theta)$$ (Loss):** Measures how well the model fits the training data.
+* **$$Omega(\Theta)$$ (Regularization):** Measures the complexity of the trees.
 It applies **L1 (Lasso)** and **L2 (Ridge)** regularization. In simple terms, this "penalizes" the model if the trees become too complex or rely too heavily on specific features. This is critical in our medical dataset to ensure the diagnosis logic applies to *new* patients, not just the training group.
 
 ### **2. Sparsity Awareness (Handling Missing Data)**
