@@ -19,9 +19,13 @@ Overfitting occurs when an AI model memorizes the specific details and noise wit
 
 To ensure our XGBoost model remains a smart learner, we implemented the following constraints:
 
-1. **Controlled Depth (`max_depth=4`):** We limit how deep each tree can grow to prevent the model from capturing overly specific outliers.
-
 ### **Decision Tree Architecture (max_depth=4)**
+
+1. Tree Depth (max_depth=4): This constraint prevents the model from growing overly complex trees that might capture "noise" or specific outliers in the training data, ensuring that the model focuses on broader, more significant clinical patterns. This is **illustrated** by the maximum depth of four shown in the Architecture & Logic Schematics (1) at the end of the page.
+
+Stochastic Data Sampling (subsample=0.8): During training, the model only sees a random 80% of the dataset for each tree. By introducing this variation, we force the model to find robust patterns that are consistent across the entire dataset, rather than becoming over-reliant on any single subset of patient records.
+
+L1 & L2 Regularization: The model applies mathematical penalties to over-complex structures. L1 (Lasso) encourages sparsity by potentially zeroing out less important features, while L2 (Ridge) prevents any single feature from having an extreme influence. Together, they ensure better generalization, allowing the model to perform accurately on new, unseen patient data.
 
 
 3. **Data Sampling (`subsample=0.8`):** The model trains on different subsets of the data, forcing it to find robust patterns that exist across the entire dataset.
@@ -188,6 +192,8 @@ Since we apply **5-fold Cross-Validation** (`cv=5`), each combination is trained
 
 <p align="center"> <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" width="1000"> </p>
 
+## **Architecture & Logic Schematics**
+
 ### **1. Decision Tree Architecture (max_depth=4)**
 
 ```mermaid
@@ -202,7 +208,7 @@ graph LR
     %% Level 2 Splits
     L2A ---|Albumin < 3.5?| L3A[Level 3: <br/>Refinement A]
     L2A ---|No| L3B[Level 3: <br/>Refinement B]
-    L2B ---|Age > 50?| L3C[Level 3: <br/>Refinement C]
+    L2B ---|Cholesterol > 200?| L3C[Level 3: <br/>Refinement C]
     L2B ---|No| L3D[Level 3: <br/>Refinement D]
 
     %% Level 3 Splits
@@ -256,4 +262,85 @@ graph LR
     style Out7 fill:#0d1117,stroke:#238636,stroke-width:3px,color:#c9d1d9;
     style Out8 fill:#0d1117,stroke:#238636,stroke-width:3px,color:#c9d1d9;
 ```
-ح
+
+### 2.
+
+
+
+
+
+
+
+
+
+
+```merma
+graph TD
+    %% --- 1. Global Data Split ---
+    Data[Total Data: 100%] --> Split{Global Split}
+    Split -->|20% (Unseen)| TestSet[Final Exam: Locked Box]
+    Split -->|80% (Training)| TrainSet[Training Pool: Study Room]
+
+    %% --- 2. Internal Training (XGBoost Logic) ---
+    subgraph "Internal Training Workflow (Sequential Learning)"
+        direction TB
+
+        %% Tree 1 Details (as a subgraph)
+        subgraph "Tree 1 (max_depth=2 Example)"
+            direction LR
+            T1_L1[Level 1: Question] -->|Yes| T1_L2A[Level 2: Outcome A]
+            T1_L1 -->|No| T1_L2B[Level 2: Outcome B]
+        end
+
+        %% Flow from TrainSet to Tree 1
+        TrainSet -->|Subsample 80%| T1_L1
+
+        %% Tree 1 Output & Error Calculation
+        T1_L2A --> Error1[Identify Mistakes on unseen 20%]
+        T1_L2B --> Error1
+
+        %% Tree 2 Details (as a subgraph - learning from Error1)
+        subgraph "Tree 2 (Corrects Tree 1 Mistakes)"
+            direction LR
+            T2_L1[Level 1: New Question] -->|Yes| T2_L2A[Level 2: Refined Outcome A]
+            T2_L1 -->|No| T2_L2B[Level 2: Refined Outcome B]
+        end
+        
+        %% Flow from Error1 to Tree 2
+        Error1 -->|Focus on Residuals| T2_L1
+
+        %% Tree 2 Output & Error Calculation
+        T2_L2A --> Error2[Identify Remaining Errors]
+        T2_L2B --> Error2
+
+        %% Continuation to further trees...
+        Error2 --> TreeN[... Tree N: Final Polishing ...]
+    end
+
+    %% --- 3. Final Ensemble & Evaluation ---
+    TreeN --> Ensemble[Final Ensemble Model]
+    Ensemble --> FinalTest{Final Test on Locked Box}
+    TestSet --> FinalTest
+    FinalTest --> Metrics[Accuracy / Precision / Recall]
+
+    %% --- Styling ---
+    style TestSet fill:#f1f1f1,stroke:#333,stroke-dasharray: 5 5
+    style TrainSet fill:#e1f5fe,stroke:#01579b
+    style Ensemble fill:#c8e6c9,stroke:#2e7d32
+    style Error1 fill:#ffecb3,stroke:#ff8f00
+    style Error2 fill:#ffecb3,stroke:#ff8f00
+    style T1_L1 fill:#e1f5fe,stroke:#01579b
+    style T2_L1 fill:#e1f5fe,stroke:#01579b
+    style T1_L2A fill:#c8e6c9,stroke:#2e7d32
+    style T1_L2B fill:#c8e6c9,stroke:#2e7d32
+    style T2_L2A fill:#c8e6c9,stroke:#2e7d32
+    style T2_L2B fill:#c8e6c9,stroke:#2e7d32
+
+```
+
+
+
+
+
+
+
