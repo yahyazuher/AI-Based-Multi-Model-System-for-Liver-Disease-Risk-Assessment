@@ -93,12 +93,19 @@ While the standard 80/20 split was used for validation, a strategic decision was
 1. The analytical values for different stages and statuses in these datasets were significantly close and overlapping. In such "high-proximity" data environments, the model needs to see every possible variation to establish a more stable decision boundary.
 2. Because these models showed lower initial confidence (62.50% and 71.43%), withholding 20% of the data for testing in the final version would have meant losing valuable clinical cases. By merging the test set back into the training phase, we provided the XGBoost engine with the **maximum possible knowledge base**.
 3. **Real-World Deployment Readiness:** To ensure the system performs reliably in a real clinical setting without "missing" subtle patterns, utilizing the full training file was essential. This ensures that no potential diagnostic insight from the original dataset is wasted.
+---
+## **Data Leakage**
+
+**Data Leakage** occurs when information from outside the training dataset is used to create the model. This essentially allows the model to "cheat" during the training process by having access to data that would not be available at the time of a real-world prediction. While the model may show near-perfect accuracy (e.g., 100%) during testing, it will fail to provide accurate results or even fail entirely when applied to new real-world patients.
+
+
+* During the development of the **Complications Prediction Model*** `hepatitisC_complication.pkl`, I intentionally excluded the 'Stage' column from the feature set to prevent Data Leakage. In clinical practice, there is a near-perfect correlation between advanced liver disease (Stage 4/Cirrhosis) and the presence of Ascites (fluid retention). If 'Stage' were included as an input, the model would likely ignore complex biomarkers—such as Bilirubin and Albumin—to follow a simplistic shortcut: "If Stage is 4, then Ascites is present." By removing this "answer key," the model is forced to identify deep physiological patterns within raw laboratory data. This ensures the model remains a pure predictive tool based on blood analytics, capable of providing truly objective risk assessments even before a patient’s histological stage is formally diagnosed.
 
 ---
 
 ### **Feature Selection & Dropped Columns**
 
-Each of the six models within the AiLDS ecosystem underwent a rigorous feature selection process. Columns that could lead to **Overfitting** or **Data Leakage** were intentionally removed:
+Each of the six models within the ecosystem Went through a rigorous feature selection process. Columns that could lead to Data Leakage (where the answer is hidden in the features) were intentionally removed:
 
 | Model Name | Training Dataset | Dropped Columns | Technical Justification |
 | --- | --- | --- | --- |
@@ -106,16 +113,23 @@ Each of the six models within the AiLDS ecosystem underwent a rigorous feature s
 | **2. Cancer Risk** | `The_Cancer_data_1500.csv` | **Diagnosis** | Primary target removal to prevent the model from seeing the answer key. |
 | **3. Complications** | `HepatitisC.csv` | **ID, N_Days, Status, Stage** | IDs are random noise; `Status/Stage` provide direct hints (leakage) about Ascites risk. |
 | **4. Staging Model** | `hepatitisC_Stage.csv` | **Stage** | Removed the stage column as it is the target variable for multi-class classification. |
-| **5. Status Model** | `hepatitisC_status.csv` | **Status, Stage** | `Stage` was dropped because it introduced high noise and low-accuracy patterns that hindered mortality prediction. |
+| **5. Status Model** | `hepatitisC_status.csv` | **Status, Stage** | Stage is the answere, and `Stage` has been removed because it is one of the Hepatitis C 3-Models requirement. |
 | **6. Fatty Liver** | `FattyLiver.csv` | **Diagnosis, SEQN** | `SEQN` (Patient Sequence) is metadata; its removal forces the model to focus only on ALT/GGT/Triglycerides. |
 
----
 
 ### **Why These Columns Were Dropped?**
 
-1. **Metadata Removal (IDs/SEQN):** If left in, the model might associate a specific row number with a disease. This leads to 100% accuracy on training but total failure on new patients.
-2. **Preventing Data Leakage:** Including clinical stages in a status prediction model is like giving a student the answer in the margin of the question. We forced the model to look at **Raw Blood Chemistry** instead of previous diagnoses.
-3. **Ensuring Clinical Logic:** By dropping these columns, the XGBoost engine is forced to find the mathematical relationship between biomarkers (like Albumin and Bilirubin) and the medical outcome.
+1.  By removing these columns, the XGBoost engine is forced to discover the genuine mathematical relationships between biomarkers (such as **Albumin** and **Bilirubin**) and medical outcomes, rather than relying on a direct answer provided within the data.
+2. If identifiers are left in, the model might associate a specific row or metadata with a disease. This causes **Data Leakage**—similar to giving a student the answer in the margin of an exam. While this leads to 100% training accuracy, it causes total failure with new patients. forcing the models to analyze **Raw Blood Chemistry** instead of memorizing previous diagnoses.
+
+---
+
+### **Why Is This Dangerous?**
+
+1. **False Confidence:** You may believe you have developed a revolutionary model due to high accuracy scores.
+2. **Deployment Failure:** In a real clinical setting, a doctor uses the model specifically because they *do not yet know* the stage of the patient's disease. Since the "cheating" feature (Stage) is missing, the model's performance will collapse.
+
+> **Key Takeaway:** To ensure a model is truly predictive, we must remove any features that are "outputs" of the disease or are only determined after the target condition has already developed.
 
 ---
 
