@@ -140,4 +140,3 @@ For detailed technical and medical information: regarding feature importance ana
 
 *The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and were generated with the assistance of large language models for documentation clarity only. They do not represent medical diagnosis or professional medical judgment.*
 
-<p align="center"> <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" width="1000"> </p>
