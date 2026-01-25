@@ -1,7 +1,19 @@
 """
-Project: AI-Based Multi-Model System for Liver Disease Risk Assessment
-Developer: Yahya Zuher
-Description: This script fetches training data directly from GitHub and trains 
+[IMPORTANT NOTE / ملاحظة هامة]
+--------------------------------------------------
+English: This script is specifically designed and optimized to run in the GOOGLE COLAB environment.
+- It is configured to automatically download models and training files directly from GitHub.
+- Copy-pasting this code to other environments (local IDEs) may require adjustments 
+  to file paths and library configurations.
+
+Arabic: Google Colab هذا الكود مخصص ومجهز للعمل مباشرة داخل بيئة 
+- GitHub لضمان التشغيل الفوري تم إعداد الكود ليقوم بتحميل النماذج وملفات التدريب تلقائياً من 
+- نسخ هذا الكود وتشغيله في تطبيقات أو بيئات أخرى قد يتطلب تعديلات في مسارات الملفات وإعدادات المكتبات.
+--------------------------------------------------
+Created by: Yahya Zuher
+Project: AI-Liver-Diseases-Diagnosis-System
+
+Description: This script fetches training data directly from GitHub and trains
              an optimized XGBoost model for status prediction.
 """
 
@@ -18,7 +30,7 @@ import os
 import sys
 
 # --- Configuration (GitHub Integration) ---
-RAW_DATA_URL = 'https://raw.githubusercontent.com/yahyazuher/AI-Based-Multi-Model-System-for-Liver-Disease-Risk-Assessment/main/data/processed/hepatitisC_status.csv'
+RAW_DATA_URL = 'https://raw.githubusercontent.com/yahyazuher/AI-Liver-Diseases-Diagnosis-System/main/data/processed/hepatitisC_status.csv'
 MODEL_FILENAME = 'hepatitisC_status_model.pkl'
 
 def get_live_dataset():
@@ -34,17 +46,17 @@ def get_live_dataset():
 def add_medical_features(df):
     """Adds ALBI and APRI features for high-precision mortality prediction."""
     df_eng = df.copy()
-    
+
     # 1. APRI Score
     df_eng['APRI'] = ((df_eng['SGOT'] / 40.0) / (df_eng['Platelets'] + 0.1)) * 100
-    
+
     # 2. ALBI Score (Log-based liver function assessment)
     df_eng['ALBI_Score'] = (np.log10(df_eng['Bilirubin'].clip(lower=0.1) * 17.1) * 0.66) + \
                             (df_eng['Albumin'] * 10 * -0.085)
-    
+
     # 3. Bilirubin to Albumin Ratio
     df_eng['Bili_Alb_Ratio'] = df_eng['Bilirubin'] / (df_eng['Albumin'] + 0.1)
-    
+
     return df_eng
 
 def run_pipeline():
@@ -52,7 +64,7 @@ def run_pipeline():
 
     # 1. Get Data from GitHub
     df = get_live_dataset()
-    
+
     # 2. Add Engineered Features
     df = add_medical_features(df)
 
