@@ -13,7 +13,7 @@ Arabic: Google Colab هذا الكود مخصص ومجهز للعمل مباشر
 Created by: Yahya Zuher
 Project: AI-Liver-Diseases-Diagnosis-System
 
-        - Target Output: 0.0 - 1.0 Presentage or int(0,1)
+        - Target Output: 0.0 - 1.0 Presentage
 """
 
 import pandas as pd
