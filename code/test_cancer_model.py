@@ -1,43 +1,54 @@
 import pandas as pd
 import joblib
 import os
+import requests
+import io
 
 def load_model():
     """
-    Locates and loads the trained XGBoost model file.
-    Default search: 'cancer_model.pkl'.
+    Downloads and loads the trained XGBoost model from GitHub.
     """
-    # The filename must match the output from the training script
-    model_filename = 'cancer_model.pkl' 
+    # Direct RAW link to the cancer model on GitHub
+    model_url = 'https://github.com/yahyazuher/AI-Liver-Diseases-Diagnosis-System/raw/main/models/cancer_model.pkl'
     
-    if os.path.exists(model_filename):
-        return joblib.load(model_filename)
-    else:
-        # Fallback: search for any available .pkl file in the root directory
-        pkl_files = [f for f in os.listdir('.') if f.endswith('.pkl')]
-        if pkl_files:
-            print(f"Loading detected model: {pkl_files[0]}")
-            return joblib.load(pkl_files[0])
+    try:
+        print(f"Connecting to GitHub to fetch: {model_url.split('/')[-1]}...")
+        response = requests.get(model_url)
+        
+        # Check if the download was successful
+        if response.status_code == 200:
+            # Use BytesIO to let joblib read the binary content directly from RAM
+            return joblib.load(io.BytesIO(response.content))
         else:
-            raise FileNotFoundError(f"Error: Model file '{model_filename}' not found.")
+            raise Exception(f"Download failed. Status code: {response.status_code}")
+            
+    except Exception as e:
+        print(f"Cloud Load Failed: {e}")
+        # Fallback: Check if the file exists locally
+        model_filename = 'cancer_model.pkl'
+        if os.path.exists(model_filename):
+            print("Local backup found. Loading from disk...")
+            return joblib.load(model_filename)
+        else:
+            raise FileNotFoundError("Critical Error: Cancer model not found online or locally.")
 
 if __name__ == "__main__":
     # Initialize model
     try:
         model = load_model()
+        print("Cancer Model loaded successfully!")
     except Exception as e:
         print(f"Initialization Error: {e}")
         exit()
 
-    # Feature columns defined during the training phase (XGBoost requirement)
-    # Order: ['Age', 'Gender', 'BMI', 'Smoking', 'GeneticRisk', 'PhysicalActivity', 'AlcoholIntake', 'CancerHistory']
+    # Feature columns defined during the training phase
     columns = ['Age', 'Gender', 'BMI', 'Smoking', 'GeneticRisk', 'PhysicalActivity', 'AlcoholIntake', 'CancerHistory']
 
     print("\n" + "="*85)
-    print(" VIRTUAL CLINIC: MODEL VALIDATION THROUGH CLINICAL SCENARIOS")
+    print(" VIRTUAL CLINIC: CANCER MODEL VALIDATION THROUGH CLINICAL SCENARIOS")
     print("="*85)
 
-    # 7 diverse cases to test model logic and weights
+    # 7 diverse cases to test model logic
     cases = [
         {'Case': '1. Healthy Athletic Young Male', 'Data': [25, 0, 22, 0, 0, 9, 0, 0]},
         {'Case': '2. Heavy Smoker (Chronic Exposure)', 'Data': [55, 1, 29, 1, 0, 2, 5, 0]},
@@ -53,13 +64,10 @@ if __name__ == "__main__":
     print("-" * 85)
 
     for case in cases:
-        # Prepare input data as a DataFrame for prediction
         df_test = pd.DataFrame([case['Data']], columns=columns)
 
-        # Generate prediction (0 = Healthy, 1 = High Risk)
+        # Generate prediction and probability
         prediction = model.predict(df_test)[0]
-        
-        # Calculate probability percentage for the positive class (index 1)
         probability = model.predict_proba(df_test)[0][1]
 
         # UI Formatting
