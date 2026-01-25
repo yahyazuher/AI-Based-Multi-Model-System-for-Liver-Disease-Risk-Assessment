@@ -1,9 +1,17 @@
 """
-    - Source: HepatitisC.csv (Processed)
-    - Target: Ascites (0 = No, 1 = Yes)
+[IMPORTANT NOTE / ملاحظة هامة]
+--------------------------------------------------
+English: This script is specifically designed and optimized to run in the GOOGLE COLAB environment.
+- It is configured to automatically download models and training files directly from GitHub.
+- Copy-pasting this code to other environments (local IDEs) may require adjustments 
+  to file paths and library configurations.
 
-Author: Yahya Zuher
-Project: AI-Based Multi-Model System for Liver Disease Risk Assessment
+Arabic: Google Colab هذا الكود مخصص ومجهز للعمل مباشرة داخل بيئة 
+- GitHub لضمان التشغيل الفوري تم إعداد الكود ليقوم بتحميل النماذج وملفات التدريب تلقائياً من 
+- نسخ هذا الكود وتشغيله في تطبيقات أو بيئات أخرى قد يتطلب تعديلات في مسارات الملفات وإعدادات المكتبات.
+--------------------------------------------------
+Created by: Yahya Zuher
+Project: AI-Liver-Diseases-Diagnosis-System
 """
 
 import pandas as pd
@@ -16,7 +24,7 @@ import io
 import sys
 
 # --- Configuration ---
-DATA_URL = 'https://raw.githubusercontent.com/yahyazuher/AI-Based-Multi-Model-System-for-Liver-Disease-Risk-Assessment/main/data/processed/HepatitisC.csv'
+DATA_URL = 'https://raw.githubusercontent.com/yahyazuher/AI-Liver-Diseases-Diagnosis-System/main/data/processed/HepatitisC.csv'
 MODEL_FILENAME = 'hepatitis_complications.pkl'
 
 def load_data():
@@ -40,7 +48,7 @@ def train_model():
     # 2. Feature Selection
     # Dropping 'Stage' and 'Status' to ensure the model relies only on raw biomarkers
     features_to_drop = ['Ascites', 'Status', 'Stage', 'ID', 'N_Days']
-    
+
     X = df.drop(columns=features_to_drop, errors='ignore')
     y = df['Ascites']
 
@@ -75,7 +83,7 @@ def train_model():
     # 7. Evaluate
     y_pred = model.predict(X_test)
     acc = accuracy_score(y_test, y_pred) * 100
-    
+
     print("-" * 40)
     print(f" Accuracy: {acc:.2f}%")
     print("-" * 40)
