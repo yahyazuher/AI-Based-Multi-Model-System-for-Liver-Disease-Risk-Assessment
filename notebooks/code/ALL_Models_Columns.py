@@ -1,13 +1,25 @@
 """
-Description:
-    This script automatically downloads ALL serialized machine learning models 
-    from the AiLDS GitHub repository (including Cancer, Fatty Liver, Gate, and Hepatitis modules).
-    
-    It extracts and displays the exact feature signature (input columns) required 
-    for each model to ensure strict alignment between the web interface and the AI backend.
+[IMPORTANT NOTE / ملاحظة هامة]
+--------------------------------------------------
+English: This script is specifically designed and optimized to run in the GOOGLE COLAB environment.
+- It is configured to automatically download models and training files directly from GitHub.
+- Copy-pasting this code to other environments (local IDEs) may require adjustments 
+  to file paths and library configurations.
 
-Author: Yahya Zuher
-Project: AI-Based Multi-Model System for Liver Disease Risk Assessment
+Arabic: Google Colab هذا الكود مخصص ومجهز للعمل مباشرة داخل بيئة 
+- GitHub لضمان التشغيل الفوري تم إعداد الكود ليقوم بتحميل النماذج وملفات التدريب تلقائياً من 
+- نسخ هذا الكود وتشغيله في تطبيقات أو بيئات أخرى قد يتطلب تعديلات في مسارات الملفات وإعدادات المكتبات.
+--------------------------------------------------
+Created by: Yahya Zuher
+Project: AI-Liver-Diseases-Diagnosis-System
+
+
+Description:
+    This script automatically downloads ALL serialized machine learning models
+    from the AiLDS GitHub repository (including Cancer, Fatty Liver, Gate, and Hepatitis 3-modules).
+
+    It extracts and displays the exact feature signature (input columns) required
+    for each model to ensure strict alignment between the web interface and the AI backend.
 """
 
 import joblib
@@ -15,10 +27,8 @@ import os
 import requests
 import sys
 
-# ==========================================
-# CONFIGURATION
-# ==========================================
-REPO_BASE_URL = "https://raw.githubusercontent.com/yahyazuher/AI-Based-Multi-Model-System-for-Liver-Disease-Risk-Assessment/main/models/"
+
+REPO_BASE_URL = "https://raw.githubusercontent.com/yahyazuher/AI-Liver-Diseases-Diagnosis-System/main/models/"
 
 # Registry of all models found in the 'models/' directory
 MODEL_REGISTRY = {
@@ -40,7 +50,7 @@ def fetch_model(filename):
     """Downloads the model from GitHub if it does not exist locally."""
     local_path = os.path.join(LOCAL_DIR, filename)
     url = REPO_BASE_URL + filename
-    
+
     if not os.path.exists(local_path):
         os.makedirs(os.path.dirname(local_path), exist_ok=True)
         try:
@@ -57,7 +67,7 @@ def fetch_model(filename):
 
 def get_feature_names(file_path):
     """
-    Intelligently extracts feature names from various model types 
+    Intelligently extracts feature names from various model types
     (Sklearn Pipeline, XGBoost, RandomForest, etc.).
     """
     try:
@@ -67,7 +77,7 @@ def get_feature_names(file_path):
         # Case A: Scikit-Learn Estimators (Standard)
         if hasattr(model, 'feature_names_in_'):
             features = list(model.feature_names_in_)
-        
+
         # Case B: Scikit-Learn Pipelines
         elif hasattr(model, 'named_steps'):
             # Check the last step (usually the classifier)
@@ -78,11 +88,11 @@ def get_feature_names(file_path):
                     features = clf.get_booster().feature_names
                 elif hasattr(clf, 'feature_names_in_'): # Standard Sklearn inside Pipeline
                     features = list(clf.feature_names_in_)
-        
+
         # Case C: Raw XGBoost Booster
         elif hasattr(model, 'get_booster'):
             features = model.get_booster().feature_names
-            
+
         return features
     except Exception as e:
         return f"Error reading file: {str(e)}"
@@ -110,7 +120,7 @@ def run_full_audit():
         # 3. Report
         print(f"   {display_name}")
         print(f"   File: {filename}")
-        
+
         if isinstance(features, list) and features:
             print(f"   Input Features Required: {len(features)}")
             print(f"   Feature Order:")
@@ -120,7 +130,7 @@ def run_full_audit():
         else:
             print(f"     Warning: Could not extract features automatically.")
             print(f"       Debug Info: {features}")
-        
+
         print(f"\n{'-'*70}\n")
 
 if __name__ == "__main__":
