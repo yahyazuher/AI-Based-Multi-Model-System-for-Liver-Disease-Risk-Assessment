@@ -20,8 +20,56 @@ Overfitting occurs when an AI model memorizes the specific details and noise wit
 To ensure our XGBoost model remains a smart learner, we implemented the following constraints:
 
 1. **Controlled Depth (`max_depth=4`):** We limit how deep each tree can grow to prevent the model from capturing overly specific outliers.
-2. **Data Sampling (`subsample=0.8`):** The model trains on different subsets of the data, forcing it to find robust patterns that exist across the entire dataset.
-3. The model applies L1 and L2 regularization to penalize over-complex trees and ensure better generalization.
+
+### **Decision Tree Architecture (max_depth=4)**
+
+```mermaid
+graph LR
+    %% الاتجاه من اليسار (L) إلى اليمين (R)
+    Start([Input Clinical Data]) --- L1[Level 1: <br/>Primary Question]
+
+    %% Level 1 Split
+    L1 ---|Bilirubin > 1.2?| L2A[Level 2: <br/>Follow-up A]
+    L1 ---|No| L2B[Level 2: <br/>Follow-up B]
+
+    %% Level 2 Splits
+    L2A ---|Albumin < 3.5?| L3A[Level 3: <br/>Final Question]
+    L2A ---|No| L3B[Level 3: <br/>Final Question]
+    
+    L2B ---|Age > 50?| L3C[Level 3: <br/>Final Question]
+    L2B ---|No| L3D[Level 3: <br/>Final Question]
+
+    %% Level 3 Splits (Final Outcomes)
+    L3A --- Out1[[Outcome 1]]
+    L3B --- Out2[[Outcome 2]]
+    L3C --- Out3[[Outcome 3]]
+    L3D --- Out4[[Outcome 4]]
+
+    %% --- التنسيق (Styling) ---
+    
+    %% خلية البداية: أبيض حليبي بـ شفافية 75% ونصوص سوداء
+    style Start fill:#ffffffbf,stroke:#333,stroke-width:2px,color:#000
+
+    %% خلايا الأسئلة: خلفية سوداء (GitHub Dark) مع حواف زرقاء
+    style L1 fill:#0d1117,stroke:#58a6ff,stroke-width:2px,color:#c9d1d9
+    style L2A fill:#0d1117,stroke:#58a6ff,stroke-width:2px,color:#c9d1d9
+    style L2B fill:#0d1117,stroke:#58a6ff,stroke-width:2px,color:#c9d1d9
+    style L3A fill:#0d1117,stroke:#58a6ff,stroke-width:2px,color:#c9d1d9
+    style L3B fill:#0d1117,stroke:#58a6ff,stroke-width:2px,color:#c9d1d9
+    style L3C fill:#0d1117,stroke:#58a6ff,stroke-width:2px,color:#c9d1d9
+    style L3D fill:#0d1117,stroke:#58a6ff,stroke-width:2px,color:#c9d1d9
+
+    %% خلايا النتائج: خلفية سوداء مع حواف خضراء
+    style Out1 fill:#0d1117,stroke:#238636,stroke-width:3px,color:#c9d1d9
+    style Out2 fill:#0d1117,stroke:#238636,stroke-width:3px,color:#c9d1d9
+    style Out3 fill:#0d1117,stroke:#238636,stroke-width:3px,color:#c9d1d9
+    style Out4 fill:#0d1117,stroke:#238636,stroke-width:3px,color:#c9d1d9
+
+
+```
+
+3. **Data Sampling (`subsample=0.8`):** The model trains on different subsets of the data, forcing it to find robust patterns that exist across the entire dataset.
+4. The model applies L1 and L2 regularization to penalize over-complex trees and ensure better generalization.
 
 <div align="center">
   <hr style="width: 100%; border: none; height: 0.4px; background-color: rgba(255, 255, 255, 0.3);">
@@ -183,3 +231,7 @@ Since we apply **5-fold Cross-Validation** (`cv=5`), each combination is trained
 > To see more about Automated Hyperparameter Tuning strategy : [![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=TCOPEuAyyDg-)
 
 ---
+---
+
+
+ح
