@@ -8,7 +8,6 @@ def load_model():
     """
     Downloads and loads the trained XGBoost model from GitHub.
     """
-    # Direct RAW link to the cancer model on GitHub
     model_url = 'https://github.com/yahyazuher/AI-Liver-Diseases-Diagnosis-System/raw/main/models/cancer_model.pkl'
     
     try:
