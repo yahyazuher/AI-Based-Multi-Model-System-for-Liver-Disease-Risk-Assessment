@@ -1,32 +1,45 @@
 import pandas as pd
 import joblib
 import os
+import requests
+import io
 
 def load_model():
     """
-    Locates and loads the pre-trained XGBoost model.
+    Downloads and loads the pre-trained "fatty_liver_model.pkl" XGBoost model directly from GitHub.
     """
-    # Updated model filename as requested
-    model_filename = 'fatty_liver_model.pkl'
+    model_url = 'https://github.com/yahyazuher/AI-Liver-Diseases-Diagnosis-System/raw/main/models/fatty_liver_model.pkl'
     
-    if os.path.exists(model_filename):
-        return joblib.load(model_filename)
-    else:
-        # Fallback search if the specific filename is not found
-        pkl_files = [f for f in os.listdir('.') if f.endswith('.pkl')]
-        if pkl_files:
-            return joblib.load(pkl_files[0])
+    try:
+        print(f"Connecting to GitHub to fetch model...")
+        response = requests.get(model_url)
+        
+        # Check if the download was successful (HTTP 200)
+        if response.status_code == 200:
+            # Wrap the raw bytes in a BytesIO object so joblib can read it like a file
+            return joblib.load(io.BytesIO(response.content))
         else:
-            raise FileNotFoundError(f"Error: Model file '{model_filename}' not found.")
+            raise Exception(f"Failed to download model. Status code: {response.status_code}")
+            
+    except Exception as e:
+        print(f"Cloud Load Failed: {e}")
+        # Fallback: Try to find the file locally if the internet is down
+        model_filename = 'fatty_liver_model.pkl'
+        if os.path.exists(model_filename):
+            print("Local backup found. Loading from disk...")
+            return joblib.load(model_filename)
+        else:
+            raise FileNotFoundError("Critical Error: Model not found online or locally.")
 
 if __name__ == "__main__":
     try:
         model = load_model()
+        print("Model loaded successfully from GitHub!")
     except Exception as e:
         print(f"Initialization Error: {e}")
         exit()
 
-    # Strict Positional Logic (13 Features)
+    # Feature labels (13 mandatory clinical inputs)
     columns = [
         'Albumin', 'ALP', 'AST', 'ALT', 'Cholesterol',
         'Creatinine', 'Glucose', 'GGT', 'Bilirubin',
@@ -37,7 +50,7 @@ if __name__ == "__main__":
     print("VIRTUAL CLINIC: FATTY LIVER (NAFLD) MODEL VALIDATION")
     print("="*75)
 
-    # Clinical scenarios for validation
+    # Clinical scenarios for testing
     cases = [
         {'Case': '1. Healthy Baseline (Athletic)', 'Data': [4.5, 60, 20, 18, 170, 0.9, 85, 25, 0.6, 90, 4.5, 250, 55]},
         {'Case': '2. Isolated Hyperlipidemia', 'Data': [4.2, 70, 22, 20, 240, 1.0, 95, 30, 0.7, 300, 5.2, 230, 40]},
@@ -52,9 +65,13 @@ if __name__ == "__main__":
     print("-" * 75)
 
     for case in cases:
+        # Create DataFrame for prediction
         df_test = pd.DataFrame([case['Data']], columns=columns)
+        
+        # Get result (0 = Healthy, 1 = NAFLD)
         prediction = model.predict(df_test)[0]
         result_text = "🔴 PATIENT (NAFLD)" if prediction == 1 else "🟢 HEALTHY"
+        
         print(f"{case['Case']:<45} | {result_text}")
 
     print("-" * 75)
