@@ -8,9 +8,13 @@ The power of this model lies in Gradient Boosting, a technique that builds many 
 
 ## **Deep Dive**
 
-Before diving into the technical details of our XGBoost configuration, it is essential to address the core challenge of **Overfitting**.
+Before diving into the technical details of our XGBoost configuration,it is essential to address the core foundation **the Decision Tree** and and the primary challenge **Overfitting**.
 
-Overfitting occurs when an AI model memorizes the specific details and noise within the training data instead of learning the underlying general patterns.
+A. **Decision Tree** is a supervised machine learning algorithm used for both classification and regression tasks. It works like a flowchart that helps the model make decisions by splitting data into branches based on specific features.
+
+>In a medical context, the tree asks a series of questions (e.g., "Does the patient have a fever?"). Depending on the answer, it follows a specific branch until it reaches a final "leaf" which represents the diagnosis.
+
+B. **Overfitting** occurs when an AI model memorizes the specific details and noise within the training data instead of learning the underlying general patterns.
 
 > **The Student Analogy:**
 > Imagine a student who memorizes previous exam questions word-for-word rather than understanding the core mathematical concepts. If a new question appears—even one with the same logic but different phrasing—the student will fail to answer because they "memorized" without "understanding."
@@ -19,11 +23,9 @@ Overfitting occurs when an AI model memorizes the specific details and noise wit
 
 To ensure our XGBoost model remains a smart learner, we implemented the following constraints:
 
-### **Decision Tree Architecture (max_depth=4)**
-
 1. Tree Depth (max_depth=4): This constraint prevents the model from growing overly complex trees that might capture "noise" or specific outliers in the training data, ensuring that the model focuses on broader, more significant clinical patterns. This is **illustrated** by the maximum depth of four shown in the **Architecture & Logic Schematics (1)** at the end of the page.
 
-2. StStochastic Data Sampling (subsample=0.8): During training, the model only sees a random 80% of the dataset for each tree. This variation forces the model to find robust patterns that work for the entire dataset, rather than just memorizing a specific group of patient records. This process is illustrated in the **Architecture & Logic Schematics (2)** at the end of the page, which shows the internal 80/20 split used during the learning process.
+2. Stochastic Data Sampling (subsample=0.8): During training, the model only sees a random 80% of the dataset for each tree. This variation forces the model to find robust patterns that work for the entire dataset, rather than just memorizing a specific group of patient records. This process is illustrated in the **Architecture & Logic Schematics (2)** at the end of the page, which shows the internal 80/20 split used during the learning process.
 
 L1 & L2 Regularization: The model applies mathematical penalties to over-complex structures. L1 (Lasso) encourages sparsity by potentially zeroing out less important features, while L2 (Ridge) prevents any single feature from having an extreme influence. Together, they ensure better generalization, allowing the model to perform accurately on new, unseen patient data.
 
