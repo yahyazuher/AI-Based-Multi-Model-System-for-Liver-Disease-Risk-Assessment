@@ -10,15 +10,14 @@ The power of this model lies in Gradient Boosting, a technique that builds many 
 
 Before diving into the technical details of our XGBoost configuration, it is essential to address the core challenge of **Overfitting**.
 
-Overfitting occurs when an AI model "memorizes" the specific details and noise within the training data instead of "learning" the underlying general patterns.
+Overfitting occurs when an AI model memorizes the specific details and noise within the training data instead of learning the underlying general patterns.
 
 > **The Student Analogy:**
 > Imagine a student who memorizes previous exam questions word-for-word rather than understanding the core mathematical concepts. If a new question appears—even one with the same logic but different phrasing—the student will fail to answer because they "memorized" without "understanding."
 
-**Why this matters in Medical Diagnostics:**
-In our project for diagnosing diseases, we must avoid this at all costs. The model needs to be a "thinker," not a "memorizer." It must be able to generalize its diagnostic logic to **new patients** it has never encountered before, ensuring stable and reliable clinical predictions rather than simply echoing the specific cases found in the training dataset.
+**Why this matters in Medical Diagnostics** because in our project for diagnosing diseases, we must avoid this at all costs. The model needs to be a thinker, not a memorizer. It must be able to generalize its diagnostic logic to **new patients** it has never encountered before, ensuring stable and reliable clinical predictions rather than simply echoing the specific cases found in the training dataset.
 
-To ensure our XGBoost model remains a "smart learner," we implemented the following constraints:
+To ensure our XGBoost model remains a smart learner, we implemented the following constraints:
 
 1. **Controlled Depth (`max_depth=4`):** We limit how deep each tree can grow to prevent the model from capturing overly specific outliers.
 2. **Data Sampling (`subsample=0.8`):** The model trains on different subsets of the data, forcing it to find robust patterns that exist across the entire dataset.
