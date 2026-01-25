@@ -1,3 +1,22 @@
+"""
+[IMPORTANT NOTE / ملاحظة هامة]
+--------------------------------------------------
+English: This script is specifically designed and optimized to run in the GOOGLE COLAB environment.
+- It is configured to automatically download models and training files directly from GitHub.
+- Copy-pasting this code to other environments (local IDEs) may require adjustments 
+  to file paths and library configurations.
+
+Arabic: Google Colab هذا الكود مخصص ومجهز للعمل مباشرة داخل بيئة 
+- GitHub لضمان التشغيل الفوري تم إعداد الكود ليقوم بتحميل النماذج وملفات التدريب تلقائياً من 
+- نسخ هذا الكود وتشغيله في تطبيقات أو بيئات أخرى قد يتطلب تعديلات في مسارات الملفات وإعدادات المكتبات.
+--------------------------------------------------
+Created by: Yahya Zuher
+Project: AI-Liver-Diseases-Diagnosis-System
+
+
+    - Target: Ascites (0 = Healthy, 1 = Patient)
+"""
+
 import pandas as pd
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
@@ -12,12 +31,9 @@ DATASET_FILENAME = 'Liver_Patient_Dataset_Cleaned_19k.csv'
 MODEL_FILENAME = 'gate_model.pkl'
 
 # Direct link to the raw CSV file on GitHub
-GITHUB_RAW_URL = 'https://raw.githubusercontent.com/yahyazuher/AI-Based-Multi-Model-System-for-Liver-Disease-Risk-Assessment/main/data/processed/Liver_Patient_Dataset_Cleaned_19k.csv'
+GITHUB_RAW_URL = 'https://raw.githubusercontent.com/yahyazuher/AI-Liver-Diseases-Diagnosis-System/main/data/processed/Liver_Patient_Dataset_Cleaned_19k.csv'
 
 def download_dataset_if_missing():
-    """
-    Checks if the dataset exists locally. If not, downloads it directly from the repository.
-    """
     if not os.path.exists(DATASET_FILENAME):
         try:
             print(f"Dataset not found locally. Downloading from {GITHUB_RAW_URL}...")
@@ -32,13 +48,13 @@ def download_dataset_if_missing():
 
 def train_liver_prediction_model():
     print("Starting Liver Disease Prediction Pipeline...")
-    
+
     # 1. Data Acquisition
     download_dataset_if_missing()
 
     print("Loading dataset...")
     df = pd.read_csv(DATASET_FILENAME)
-    
+
     # Remove any inadvertent missing values
     df = df.dropna()
 
@@ -61,12 +77,12 @@ def train_liver_prediction_model():
     print("Training XGBoost Classifier...")
     # Hyperparameters are set to prevent overfitting on the cleaned dataset
     model = xgb.XGBClassifier(
-        n_estimators=200,        
-        learning_rate=0.05,      
-        max_depth=4,             
-        subsample=0.8,           
-        colsample_bytree=0.8,    
-        eval_metric='logloss',   
+        n_estimators=200,
+        learning_rate=0.05,
+        max_depth=4,
+        subsample=0.8,
+        colsample_bytree=0.8,
+        eval_metric='logloss',
         random_state=42
     )
 
