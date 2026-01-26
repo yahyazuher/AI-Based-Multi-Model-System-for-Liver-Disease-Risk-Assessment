@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software in your research or project, please cite it as follows."
+authors:
+- family-names: "Zuhair"
+  given-names: "Yahya"
+  affiliation: "Northern Technical University"
+title: "AiLDS: AI Liver Disease Diagnosis System"
+version: 1.0.0
+date-released: 2026-01-26
+url: "https://github.com/yahyazuhair/AiLDS"
+abstract: "An integrated AI ecosystem designed to assess liver health through a pipeline of machine learning models including Fibrosis staging, Fatty Liver detection, and Cancer risk assessment."
+keywords:
+  - "Machine Learning"
+  - "XGBoost"
+  - "Liver Disease Diagnosis"
+  - "Hepatocellular Carcinoma (HCC)"
+  - "Non-Alcoholic Fatty Liver Disease (NAFLD)"
+  - "Liver Fibrosis Staging"
+  - "Hepatitis C Virus (HCV)"
+  - "Clinical Decision Support System"
+  - "Data Engineering"
+  - "Medical Data Science"
+  - "Graduation Project"
