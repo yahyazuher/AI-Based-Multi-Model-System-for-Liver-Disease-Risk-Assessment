@@ -279,8 +279,9 @@ To ensure the inference engine functions correctly, data must be structured into
 
 For a deeper dive into the model evaluation metrics and architectural logic, please refer to the following resources:
 
-* **Visual Analysis (Confusion Matrices):** To view the performance visualizations and confusion matrices for all models, visit the main analysis notebook: **[notebooks/AI-Liver-Disease-Diagnosis-System.ipynb](https://www.google.com/search?q=./notebooks/AI-Liver-Disease-Diagnosis-System.ipynb)**
-* For detailed information on XGBoost hyperparameters, vector logic, and training methodologies, refer to:**[docs/XGBoost.md](https://www.google.com/search?q=./docs/XGBoost.md)**
+
+* **Visual Analysis (Confusion Matrices):** To view the performance visualizations and confusion matrices for all models, visit the main analysis notebook: **[notebooks/AI_Liver_Disease_Diagnosis_System.ipynb](https://github.com/yahyazuher/AI-Liver-Disease-Diagnosis-System/blob/main/notebooks/AI_Liver_Diseases_Diagnosis_System.ipynb)**
+* **Technical Documentation:** For detailed information on XGBoost hyperparameters, vector logic, and training methodologies, refer to: **[docs/XGBoost.md](./XGBoost.md)**
 
 ---
 
