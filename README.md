@@ -139,5 +139,31 @@ For detailed technical and medical information: regarding feature importance ana
 
 <p align="center"> <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" width="1000"> </p>
 
+#### 1. Clinical Feature Glossary (Base Variables)
+
+The following 15 clinical markers form the foundation for all feature engineering and model inputs.
+
+| Index | Feature Name | Description |
+| --- | --- | --- |
+| **01** | **Bilirubin** | Total bilirubin level (mg/dL). |
+| **02** | **Cholesterol** | Serum cholesterol (mg/dL). |
+| **03** | **Albumin** | Serum albumin (g/dL). |
+| **04** | **Copper** | Urine copper (µg/day). |
+| **05** | **Alk_Phos** | Alkaline phosphatase (U/L). |
+| **06** | **SGOT** | Aspartate aminotransferase (AST) (U/L). |
+| **07** | **Tryglicerides** | Serum triglycerides (mg/dL). |
+| **08** | **Platelets** | Platelet count (per cubic millimeter). |
+| **09** | **Prothrombin** | Prothrombin time (seconds). |
+| **10** | **Age** | Patient age in years. |
+| **11** | **Sex** | Gender (Categorically encoded: 0:F/1:M). |
+| **12** | **Ascites** | Presence of abdominal fluid accumulation. |
+| **13** | **Hepatomegaly** | Clinical presence of liver enlargement. |
+| **14** | **Spiders** | Presence of spider angiomas. |
+| **15** | **Edema** | Presence of systemic swelling. |
+
+
+*The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and were generated with the assistance of large language models for documentation clarity only. They do not represent medical diagnosis or professional medical judgment.*
+
+
 *The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and were generated with the assistance of large language models for documentation clarity only. They do not represent medical diagnosis or professional medical judgment.*
 
