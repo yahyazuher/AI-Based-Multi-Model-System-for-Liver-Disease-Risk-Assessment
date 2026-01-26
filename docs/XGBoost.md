@@ -170,6 +170,44 @@ This hybrid strategy allowed the model to reach **100% Accuracy** without fallin
 
 > **For more details, visit:** [`docs/FattyLiver_Model.md`](./FattyLiver_Model.md)
 
+
+---
+## Model Performance Evaluation: The Confusion Matrix Logic
+
+In medical diagnostics, "Accuracy" alone is often a misleading metric. A model could achieve 90% accuracy simply by classifying everyone as healthy if the dataset is imbalanced. To ensure clinical safety and reliability, theis project evaluates performance using a **Confusion Matrix**. 
+**For Binary Classification Models** (where the output is strictly two cases: e.g., *Healthy vs. Patient* or *Stable vs. Risk*), this matrix breaks down predictions into four clinically distinct categories:
+
+### 1. The Matrix Structure
+The confusion matrix acts as a truth table comparing the **Actual Clinical Status** (Ground Truth) against the **Model's Prediction**.
+
+| | **Predicted: Healthy (Negative)** | **Predicted: Patient (Positive)** |
+| :--- | :--- | :--- |
+| **Actual: Healthy** | **True Negative (TN)** <br> *(Correct Rejection)* | **False Positive (FP)** <br> *(Type I Error / False Alarm)* |
+| **Actual: Patient** | **False Negative (FN)** <br> *(Type II Error / Missed Case)* | **True Positive (TP)** <br> *(Correct Detection)* |
+
+### 2. Clinical Implications of Errors
+
+* **True Negative (TN):**
+    * *Scenario:* The user is healthy, and the model correctly identifies them as healthy.
+    * *Outcome:* The user is reassured. The system functions correctly as a screening tool.
+
+* **True Positive (TP):**
+    * *Scenario:* The user has liver disease, and the model correctly detects it.
+    * *Outcome:* Early detection achieved. The user is referred for further medical treatment.
+
+* **False Positive (FP) - "The False Alarm":**
+    * *Scenario:* The user is healthy, but the model incorrectly flags them as a patient.
+    * *Medical Impact:* This causes unnecessary anxiety and follow-up tests.
+    * *Mitigation:* While undesirable, this is clinically "acceptable" in screening as it errs on the side of caution. The system addresses this by tuning probability thresholds (e.g., in the Status Model).
+
+* **False Negative (FN) - "The Critical Failure":**
+    * *Scenario:* The user is actually sick, but the model tells them they are healthy.
+    * *Medical Impact:* **This is the most dangerous outcome.** The patient is sent home without treatment, leading to disease progression (e.g., Fibrosis to Cirrhosis).
+    * *System Priority:* The **Gate Model** and **Fatty Liver Model** are strictly optimized to minimize FN (aiming for 0), prioritizing "Recall" (Sensitivity) over precision to ensure no patient is left behind.
+
+**Gate Model (First Line):** Prioritizes **High Sensitivity**. It is better to flag a healthy person for a checkup (False Positive) than to miss a sick person (False Negative).
+**Click here to view the full analysis:** [notebooks/AI-Liver-Disease-Diagnosis-System.ipynb](./notebooks/AI-Liver-Disease-Diagnosis-System.ipynb)
+
 ---
 ## **Automated Hyperparameter Tuning**
 
