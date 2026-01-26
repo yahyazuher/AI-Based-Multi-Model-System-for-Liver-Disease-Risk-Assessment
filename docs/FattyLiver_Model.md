@@ -27,7 +27,7 @@ The model's exceptional performance is derived from a strategic data split of **
 * **Testing Data:** A holdout set of **1,307 patients** was reserved to validate the model's accuracy on unseen clinical data.
 * **Class Distribution:** The dataset contains **5,877 Healthy** cases and **656 NAFLD** cases, demonstrating the model's ability to identify the minority "Patient" class with high sensitivity.
 
-> (For more details about ML model, see: docs/XGBoost.md).
+> (For more details about ML model, see:  [`docs/XGBoost.md`](./XGBoost.md). 
 
 ---
 ### Data Engineering & Integration Strategy
