@@ -138,26 +138,29 @@ Each of the six models within the ecosystem Went through a rigorous feature sele
 
 ---
 
-### **Projects Technical Implementation**
+## **Selected Technical Implementation**
 
-#### 1- Data Balancing Strategy
 
-In medical diagnostics, datasets are often heavily skewed, instance, the number of patients diagnosed with **Ascites** is significantly lower than healthy individuals. A standard model would likely develop a "Majority Bias," predicting everyone as healthy to achieve high accuracy while failing to detect actual cases.
+### **A. Data Balancing Strategy**
 
-**The Solution:**
-Instead of manual oversampling, we implemented a dynamic class-weighting mechanism. The code programmatically calculates the ratio between the two classes (On: `data/raw/Liver_Patient_Dataset_Cleaned_19k.csv` file) to determine the `scale_pos_weight` parameter:
+Datasets in medical diagnostics are often heavily skewed; **for instance**, the number of patients diagnosed with **Ascites** is significantly lower than healthy individuals. A standard model trained on such data would likely develop a **"Majority Bias,"** predicting everyone as healthy to achieve high accuracy while dangerously failing to detect actual positive cases.
 
- By assigning a higher weight to the minority class (the patients), the **XGBoost** algorithm becomes hyper-sensitive to positive cases. It forces the loss function to penalize the misclassification of a **sick** patient more heavily than a **healthy** one, ensuring the model is clinically reliable.
+Instead of manual oversampling, we implemented a **dynamic class-weighting mechanism**. The code programmatically calculates the ratio between the two classes to determine the **`scale_pos_weight`** parameter—a critical setting that adjusts the model's **sensitivity** toward the minority class. (A practical application of this can be seen in the `data/raw/Liver_Patient_Dataset_Cleaned_19k.csv` file, with further details available in `docs/FattyLiver_Model.md`).
 
-This logic is fully automated in `notebooks/code/train_gate_model.py` and demonstrated in  [![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=OGcBn26-pcsQ)
+By assigning a higher weight to the minority class (the patients), the **XGBoost** algorithm becomes hyper-sensitive to positive cases. This forces the loss function to penalize the misclassification of a **sick** patient more heavily than a **healthy** one, ensuring the model is clinically reliable and optimized for high **Recall (Sensitivity)**.
+
+This logic is fully automated in `notebooks/code/train_gate_model.py` and demonstrated in: [![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=OGcBn26-pcsQ)
 
 ---
-#### 2- Cancer Risk Model
+### B- Cancer Risk Model
 The Liver Cancer diagnostic model was specifically optimized to account for the Limited-scale Clinical Dataset used in this study. To ensure the model remains robust and reliable for sensitive cancer detection, the following configuration was implemented:
 
 * Tree Depth Constraint (max_depth = 3): With a constrained sample size, deep trees (high max_depth) pose a high risk of Overfitting, where the model captures noise and specific outliers rather than generalized medical patterns. By restricting the depth to 3, we ensured that the XGBoost algorithm focuses on the most prominent and statistically significant diagnostic features.
 
 * This approach achieved the highest Validation Accuracy by promoting model simplicity. It prevented the algorithm from "memorizing" individual patient cases, ensuring that the diagnostic logic is stable and can be generalized to new clinical samples effectively.
+  
+> **For more details, visit:** [`docs/Cancer_Risk_Model.md`](https://www.google.com/search?q=docs/Cancer_Risk_Model.md)
+
 ---
 ## **Automated Hyperparameter Tuning**
 
