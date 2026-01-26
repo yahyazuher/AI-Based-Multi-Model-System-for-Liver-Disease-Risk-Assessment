@@ -95,13 +95,13 @@ While the standard 80/20 split was used for validation, a strategic decision was
 | `hepatitisC_stage_model.pkl` | **62.50%** | **Academic Use** | Full Dataset Integration |
 | `hepatitisC_status_model.pkl` | **71.43%** | **Moderate-High Reliability** | Full Dataset Integration |
 
-### **Why 100% Data was used for these specific models?**
+#### **Why 100% Data was used for these specific models?**
 
 1. The analytical values for different stages and statuses in these datasets were significantly close and overlapping. In such "high-proximity" data environments, the model needs to see every possible variation to establish a more stable decision boundary.
 2. Because these models showed lower initial confidence (62.50% and 71.43%), withholding 20% of the data for testing in the final version would have meant losing valuable clinical cases. By merging the test set back into the training phase, we provided the XGBoost engine with the **maximum possible knowledge base**.
 3. **Real-World Deployment Readiness:** To ensure the system performs reliably in a real clinical setting without "missing" subtle patterns, utilizing the full training file was essential. This ensures that no potential diagnostic insight from the original dataset is wasted.
----
-## **Data Leakage**
+   
+### **3. Data Leakage**
 
 **Data Leakage** occurs when information from outside the training dataset is used to create the model. This essentially allows the model to "cheat" during the training process by having access to data that would not be available at the time of a real-world prediction. While the model may show near-perfect accuracy (e.g., 100%) during testing, it will fail to provide accurate results or even fail entirely when applied to new real-world patients.
 
