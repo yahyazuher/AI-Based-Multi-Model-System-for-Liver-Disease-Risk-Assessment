@@ -45,8 +45,8 @@ To ensure our XGBoost model remains a smart learner, we implemented the followin
 
 
 
-
-Below is a detailed breakdown of the internal mechanisms that make XGBoost superior for this medical diagnostic project:
+## **Internal Mechanisms**
+Detailed breakdown of the internal mechanisms that make XGBoost superior for this medical diagnostic project:
 
 ### **1. Regularization**
 Prevents overfitting, unlike standard Gradient Boosting, which focuses solely on minimizing the error (Loss Function), XGBoost optimizes an objective function that includes a **regularization term**.
@@ -90,7 +90,7 @@ To ensure the system acts as a "Smart Clinician" rather than a "Rote Learner," I
 
 * **80% Training Set:** Acts as the "Academic Curriculum," where the XGBoost algorithm learns complex patterns between biomarkers.
 * **20% Testing Set:** Acts as the "Unseen Exam." These records are hidden from the model during training to measure its real-world diagnostic accuracy.
-
+   > This process is illustrated in the Architecture & Logic Schematics (2) at the end of the page, which shows the internal 80/20 split used during the learning process.
 
 ### **2. Maximizing Data Utility**
 
