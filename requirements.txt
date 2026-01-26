@@ -1,1 +1,17 @@
+# --- AI Liver Disease Diagnosis System ---
 
+# Data Manipulation & Clinical Feature Engineering
+pandas
+numpy
+
+# Core Machine Learning Engines (XGBoost Framework)
+xgboost
+scikit-learn
+joblib
+
+# Cloud Connectivity & Remote Data Fetching
+requests
+
+# Visual Analysis & Performance Metrics (Confusion Matrices)
+matplotlib
+seaborn
