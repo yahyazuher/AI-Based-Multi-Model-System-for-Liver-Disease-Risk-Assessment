@@ -64,7 +64,7 @@ The `FattyLiver_Model.pkl` file is a **Mathematical Matrix**. It does not interp
 
 **Critical Execution Requirement:**
 Feeding data in the wrong sequence (e.g., placing Glucose in the Triglycerides slot) will lead to a total diagnostic failure. Data must be submitted in this exact order, model input sequence (13 Features):
-['Albumin', 'ALP', 'AST', 'ALT', 'Cholesterol', 'Creatinine', 'Glucose', 'GGT', 'Bilirubin', 'Triglycerides', 'Uric_Acid', 'Platelets', 'HDL']
+`['Albumin', 'ALP', 'AST', 'ALT', 'Cholesterol', 'Creatinine', 'Glucose', 'GGT', 'Bilirubin', 'Triglycerides', 'Uric_Acid', 'Platelets', 'HDL']`
 
 ---
 
