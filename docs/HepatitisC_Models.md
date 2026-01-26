@@ -16,8 +16,8 @@ This framework is specifically designed and optimized for Hepatitis C (HCV) diag
 | **hepatitisC_stage_model.pkl** | `models/` | Trained model to classify histological damage (Stage 1-3). |
 | **hepatitisC_complications.pkl** | `models/` | Trained model to estimate the risk of Ascites. |
 | **hepatitiC_status_model.pkl** | `models/` | Trained model to calculate survival/mortality probability. |
-| **train_hepatitisC_models** | `code/` | Source code responsible for building and training the 3 models.Can be run directly in Google Colab |
-| **test_hepatitisC_models** | `code/` | Inference script for diagnosing the 7 cases (see details above).Can be run directly in Google Colab |
+| **train_hepatitisC_models** | `notebooks/code/` | Source code responsible for building and training the 3 models.Can be run directly in Google Colab |
+| **test_hepatitisC_models** | `notebooks/code/` | Inference script for diagnosing the 7 cases (see details above).Can be run directly in Google Colab |
 | **`HepatitisC.csv`** **`hepatitisC_status.csv`**  **`hepatitisC_stage.csv`** | `data/processed` | The processed clinical dataset derived from Mayo Clinic records. |
 | **XGBoost.md** | `docs/` | Technical documentation explaining the mechanism of the XGBoost algorithm. |
 
@@ -40,7 +40,7 @@ After completing the training on  records and testing on  unseen records, the mo
 | **`hepatitiC_status_model.pkl`** | $71.43\%$ % | Moderate-High Reliability |
 | **`hepatitisC_stage_model.pkl`** | $62.50\%$ % | Academic Use |
 
-The logic used to generate these results, including the $80/20$ split and XGBoost configurations, can be found in the source script: `code/train_HC_models` or executed directly via the Colab environment: [![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=3oQ6HJTl0F1V)
+The logic used to generate these results, including the $80/20$ split and XGBoost configurations, can be found in the source script: `notebooks/code/train_HC_models` or executed directly via the Colab environment: [![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=3oQ6HJTl0F1V)
 
 
 ---
@@ -247,38 +247,7 @@ def calculate_albi(bilirubin, albumin):
 
 ### Models Input Requirements & Data Structure
 
-To ensure the inference engine functions correctly, data must be structured into precise vector formats specific to each model. The system utilizes three distinct input architectures to handle the mathematical dependencies of each diagnostic task.
-
-#### 1. Clinical Feature Glossary (Base Variables)
-
-The following 15 clinical markers form the foundation for all feature engineering and model inputs.
-
-| Index | Feature Name | Description |
-| --- | --- | --- |
-| **01** | **Bilirubin** | Total bilirubin level (mg/dL). |
-| **02** | **Cholesterol** | Serum cholesterol (mg/dL). |
-| **03** | **Albumin** | Serum albumin (g/dL). |
-| **04** | **Copper** | Urine copper (µg/day). |
-| **05** | **Alk_Phos** | Alkaline phosphatase (U/L). |
-| **06** | **SGOT** | Aspartate aminotransferase (AST) (U/L). |
-| **07** | **Tryglicerides** | Serum triglycerides (mg/dL). |
-| **08** | **Platelets** | Platelet count (per cubic millimeter). |
-| **09** | **Prothrombin** | Prothrombin time (seconds). |
-| **10** | **Age** | Patient age in years. |
-| **11** | **Sex** | Gender (Categorically encoded: 0:F/1:M). |
-| **12** | **Ascites** | Presence of abdominal fluid accumulation. |
-| **13** | **Hepatomegaly** | Clinical presence of liver enlargement. |
-| **14** | **Spiders** | Presence of spider angiomas. |
-| **15** | **Edema** | Presence of systemic swelling. |
-
-
-*The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and were generated with the assistance of large language models for documentation clarity only. They do not represent medical diagnosis or professional medical judgment.*
-
-
-
-#### 2. Model-Specific Vector Signatures
-
-To ensure successful inference using the XGBoost engines, data must be passed as a vector following the exact sequence defined below.
+To ensure the inference engine functions correctly, data must be structured into precise vector formats specific to each model:
 
 **A. Complications Prediction Model**
 
@@ -345,7 +314,7 @@ While most cases showed negligible Ascites risk (<5%), **Case 5** triggered a ma
 
 In **Case 7**, the patient's advanced age (70 years) significantly amplified the mortality risk to **92.0%**, despite having a similar structural profile to Case 3. This confirms the XGBoost architecture weights **Age** as a critical non-linear multiplier for prognosis.
 
-The logic used to generate these results, can be found in: `code/test_HC_models` or executed directly via the Colab environment: [![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=MjHUnRyuYZMA)
+The logic used to generate these results, can be found in: `notebooks/code/test_HC_models` or executed directly via the Colab environment: [![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=MjHUnRyuYZMA)
 
 
 ---
