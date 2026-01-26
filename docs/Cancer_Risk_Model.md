@@ -19,11 +19,11 @@ This section is dedicated to evaluating the probability of developing Hepatocell
 
 | Name | Database Location | Function |
 | --- | --- | --- |
-| **models/cancer_model.pkl** | [models/](./models/) | The trained model containing the final decision-making weights. |
-| **train_cancer_model.py** | [notebooks/code/](./notebooks/code/) | Source code responsible for building and training the model.Can be run directly in Google Colab |
-| **test_cancer_model.py** | [notebooks/code/](./notebooks/code/) | Source code dedicated to testing the efficiency of the trained model.Can be run directly in Google Colab |
-| **The_Cancer_data_1500.csv** | [data/processed](./data/processed/) | Training dataset containing 1,500 patient records with required analytics. |
-| **XGBoost.md** | [docs/](./docs/XGBoost.md/) | Technical documentation explaining the mechanism of the XGBoost algorithm. |
+| **models/cancer_model.pkl** | models/ | The trained model containing the final decision-making weights. |
+| **train_cancer_model.py** |notebooks/code/ | Source code responsible for building and training the model.Can be run directly in Google Colab |
+| **test_cancer_model.py** | notebooks/code/| Source code dedicated to testing the efficiency of the trained model.Can be run directly in Google Colab |
+| **The_Cancer_data_1500.csv** | data/processed| Training dataset containing 1,500 patient records with required analytics. |
+| **XGBoost.md** | docs/| Technical documentation explaining the mechanism of the XGBoost algorithm. |
 
 
 
