@@ -11,8 +11,8 @@ This section is dedicated to the initial triage of users, functioning as the sys
 | Name | Database Location | Function |
 | --- | --- | --- |
 | **gate_model.pkl** | `models/` | The trained model containing the final decision-making weights(Sick, Healthy). |
-| **train_gate_model.py** | `code/` | Source code responsible for cleaning data and training the model. Can be run directly in Google Colab |
-| **test_gate_model.py** | `code/` | Source code dedicated to testing the efficiency of the trained model. Can be run directly in Google Colab |
+| **train_gate_model.py** | `notebooks/code/` | Source code responsible for cleaning data and training the model. Can be run directly in Google Colab |
+| **test_gate_model.py** | `notebooks/code/` | Source code dedicated to testing the efficiency of the trained model. Can be run directly in Google Colab |
 | **Liver_Patient_Dataset_Cleaned_19k.csv** | `data/processed` | The cleaned training dataset containing ~19,000 unique records. |
 | **XGBoost.md** | `docs/` | Technical documentation explaining the mechanism of the XGBoost algorithm. |
 
