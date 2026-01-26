@@ -11,8 +11,8 @@ This section is dedicated to the detection of **Non-Alcoholic Fatty Liver Diseas
 | Name | Database Location | Function |
 | --- | --- | --- |
 | **fatty_liver_model.pkl** | `models/` | The trained model containing the optimized weights for NAFLD detection. |
-| **train_fatty_liver.py** | `code/` | Source code for data merging (`SEQN` logic) and model training.Can be run directly in Google Colab |
-| **test_fatty_liver.py** | `code/` | Source code dedicated to testing and evaluating the model performance.Can be run directly in Google Colab |
+| **train_fatty_liver.py** | `notebooks/code/` | Source code for data merging and model training.|
+| **test_fatty_liver.py** | `notebooks/code/` | Source code dedicated to testing and evaluating the model performance.|
 | **FattyLiver.csv** | `data/processed/` | Engineered dataset from NHANES 2013-2014 cycles containing 6,533 patient records. |
 | **XGBoost.md** | `docs/` | Technical documentation of the underlying boosting mechanism. |
 
