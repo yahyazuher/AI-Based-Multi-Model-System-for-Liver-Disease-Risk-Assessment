@@ -1,4 +1,4 @@
-# **XGBoost Algorithm Overview**
+# **XGBoost Algorithm**
 
 XGBoost (eXtreme Gradient Boosting) is the core engine used in this project for analyzing medical data. Unlike standard AI models that might try to guess an outcome in a single attempt, XGBoost adopts a smarter, sequential approach akin to a team of doctors analyzing a patient's file one by one. In this analogy, the first tree makes an initial diagnosis, the second tree identifies and corrects the first one's mistakes, and the third focuses exclusively on the remaining errors. This process repeats hundreds of times, and the final result is a combination of all these "opinions," leading to a highly accurate prediction.
 
