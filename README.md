@@ -144,44 +144,46 @@ For detailed technical and medical information: regarding feature importance ana
 The following 36 clinical markers form the foundation for all feature engineering and model inputs.
 
 
-| # | Code Name | Scientific Name | Unit / Value | Input Type | Mathematical Formula | Clinical Significance & Role |
-| --- | --- | --- | --- | --- | --- | --- |
-| **01** | **Age** | Patient Age | Years | Direct Numerical | N/A | A primary demographic factor influencing fibrosis progression rates. |
-| **02** | **Gender** | Biological Sex | 0: Female, 1: Male | Binary | N/A | Adjusts for biological variations in enzyme levels and disease susceptibility. |
-| **03** | **BMI** | Body Mass Index | kg/m^2 | Direct Numerical | Weight(kg) / Height(m)^2 | Key indicator for obesity-related liver risks (NAFLD/NASH). |
-| **04** | **Smoking** | Smoking Status | 0: No, 1: Yes | Binary | N/A | Exacerbates oxidative stress and accelerates hepatic fibrosis. |
-| **05** | **GeneticRisk** | Genetic Predisposition | 0: Low, 1: Med, 2: High | Categorical | N/A | Stratifies risk based on family history (e.g., Hemochromatosis). |
-| **06** | **PhysicalActivity** | Physical Activity | Hours/Week | Direct Numerical | N/A | Inverse correlation with hepatic fat accumulation and insulin resistance. |
-| **07** | **AlcoholIntake** | Alcohol Consumption | Units/Week | Direct Numerical | N/A | Critical for differentiating Alcoholic vs. Non-Alcoholic liver disease. |
-| **08** | **CancerHistory** | Cancer History | 0: No, 1: Yes | Binary | N/A | Previous history increases the weighted probability of HCC development. |
-| **09** | **Ascites** | Ascites | 0: No, 1: Yes | Binary | N/A | Presence of pathological fluid accumulation; indicates decompensation. |
-| **10** | **Hepatomegaly** | Hepatomegaly | 0: No, 1: Yes | Binary | N/A | Clinically palpable enlargement of the liver organ. |
-| **11** | **Spiders** | Spider Angiomas | 0: No, 1: Yes | Binary | N/A | Cutaneous vascular lesions resulting from altered estrogen metabolism. |
-| **12** | **Edema** | Systemic Edema | 0: No, 1: Yes | Binary | N/A | Fluid retention caused by hypoalbuminemia and portal hypertension. |
-| **13** | **Total_Bilirubin** | Total Bilirubin | mg/dL | Direct Numerical | Direct + Indirect | Measure of hepatic excretory function and hemolytic processes. |
-| **14** | **Direct_Bilirubin** | Conjugated Bilirubin | mg/dL | Direct Numerical | N/A | Specific marker for biliary obstruction or cholestasis. |
-| **15** | **Albumin** | Serum Albumin | g/dL | Direct Numerical | N/A | Primary protein synthesized by the liver; indicates synthetic capacity. |
-| **16** | **Total_Proteins** | Total Serum Proteins | g/dL | Direct Numerical | Albumin + Globulin | Overview of nutritional status and protein synthesis capability. |
-| **17** | **A/G_Ratio** | Albumin/Globulin Ratio | Ratio | Computed | Albumin / (TotalProts - Albumin) | Low ratio indicates chronic inflammation or advanced liver damage. |
-| **18** | **ALT** | Alanine Aminotransferase | U/L | Direct Numerical | N/A | Most specific enzymatic marker for hepatocellular injury. |
-| **19** | **AST** | Aspartate Aminotransferase | U/L | Direct Numerical | N/A | Enzyme released during tissue damage; less specific than ALT. |
-| **20** | **ALP** | Alkaline Phosphatase | U/L | Direct Numerical | N/A | Marker for biliary tract obstruction or infiltrative diseases. |
-| **21** | **GGT** | Gamma-Glutamyl Transferase | U/L | Direct Numerical | N/A | Highly sensitive marker for biliary injury and alcohol toxicity. |
-| **22** | **Triglycerides** | Serum Triglycerides | mg/dL | Direct Numerical | N/A | Primary biomarker for Fatty Liver Disease diagnosis. |
-| **23** | **Cholesterol** | Total Cholesterol | mg/dL | Direct Numerical | N/A | Assesses metabolic status and lipid synthesis function. |
-| **24** | **HDL** | High-Density Lipoprotein | mg/dL | Direct Numerical | N/A | "Good" cholesterol; inversely related to metabolic syndrome. |
-| **25** | **Glucose** | Fasting Blood Glucose | mg/dL | Direct Numerical | N/A | Monitors diabetes mellitus, a major driver of liver fibrosis. |
-| **26** | **Creatinine** | Serum Creatinine | mg/dL | Direct Numerical | N/A | Assesses renal function; crucial for hepatorenal syndrome detection. |
-| **27** | **Uric_Acid** | Serum Uric Acid | mg/dL | Direct Numerical | N/A | Elevated levels are associated with oxidative stress and NAFLD. |
-| **28** | **Copper** | Urine Copper | ug/day | Direct Numerical | N/A | Detects copper accumulation disorders (e.g., Wilson's Disease). |
-| **29** | **Platelets** | Platelet Count | 10^9/L | Direct Numerical | N/A | Thrombocytopenia is a surrogate marker for portal hypertension. |
-| **30** | **Prothrombin** | Prothrombin Time | Seconds | Direct Numerical | N/A | Measures clotting time; reflects the liver's synthetic failure. |
-| **31** | **Status** | Survival Status | Categorical | Target Class | N/A | The clinical outcome (1: Stable, 2: Transplant, 3: Deceased). |
-| **32** | **Stage** | Fibrosis Stage | Categorical | Target Class | N/A | Histological severity of liver scarring (F0-F4). |
-| **33** | **APRI** | AST to Platelet Ratio Index | Index Score | Computed | ((AST / 40) / Platelets) * 100 | Non-invasive predictor of significant fibrosis and cirrhosis. |
-| **34** | **ALBI_Score** | Albumin-Bilirubin Grade | Score | Computed | (0.66 * log10(Bili)) + (-0.085 * Alb) | Assesses liver function severity and mortality risk. |
-| **35** | **Bili_Alb_Ratio** | Bilirubin-Albumin Ratio | Ratio | Computed | Total_Bilirubin / Albumin | Highlights the gap between excretion (Bili) and synthesis (Alb). |
-| **36** | **Copper_Platelets** | Copper-Platelet Interaction | Ratio | Computed | Copper / Platelets | Engineered feature correlating toxicity with portal hypertension. |
+| #  | Feature Code Name | Scientific Name             | Unit / Value       | Input Type   | Formula                     | Clinical Importance & Diagnostic Role                     | Model Scope            |
+| -- | ----------------- | --------------------------- | ------------------ | ------------ | --------------------------- | --------------------------------------------------------- | ---------------------- |
+| 01 | Age               | Patient Age                 | Years              | Numerical    | N/A                         | Core demographic factor influencing fibrosis progression. | All Models             |
+| 02 | Gender            | Biological Sex              | 0: Female, 1: Male | Binary       | N/A                         | Adjusts for biological enzyme variability.                | All Models             |
+| 03 | BMI               | Body Mass Index             | kg/m²              | Numerical    | Weight / Height²            | Primary indicator of fatty liver risk.                    | Fatty Liver & Cancer   |
+| 04 | Smoking           | Smoking Status              | 0: No, 1: Yes      | Binary       | N/A                         | Increases oxidative stress and accelerates fibrosis.      | Cancer Risk Model      |
+| 05 | GeneticRisk       | Genetic Predisposition      | 0–2 (Categories)   | Categorical  | N/A                         | Classifies hereditary and familial cancer risk.           | Cancer Risk Model      |
+| 06 | PhysicalActivity  | Physical Activity           | Hours/week         | Numerical    | N/A                         | Improves insulin sensitivity and reduces hepatic fat.     | Fatty Liver & Cancer   |
+| 07 | AlcoholIntake     | Alcohol Consumption         | Units/week         | Numerical    | N/A                         | Differentiates alcoholic vs non-alcoholic liver injury.   | Fatty Liver & Cancer   |
+| 08 | CancerHistory     | Cancer History              | 0: No, 1: Yes      | Binary       | N/A                         | Raises probabilistic weight for HCC development.          | Cancer Risk Model      |
+| 09 | Ascites           | Ascites                     | 0: No, 1: Yes      | Binary       | N/A                         | Marker of advanced hepatic decompensation.                | Hep C (Stage & Status) |
+| 10 | Hepatomegaly      | Hepatomegaly                | 0: No, 1: Yes      | Binary       | N/A                         | Clinical enlargement of the liver.                        | Hep C (All Models)     |
+| 11 | Spiders           | Spider Angiomas             | 0: No, 1: Yes      | Binary       | N/A                         | Cutaneous vascular lesions from hormonal imbalance.       | Hep C (All Models)     |
+| 12 | Edema             | Peripheral Edema            | 0: No, 1: Yes      | Binary       | N/A                         | Fluid retention due to hypoalbuminemia.                   | Hep C (All Models)     |
+| 13 | Total_Bilirubin   | Total Bilirubin             | mg/dL              | Numerical    | Direct + Indirect           | Reflects hepatic excretory function.                      | All Models             |
+| 14 | Direct_Bilirubin  | Direct Bilirubin            | mg/dL              | Numerical    | N/A                         | Indicates mechanical or cholestatic obstruction.          | Gate Model         |
+| 15 | Albumin           | Serum Albumin               | g/dL               | Numerical    | N/A                         | Indicator of liver synthetic capacity.                    | All Models             |
+| 16 | Total_Proteins    | Total Proteins              | g/dL               | Numerical    | Albumin + Globulin          | Assesses nutritional and immune status.                   | Gate Model         |
+| 17 | A/G_Ratio         | Albumin/Globulin Ratio      | Ratio              | Calculated   | Albumin / (Total − Albumin) | Marker of chronic inflammation and tissue damage.         | Gate Model         |
+| 18 | ALT               | Alanine Aminotransferase    | U/L                | Numerical    | N/A                         | Most specific enzyme for hepatocellular injury.           | All Models             |
+| 19 | AST               | Aspartate Aminotransferase  | U/L                | Numerical    | N/A                         | Enzyme reflecting multi-tissue injury.                    | All Models             |
+| 20 | ALP               | Alkaline Phosphatase        | U/L                | Numerical    | N/A                         | Elevated in biliary obstruction.                          | All Models             |
+| 21 | GGT               | Gamma-Glutamyl Transferase  | U/L                | Numerical    | N/A                         | Highly sensitive to alcohol toxicity and steatosis.       | Fatty Liver Model      |
+| 22 | Triglycerides     | Triglycerides               | mg/dL              | Numerical    | N/A                         | Core biomarker of fatty liver disease.                    | Fatty Liver & Hep C    |
+| 23 | Cholesterol       | Total Cholesterol           | mg/dL              | Numerical    | N/A                         | Reflects metabolic and hepatic synthetic status.          | Fatty Liver & Hep C    |
+| 24 | HDL               | High-Density Lipoprotein    | mg/dL              | Numerical    | N/A                         | Inversely associated with metabolic syndrome.             | Fatty Liver Model      |
+| 25 | Glucose           | Fasting Blood Glucose       | mg/dL              | Numerical    | N/A                         | Diabetes is a major driver of fibrosis.                   | Fatty Liver Model      |
+| 26 | Creatinine        | Serum Creatinine            | mg/dL              | Numerical    | N/A                         | Assesses renal function (hepatorenal risk).               | Fatty Liver Model      |
+| 27 | Uric_Acid         | Uric Acid                   | mg/dL              | Numerical    | N/A                         | Oxidative stress marker linked to steatosis.              | Fatty Liver Model      |
+| 28 | Copper            | Urinary Copper              | µg/day             | Numerical    | N/A                         | Detects copper accumulation disorders.                    | Hep C (All Models)     |
+| 29 | Platelets         | Platelet Count              | 10⁹/L              | Numerical    | N/A                         | Thrombocytopenia indicates portal hypertension.           | All Models             |
+| 30 | Prothrombin       | Prothrombin Time            | Seconds            | Numerical    | N/A                         | Reflects clotting factor synthesis efficiency.            | Hep C (All Models)     |
+| 31 | Status            | Clinical Status             | Categories         | Target/Input | N/A                         | Clinical outcome (Alive / Death ).            | Input for Stage Model  |
+| 32 | Stage             | Fibrosis Stage              | Categories         | Target       | N/A                         | fibrosis severity (F1–F3).                   | Target (Output)        |
+| 33 | APRI              | AST to Platelet Ratio Index | Score              | Calculated   | ((AST/40)/Platelets)*100    | fibrosis predictor.                          | Hep C (Stage & Status) |
+| 34 | ALBI_Score        | Albumin-Bilirubin Score     | Score              | Calculated   | Formula-based               | Assesses liver function and mortality risk.               | Hep C (Status Model)   |
+| 35 | Bili_Alb_Ratio    | Bilirubin/Albumin Ratio     | Ratio              | Calculated   | Total_Bilirubin / Albumin   | Reflects excretory–synthetic imbalance.                   | Hep C (Stage & Status) |
+| 36 | Copper_Platelets  | Copper–Platelet Interaction | Ratio              | Calculated   | Copper / Platelets          | Marker of toxicity and portal hypertension.               | Hep C (Stage Model)    |
+
+---
 
 
 *The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and were generated with the assistance of large language models for documentation clarity only. They do not represent medical diagnosis or professional medical judgment.*
