@@ -145,7 +145,7 @@ Each of the six models within the ecosystem Went through a rigorous feature sele
 
 Datasets in medical diagnostics are often heavily skewed; **for instance**, the number of patients diagnosed with **Ascites** is significantly lower than healthy individuals. A standard model trained on such data would likely develop a **"Majority Bias,"** predicting everyone as healthy to achieve high accuracy while dangerously failing to detect actual positive cases.
 
-Instead of manual oversampling, we implemented a **dynamic class-weighting mechanism**. The code programmatically calculates the ratio between the two classes to determine the **`scale_pos_weight`** parameter—a critical setting that adjusts the model's **sensitivity** toward the minority class. (A practical application of this can be seen in the `data/raw/Liver_Patient_Dataset_Cleaned_19k.csv` file, with further details available in `docs/FattyLiver_Model.md`).
+Instead of manual oversampling, we implemented a **dynamic class-weighting mechanism**. The code programmatically calculates the ratio between the two classes to determine the **`scale_pos_weight`** parameter—a critical setting that adjusts the model's **sensitivity** toward the minority class. (A practical application of this can be seen in the `data/raw/Liver_Patient_Dataset_Cleaned_19k.csv` file, with further details available in [docs/FattyLiver_Model.md](./FattyLiver_Model.md) ).
 
 By assigning a higher weight to the minority class (the patients), the **XGBoost** algorithm becomes hyper-sensitive to positive cases. This forces the loss function to penalize the misclassification of a **sick** patient more heavily than a **healthy** one, ensuring the model is clinically reliable and optimized for high **Recall (Sensitivity)**.
 
@@ -159,14 +159,16 @@ The Liver Cancer diagnostic model was specifically optimized to account for the 
 
 * This approach achieved the highest Validation Accuracy by promoting model simplicity. It prevented the algorithm from "memorizing" individual patient cases, ensuring that the diagnostic logic is stable and can be generalized to new clinical samples effectively.
   
-> **For more details, visit:** [`docs/Cancer_Risk_Model.md`](https://www.google.com/search?q=docs/Cancer_Risk_Model.md)
+> **For more details, visit:** [`docs/Cancer_Risk_Model.md`](./Cancer_Risk_Model.md)
+
 ---
 ### **C. Hybrid Knowledge-Based Learning**
 
 Beyond standard Machine Learning, we adopted an **"Outside the Box"** approach for the Fatty Liver diagnostic model (`fatty_liver_model.pkl`). Instead of relying solely on automated pattern recognition, we integrated **Hard-Coded Medical Logic** and domain-specific constraints into the feature engineering process. By incorporating established clinical benchmarks—such as Triglycerides levels  and specific elevations in **GGT/ALT** enzymes—we provided the model with a "logical compass."
 This hybrid strategy allowed the model to reach **100% Accuracy** without falling into the "Overfitting" or "Overconfidence" traps. The model doesn't just "guess" based on statistics; it mathematically weighs clinical markers against real-world medical protocols.
 
-> **For more details, visit:** [`docs/FattyLiver_Model.md`](https://www.google.com/search?q=docs/FattyLiver_Model.md)
+
+> **For more details, visit:** [docs/FattyLiver_Model.md](./FattyLiver_Model.md)
 
 ---
 ## **Automated Hyperparameter Tuning**
