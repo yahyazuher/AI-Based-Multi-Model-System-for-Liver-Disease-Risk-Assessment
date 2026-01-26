@@ -143,6 +143,7 @@ The results demonstrate that **High-Quality Data + Clear Clinical Logic = Perfec
 
 By utilizing these specific values, the system eliminates human error in interpreting complex lab results, ensuring that every patient among the 6,544 is classified with absolute mathematical certainty.
 
+> Visit `notebooks/` or [![Open In Colab](https://img.shields.io/badge/Open%20In%20Colab-black?style=flat&logo=googlecolab&logoColor=white)](https://colab.research.google.com/drive/1sr0GzN9SEN2H5wC3t0REaPVXUMlFYzfG#scrollTo=Twbk4kGwo8IX)
 ---
 
 ### Clinical Interpretation Logic
