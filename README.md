@@ -12,9 +12,9 @@ An integrated AI ecosystem designed to assess liver health through a pipeline of
 | Directory / File | Description |
 | --- | --- |
 | **[`notebooks/`](./notebooks/)** | The core functional hub. It contains the **Main `.ipynb` file**, which integrates the entire diagnostic pipeline—from data processing to final prediction. |
-| **`models/`** | Contains the finalized **`.pkl`** serialized models (Fatty Liver, Fibrosis, Cancer, etc.), ready for instant deployment. |
-| **`docs/`** | **Detailed documentation** regarding medical logic, ethical guidelines, and the **`XGBoost.md`** file for technical deep-dives. |
-| **`data/`** | The storage hub for the **`.csv `,`.pxt`** processed and raw datasets. |
+| **[`models/`](./models/)** | Contains the finalized **`.pkl`** serialized models (Fatty Liver, Fibrosis, Cancer, etc.), ready for instant deployment. |
+| **[`docs/`](./docs/)** | **Detailed documentation** regarding medical logic, ethical guidelines, and the **`XGBoost.md`** file for technical deep-dives. |
+| **[`data/`](./data/)** | The storage hub for the **`.csv `,`.pxt`** processed and raw datasets. |
 | **`notebooks/code/`** | A dedicated sub-directory for **modular `.py` scripts**. Source Code for the project's backend logic |
 
 ---
