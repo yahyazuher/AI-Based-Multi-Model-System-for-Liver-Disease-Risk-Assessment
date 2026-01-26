@@ -7,11 +7,14 @@ An integrated AI ecosystem designed to assess liver health through a pipeline of
 >  **Disclaimer:** This system is for **research and educational purposes only**.  
 > It does **not** replace professional medical diagnosis.
 
+
+
+
 ---
 
 | Directory / File | Description |
 | --- | --- |
-| **[`notebooks/`](./notebooks/)** | The core functional hub. It contains the **Main `.ipynb` file**, which integrates the entire diagnostic pipeline—from data processing to final prediction. |
+| **[`notebooks/`](./notebooks/)** | The core functional hub. It contains the **Main [.ipynb](https://github.com/yahyazuher/AI-Liver-Disease-Diagnosis-System/blob/main/notebooks/AI_Liver_Diseases_Diagnosis_System.ipynb)** file**, which integrates the entire diagnostic pipeline—from data processing to final prediction. |
 | **[`models/`](./models/)** | Contains the finalized **`.pkl`** serialized models (Fatty Liver, Fibrosis, Cancer, etc.), ready for instant deployment. |
 | **[`docs/`](./docs/)** | **Detailed documentation** regarding medical logic, ethical guidelines, and the **`XGBoost.md`** file for technical deep-dives. |
 | **[`data/`](./data/)** | The storage hub for the **`.csv `,`.pxt`** processed and raw datasets. |
@@ -35,6 +38,10 @@ This project presents a **multi-model AI system** designed to assess liver healt
 * Sequential logic between models with a safety protocol to prevent incorrect decisions.
 * Relies on routine blood markers to minimize invasive testing.
 * **Clinical Basis:** The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges and standard medical guidelines.
+
+**Performance & Analysis:**
+To view the comprehensive performance visualizations, including **Confusion Matrices** and detailed evaluation metrics for all models, please visit the main analysis notebook:
+**[notebooks/AI_Liver_Disease_Diagnosis_System.ipynb](https://github.com/yahyazuher/AI-Liver-Disease-Diagnosis-System/blob/main/notebooks/AI_Liver_Diseases_Diagnosis_System.ipynb)**
 
 ---
 
