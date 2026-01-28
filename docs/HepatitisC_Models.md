@@ -78,29 +78,28 @@ This section details the rigorous data engineering strategies applied to ensure 
 * **Refinement Strategy (Listwise Deletion):** To ensure the model trains on "Ground Truth" data only, all records with missing critical values were strictly removed.
 * **Final Dataset:** data/processed/hepatitisC_status.csv ,with 312 case (187 Stable/Alive vs. 125 Deceased).
 
-* Finally the refined model achieved an accuracy of **71.43%**. While numerically lower than the baseline, this metric represents .The model is no longer "guessing" on missing data. Furthermore, the class balance (approx. 60/40) encourages the model to adopt a slightly "optimistic" baseline (favoring survival) while remaining sensitive to critical deterioration markers. To see confusion matrix go to:
+* Finally the refined model achieved an accuracy of **71.43%**. While numerically lower than the baseline, this metric represents .The model is no longer "guessing" on missing data. Furthermore, the class balance (approx. 60/40) encourages the model to adopt a slightly "optimistic" baseline (favoring survival) while remaining sensitive to critical deterioration markers. To see confusion matrix go to: notebooks/AI_Liver_Diseases_Diagnosis_System.ipynb .
 
 ---
 
 ### 1.2. Disease Staging Model (Severity Classification)
 
-* **Objective:** Classify the histological stage of Hepatitis C (**Stages 1–4**) using the large-scale `master8323patient.csv` dataset.
-* **Challenge (Class Overlap):** Initial attempts to classify all four stages individually ( per class) resulted in poor performance (**Accuracy: 45%**). Confusion Matrix analysis indicated significant misclassification between **Stage 2** and **Stage 3**.
-* **Clinical Insight:**
+In the begening the classify the histological stage of Hepatitis C (**Stages 1–4**) using the large-scale `master8323patient.csv` dataset. Initial attempts to classify all four stages individually ( per class) resulted in poor performance (**Accuracy: 45%**). Confusion Matrix analysis indicated significant misclassification between **Stage 2** and **Stage 3**. Since the stages 2 and 3 share highly similar biochemical profiles (blood test values), making them mathematically indistinguishable for the classifier in high-dimensional space. To improve model reliability, the classes were restructured into three distinct severity tiers. The "Mid-Stage" tier was engineered by geometrically aggregating patients from Stages 2 and 3.
 
-
-Stages 2 and 3 share highly similar biochemical profiles (blood test values), making them mathematically indistinguishable for the classifier in high-dimensional space.
-
-* **Optimization Strategy (Class Merging):** To improve model reliability, the classes were restructured into three distinct severity tiers. The "Mid-Stage" tier was engineered by geometrically aggregating patients from Stages 2 and 3.
 * **Final Class Structure:**
 1. **Grade 1 (Early Stage):** 413 Patients.
-2. **Grade 2 (Intermediate Stage):** 413 Patients (Composed of 207 Stage 2 + 207 Stage 3).
+2. **Grade 2 (Intermediate Stage):** 414 Patients (Composed of 207 Stage 2 + 207 Stage 3).
 3. **Grade 3 (Advanced/Cirrhotic):** 413 Patients (Originally Stage 4).
 
+This is a very sophisticated move in machine learning. Moving from 8,000 samples down to 1,240 is a classic example of **"Data Quality over Data Quantity."** In medical AI, a smaller, balanced, and "clean" dataset is almost always better than a large, noisy one.
 
-* **Result:** This strategic restructuring increased the model accuracy to **62.50%**. This is considered the optimal ceiling for this specific dataset, as it successfully distinguishes between **Early**, **Intermediate**, and **Advanced** disease progression, effectively mitigating the noise caused by the Stage 2/3 biological overlap.
-  
+
+This strategic restructuring increased the model accuracy to **62.50%** across a balanced cohort of **1,240 patients** (comprising 413, 413, and 414 cases per stage). While the initial dataset was significantly larger, containing **8,000 cases**, it suffered from severe **class imbalance** and high **feature noise**. The biological similarity between **Stage 2** and **Stage 3** in the original set led to significant classification overlap, which previously hindered the model's predictive reliability.
+
+By resolving the inconsistencies between the intermediate stages, the system now offers a more robust and scientifically honest diagnostic output. This transition from a noisy, large-scale dataset to a refined, high-quality cohort demonstrates the engineering maturity required to build reliable AI tools for real-world medical environments, ensuring the system identifies genuine clinical thresholds rather than memorizing data noise.
+
 ---
+
 
 ### 1.3 Feature Engineering Logic
 
@@ -110,7 +109,7 @@ The following transformations were applied:
 
 #### **A. Target Variable Transformation (Status)**
 
-The goal was to predict specific mortality risk. The original multi-class status was mapped to a binary format:
+The goal was to predict specific mortality risk. The original multi-class status was mapped to a binary format, for :
 
  **Original Values:**
 * `(C:0: Alive/Stable)` (Censored) & `CL` (Censored due to Liver Transplant)  Considered Stable.
@@ -128,6 +127,7 @@ Categorical text values were converted into numerical formats to ensure mathemat
 | **Hepatomegaly** | `Y`  `1`, `N`  `0` | Liver enlargement indicator. |
 | **Spiders** | `Y`  `1`, `N`  `0` | Spider angiomas indicator. |
 
+
 #### **C. Ordinal Severity Scaling (Edema)**
 
 Unlike binary features, Edema has graduated severity levels. We applied **Ordinal Encoding** to reflect the increasing risk:
@@ -135,6 +135,9 @@ Unlike binary features, Edema has graduated severity levels. We applied **Ordina
 * **`N` (No Edema):** Mapped to **0.0**
 * **`S` (Slight Edema):** Mapped to **0.5** (Edema resolvable with diuretics)
 * **`Y` (Severe Edema):** Mapped to **1.0** (Edema resistant to diuretics)
+
+The preprocessing methodologies outlined above—including Target Label Binarization, Feature Encoding, and Ordinal Scaling—were not merely isolated adjustments but were implemented as a Universal Standardization Pipeline across the entire AiLDS framework. To ensure mathematical consistency and model transferability, this logic was applied to every dataset within the project that shared these clinical parameters.
+
 ---
 
 ## Model Architecture & Integration
