@@ -301,7 +301,7 @@ def calculate_bili_alb_interaction(bilirubin, albumin):
 
 To ensure the inference engine functions correctly, data must be structured into precise vector formats specific to each model:
 
-**A. Complications Prediction Model**
+#### **A. Complications Prediction Model**
 
 * **Target File:** `models/hepatitisC_complications.pkl`
 * **Clinical Goal:** Predicts risk of Ascites (Fluid Retention).
@@ -310,7 +310,7 @@ To ensure the inference engine functions correctly, data must be structured into
 `['Bilirubin', 'Cholesterol', 'Albumin', 'Copper', 'Alk_Phos', 'SGOT', 'Tryglicerides', 'Platelets', 'Prothrombin', 'Age', 'Sex', 'Hepatomegaly', 'Spiders', 'Edema']`
 > Since the Hepatitis_C 3-models are interconnected and operate in coordination with one another, the 'Stage' is treated as a user request that the system provides in Stage model, assuming the user does not already know it(More info: docs/XGBoost.md).
 
-**B. Stage Prediction Model**
+#### **B. Stage Prediction Model**
 
 * **Target File:** `models/hepatitisC_stage_model.pkl`
 * **Clinical Goal:** Classifies Histological Fibrosis Stage (1, 2, or 3).
@@ -318,7 +318,7 @@ To ensure the inference engine functions correctly, data must be structured into
 * **Required Vector:**
 `['Bilirubin', 'Cholesterol', 'Albumin', 'Copper', 'Alk_Phos', 'SGOT', 'Tryglicerides', 'Platelets', 'Prothrombin', 'Status', 'Age', 'Sex', 'Ascites', 'Hepatomegaly', 'Spiders', 'Edema', 'APRI', 'Bilirubin_Albumin', 'Copper_Platelets']`
 
-**C. Status Prediction Model**
+#### **C. Status Prediction Model**
 
 * **Target File:** `models/hepatitisC_status_model.pkl`
 * **Clinical Goal:** Calculates Mortality Risk Probability.
@@ -337,7 +337,7 @@ For a deeper dive into the model evaluation metrics and architectural logic, ple
 
 ---
 
-## Virtual Case Analysis Table
+## **Virtual Case Analysis Table**
 
 | Clinical Case | Brief Description | AI Stage | Survival Risk | Ascites Risk | AI Assessment |
 | --- | --- | --- | --- | --- | --- |
@@ -352,7 +352,7 @@ For a deeper dive into the model evaluation metrics and architectural logic, ple
 > *The medical descriptions provided are illustrative summaries derived from publicly available clinical reference ranges. They do not represent medical diagnosis or professional medical judgment.*
 
 
-### Clinical Insights & Logic Validation
+### **Clinical Insights & Logic Validation**
 
 Based on the latest inference outputs, critical technical observations regarding the Multi-Model logic were derived:
 
