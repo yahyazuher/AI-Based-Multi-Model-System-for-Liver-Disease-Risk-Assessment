@@ -1,4 +1,4 @@
-# Hepatitis C (HCV)
+# **Hepatitis C (HCV)**
 
 
 This specialized framework is dedicated to evaluating the progression of Liver Fibrosis in Hepatitis C patients and predicting the probability of critical complications, such as Ascites, and overall mortality. The system utilizes an ensemble of XGBoost models, with its core logic distributed across three specialized serialized files: `hepatitisC_stage_model.pkl`, `hepatitisC_complications.pkl`, and `hepatitiC_status_model.pkl`(all in models/ directory). By analyzing clinical input values through optimized "feature weights," the framework provides a precise determination of the risk levels associated with key biomarkers.
@@ -9,7 +9,7 @@ This framework is specifically designed and optimized for Hepatitis C (HCV) diag
 
 ---
 
-### Dataset Overview
+### **Dataset Overview**
 
 | Name | Database Location | Function |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ This framework is specifically designed and optimized for Hepatitis C (HCV) diag
 
 ---
 
-### Training Phase 
+### **Training Phase**
 
 The reliability of the **Hepatitis Diagnostic Framework** is built on a rigorous training pipeline designed to ensure scientific validity and clinical transparency:
 
@@ -45,9 +45,9 @@ The logic used to generate these results, including the $80/20$ split and XGBoos
 
 ---
 
-##  Data Pipeline & Feature Engineering
+##  **Data Pipeline & Feature Engineering**
 
-### Data Sources (Raw Data)
+### **Data Sources**
 
 The system relies on two distinct primary datasets. these datasets were selected for their clinical relevance and statistical significance.
 
@@ -67,11 +67,11 @@ The system relies on two distinct primary datasets. these datasets were selected
   
 ---
 
-## 1. Model Optimization & Dataset Curation
+## **1. Model Optimization & Dataset Curation**
 
 This section details the rigorous data engineering strategies applied to ensure the models learn from valid clinical pathology rather than statistical noise.
 
-### 1.1. Mortality Prediction Model (Status Classification)
+### **1.1. Mortality Prediction Model (Status Classification)**
 
 * Predict patient survival outcomes (**Deceased** vs. **Alive**).
 * **Initial Baseline:** Wen the preliminary model was trained on the full raw dataset, achieving an accuracy of **79.76%**. However, a data quality audit revealed that **105 records** contained missing values in critical biomarkers (*Triglycerides, SGOT, Alk_Phos, Copper, and Cholesterol*). The initial high accuracy was artificially inflated. The model was learning patterns from imputed or missing data structures rather than actual clinical pathology, leading to unreliable real-world predictions.
@@ -82,7 +82,7 @@ This section details the rigorous data engineering strategies applied to ensure 
 
 ---
 
-### 1.2. Disease Staging Model (Severity Classification)
+### **1.2. Disease Staging Model (Severity Classification)**
 
 In the begening the classify the histological stage of Hepatitis C (**Stages 1–4**) using the large-scale `master8323patient.csv` dataset. Initial attempts to classify all four stages individually ( per class) resulted in poor performance (**Accuracy: 45%**). Confusion Matrix analysis indicated significant misclassification between **Stage 2** and **Stage 3**. Since the stages 2 and 3 share highly similar biochemical profiles (blood test values), making them mathematically indistinguishable for the classifier in high-dimensional space. To improve model reliability, the classes were restructured into three distinct severity tiers. The "Mid-Stage" tier was engineered by geometrically aggregating patients from Stages 2 and 3.
 
@@ -101,7 +101,7 @@ By resolving the inconsistencies between the intermediate stages, the system now
 ---
 
 
-### 1.3 Feature Engineering Logic
+### **1.3 Feature Engineering Logic**
 
 To prepare the raw data for the **XGBoost** model, a rigorous **Data Engineering** phase was executed. The original file (`cirrhosis.csv`) was transformed into the processed training file (`Hepatitis.csv`) located in `data/processed`, resulting in a refined dataset of **419 patient records**.
 
@@ -140,11 +140,11 @@ The preprocessing methodologies outlined above—including Target Label Binariza
 
 ---
 
-## Model Architecture & Integration
+## **Model Architecture & Integration**
 
 The predictive logic of the **AiLDS** is divided into three integrated diagnostic layers. Each layer acts as an independent specialized component, utilizing specific clinical features derived from the processed dataset to provide a comprehensive health assessment.
 
-### 1. Model Breakdown & Feature Selection
+### **1. Model Breakdown & Feature Selection**
 
 | Model File | Target Variable (CSV) | Input Features | Target Output | Clinical Significance |
 | --- | --- | --- | --- | --- |
@@ -154,7 +154,7 @@ The predictive logic of the **AiLDS** is divided into three integrated diagnosti
 
 ---
 
-### 2. Workflow And Double Verification Logic
+### **2. Double Verification Logic**
 
 This models engineered as a **Clinical Decision Support Tool**. To ensure the highest level of safety, the system follows a strict execution sequence and a custom verification protocol.
 
@@ -169,7 +169,7 @@ The diagnostic architecture of the system follows a strictly hierarchical execut
 This architectural dependency ensures that the structural state of the liver is prioritized as a primary factor before the system evaluates functional survival outcomes, mirroring real-world clinical decision-making. Because the Status Model requires an accurate Stage value to produce precise, high-fidelity results—and since this parameter is a required input that the user may not yet possess—. To ensure diagnostic accuracy, the system is designed to be operated sequentially.
 ---
 
-### 3. Clinical Interpretation
+### **3. Clinical Interpretation**
 
 The system categorizes results based on a probability threshold to assist in rapid triage:
 
@@ -178,7 +178,7 @@ The system categorizes results based on a probability threshold to assist in rap
 
 ---
 
-### 4. Mathematical Validation
+### **4. Mathematical Validation**
 
 To complement the AI's predictive power, the system integrates established clinical scoring systems to provide a "ground truth" reference:
 
