@@ -76,11 +76,9 @@ This section details the rigorous data engineering strategies applied to ensure 
 * Predict patient survival outcomes (**Deceased** vs. **Alive**).
 * **Initial Baseline:** Wen the preliminary model was trained on the full raw dataset, achieving an accuracy of **79.76%**. However, a data quality audit revealed that **105 records** contained missing values in critical biomarkers (*Triglycerides, SGOT, Alk_Phos, Copper, and Cholesterol*). The initial high accuracy was artificially inflated. The model was learning patterns from imputed or missing data structures rather than actual clinical pathology, leading to unreliable real-world predictions.
 * **Refinement Strategy (Listwise Deletion):** To ensure the model trains on "Ground Truth" data only, all records with missing critical values were strictly removed.
-* **Final Dataset:** data/processed/hepatitisC_status.csv ,
-* **Distribution:** 187 Stable/Alive vs. 125 Deceased.
+* **Final Dataset:** data/processed/hepatitisC_status.csv ,with 312 case (187 Stable/Alive vs. 125 Deceased).
 
-
-* **Final Performance:** The refined model achieved an accuracy of **71.43%**. While numerically lower than the baseline, this metric represents **statistically robust performance**. The model is no longer "guessing" on missing data. Furthermore, the class balance (approx. 60/40) encourages the model to adopt a slightly "optimistic" baseline (favoring survival) while remaining sensitive to critical deterioration markers.
+* Finally the refined model achieved an accuracy of **71.43%**. While numerically lower than the baseline, this metric represents .The model is no longer "guessing" on missing data. Furthermore, the class balance (approx. 60/40) encourages the model to adopt a slightly "optimistic" baseline (favoring survival) while remaining sensitive to critical deterioration markers. To see confusion matrix go to:
 
 ---
 
