@@ -167,6 +167,7 @@ The diagnostic architecture of the system follows a strictly hierarchical execut
 * Phase 2: The system automatically merges the initial clinical data with the AI-generated Stage to calculate the final Mortality Risk Probability using the hepatiti_status.pkl model.
 
 This architectural dependency ensures that the structural state of the liver is prioritized as a primary factor before the system evaluates functional survival outcomes, mirroring real-world clinical decision-making. Because the Status Model requires an accurate Stage value to produce precise, high-fidelity results—and since this parameter is a required input that the user may not yet possess—. To ensure diagnostic accuracy, the system is designed to be operated sequentially.
+
 ---
 
 ### **3. Clinical Interpretation**
