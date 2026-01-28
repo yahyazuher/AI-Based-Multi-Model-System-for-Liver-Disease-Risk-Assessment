@@ -146,13 +146,11 @@ The predictive logic of the **AiLDS** is divided into three integrated diagnosti
 
 ### 1. Model Breakdown & Feature Selection
 
-| Model File | Input Features | Target Output | Clinical Significance |
-| :--- | :--- | :--- | :--- |
-| **`hepatitisC_stage_model.pkl`** | Blood Tests + **`APRI`**, **`Bilirubin_Albumin`**, **`Copper_Platelets`** | Discrete Class: **1, 2, 3** | Determines the level of histological liver scarring (Fibrosis). |
-| **`hepatitisC_status_model.pkl`** | Blood Tests + **`APRI`**, **`ALBI_Score`**, **`Bili_Alb_Ratio`** | Probability: **0.0 to 1.0** | Calculates the ultimate mortality risk (Survival vs. Death). |
-| **`hepatitisC_complications.pkl`** | Blood Tests Only (Raw Clinical Markers) | Probability: **0.0 to 1.0** | Estimates the immediate risk of fluid accumulation (Ascites). |
-
-
+| Model File | Target Variable (CSV) | Input Features | Target Output | Clinical Significance |
+| --- | --- | --- | --- | --- |
+| **`hepatitisC_stage_model.pkl`** | **`Stage`** | Blood Tests + **`APRI`**, **`Bili_Alb`**, **`Cu_Plt`** | Discrete Class: **1, 2, 3** | Determines the histological level of liver scarring (Fibrosis). |
+| **`hepatitisC_status_model.pkl`** | **`Status`** | Blood Tests + **`APRI`**, **`ALBI_Score`**, **`Bili_Alb_Ratio`** | Binary Class: **0 (Stable) / 1 (Critical)** | Calculates the mortality risk and overall survival probability. |
+| **`hepatitisC_complications.pkl`** | **`Ascites`** | Blood Tests Only (Raw Clinical Markers) | Probability: **0.0 to 1.0** | Estimates the immediate risk of fluid accumulation (Ascites). |
 
 ---
 
@@ -164,12 +162,11 @@ This models engineered as a **Clinical Decision Support Tool**. To ensure the hi
 
 The diagnostic architecture of the system follows a strictly hierarchical execution sequence. The predicted output from the Stage Model is a fundamental prerequisite because it serves as a high-weight input feature for the final Status (Mortality) Model.
 
-* Phase 1 (Histological Diagnosis): The inference engine first processes raw clinical biomarkers (such as Bilirubin and Albumin) to determine the liver's histological Stage Prediction using the hepatitis_stage.pkl model.
+* Phase 1: The inference engine first processes raw clinical biomarkers (such as Bilirubin and Albumin) to determine the liver's histological Stage Prediction using the hepatitis_stage.pkl model.
 
-* Phase 2 (Prognostic Analysis): The system automatically merges the initial clinical data with the AI-generated Stage to calculate the final Mortality Risk Probability using the hepatiti_status.pkl model.
+* Phase 2: The system automatically merges the initial clinical data with the AI-generated Stage to calculate the final Mortality Risk Probability using the hepatiti_status.pkl model.
 
-This dependency ensures that the structural state of the liver is prioritized as a primary factor before the system evaluates functional survival outcomes, mirroring real-world clinical decision-making.
-
+This architectural dependency ensures that the structural state of the liver is prioritized as a primary factor before the system evaluates functional survival outcomes, mirroring real-world clinical decision-making. Because the Status Model requires an accurate Stage value to produce precise, high-fidelity results—and since this parameter is a required input that the user may not yet possess—. To ensure diagnostic accuracy, the system is designed to be operated sequentially.
 ---
 
 ### 3. Clinical Interpretation
@@ -185,7 +182,7 @@ The system categorizes results based on a probability threshold to assist in rap
 
 To complement the AI's predictive power, the system integrates established clinical scoring systems to provide a "ground truth" reference:
 
-#### **A. APRI Score (AST to Platelet Ratio Index)**
+### **A. APRI Score (AST to Platelet Ratio Index)**
 
 The APRI score is a non-invasive method used to assess the likelihood of liver fibrosis and cirrhosis. It calculates the ratio between liver enzymes and blood platelets to identify structural damage without a biopsy:
 
@@ -210,7 +207,7 @@ def calculate_apri(ast_val, platelets):
 * **40**: The standardized Upper Limit of Normal (ULN) for AST used in this system.
 * **Platelets**: Platelet count per cubic millimeter ().
 
-#### **B. ALBI Score (Albumin-Bilirubin Grade)**
+### **B. ALBI Score (Albumin-Bilirubin Grade)**
 
 The ALBI score is an objective metric specifically designed to evaluate liver functional reserve. Unlike other scores, it relies solely on laboratory markers, eliminating subjective clinical variables:
 
@@ -238,6 +235,62 @@ def calculate_albi(bilirubin, albumin):
 
 * **Bilirubin**: Total bilirubin level (converted to  using the  factor).
 * **Albumin**: Serum albumin level (converted to  using the  factor).
+
+
+### **C. Additional Engineered Features**
+
+To further refine the predictive accuracy of the models, the following mathematical ratios were derived from raw clinical markers. These features capture the synergistic effects between different biomarkers that a single variable might miss.
+
+#### **1. Bilirubin to Albumin Ratio (`Bili_Alb_Ratio`)**
+
+Used in both the **Status** and **Stage** models to evaluate the severity of liver dysfunction.
+
+**Mathematical Formula:** 
+
+$$Bilirubin\_Albumin = \frac{Bilirubin (mg/dL)}{Albumin (g/dL)}$$
+
+**Python Implementation:**
+
+```python
+def calculate_bili_alb_ratio(bilirubin, albumin):
+    if albumin == 0: return 0.0
+    return bilirubin / albumin
+
+```
+
+#### **2. Copper to Platelets Index (`Copper_Platelets`)**
+
+Specifically used in the **Stage Prediction Model** to identify advanced fibrosis and architectural changes in the liver.
+
+**Mathematical Formula:** 
+
+$$Copper\_Platelets = \frac{Copper (\mu g/dL)}{Platelets (10^9/L)}$$
+
+**Python Implementation:**
+
+```python
+def calculate_copper_platelets(copper, platelets):
+    if platelets == 0: return 0.0
+    return copper / platelets
+
+```
+
+#### **3. Bilirubin-Albumin Interaction (`Bilirubin_Albumin`)**
+
+Used in the **Stage** model to highlight the combined impact of decreased protein synthesis (Albumin) and impaired excretory function (Bilirubin).
+
+**Mathematical Formula:** 
+
+$$Bilirubin\_Albumin\_Interaction = Bilirubin \times Albumin$$
+
+
+**Python Implementation:**
+
+```python
+def calculate_bili_alb_interaction(bilirubin, albumin):
+    return bilirubin * albumin
+
+```
 
 
 > By presenting these mathematical validations alongside the AI results, the **Hepatitis Diagnostic Framework** ensures that the "black box" decisions of the Machine Learning models are grounded in proven medical mathematics. This dual-approach increases the system's transparency and reliability for clinical decision support.
