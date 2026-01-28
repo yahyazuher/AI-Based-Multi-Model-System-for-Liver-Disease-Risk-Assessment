@@ -57,9 +57,9 @@ To view the comprehensive performance visualizations, including **Confusion Matr
 
 ## 1. The Gate Model: First Line 
 
-The Gate Model serves as the **first line of defense** in the system, performing binary classification to separate healthy users from potential liver patients. It relies on an **XGBoost-trained model** (`gate_model.pkl`) that interprets biochemical input values using learned weights from a rigorously cleaned dataset, ensuring resource-efficient pre-screening before activating complex sub-models.
+The Gate Model serves as the **first line of defense** in the system, performing binary classification to separate healthy users from potential liver patients. It relies on an **XGBoost-trained model** that interprets biochemical input values using learned weights from a rigorously cleaned dataset, ensuring resource-efficient pre-screening before activating complex sub-models.
 
-**(Trained Model):** [gate_model.pkl](./models/gate_model.pkl)
+**Trained Model:** [gate_model.pkl](./models/gate_model.pkl)
 
 **Core Logic:** Evaluates user biochemical profiles and identifies potential risk patterns to filter cases needing further analysis.
 
@@ -73,13 +73,13 @@ For more information on dataset preparation, model training, and testing methodo
 ## 2. Fatty Liver Diagnosis Model (NAFLD)
 Non-Alcoholic Fatty Liver Disease Diagnosis Model
 
-This model analyzes the interplay between triglyceride levels and liver enzymes to identify inflammatory lipid accumulation. The system features a safety Veto protocol based on "Platelet counts" for the early detection of liver fibrosis markers associated with fatty liver.
+This model analyzes the interplay between triglyceride levels and liver enzymes to identify inflammatory lipid accumulation. 
 
-(Trained Model): [fatty_liver_model.pkl](./models/fatty_liver_model.pkl)
+**Trained Model:** [fatty_liver_model.pkl](./models/fatty_liver_model.pkl)
 
 Core Logic: Connects the "Raw Material" (Triglycerides) with the "Alarm Signal" (ALT/GGT) to distinguish NAFLD from viral hepatitis.
-
-Critical Requirement (Positional Logic): The model processes data as an ordered mathematical matrix; therefore, inputs must be entered in the exact following order: `['Albumin', 'ALP', 'AST', 'ALT', 'Cholesterol', 'Creatinine', 'Glucose', 'GGT', 'Bilirubin', 'Triglycerides', 'Uric_Acid', 'Platelets', 'HDL']`.
+* **Performance:** **97.41% Accuracy**.
+* * **Required Feature Order:**  `['Albumin', 'ALP', 'AST', 'ALT', 'Cholesterol', 'Creatinine', 'Glucose', 'GGT', 'Bilirubin', 'Triglycerides', 'Uric_Acid', 'Platelets', 'HDL']`.
 
 For detailed technical and medical information: regarding NHANES Data Integration, cleaning strategies, and clinical scenario analysis, please visit: ➔  [docs/FattyLiver_Model.md](./docs/FattyLiver_Model.md) 
 
@@ -110,6 +110,7 @@ The system relies on three specialized models, each requiring a strict mathemati
 
 * **Target File:** [hepatitisC_stage_model.pkl](./models/hepatitisC_stage_model.pkl)
 * **Clinical Goal:** Classifies Histological Fibrosis Stage (1, 2, or 3).
+* * **Performance:** **62.50% Accuracy**.
 * **Input Dimension:** 19 Features (Includes calculated indices).
 * **Required Feature Order:**
 `['Bilirubin', 'Cholesterol', 'Albumin', 'Copper', 'Alk_Phos', 'SGOT', 'Tryglicerides', 'Platelets', 'Prothrombin', 'Status', 'Age', 'Sex', 'Ascites', 'Hepatomegaly', 'Spiders', 'Edema', 'APRI', 'Bilirubin_Albumin', 'Copper_Platelets']`
@@ -118,6 +119,7 @@ The system relies on three specialized models, each requiring a strict mathemati
 
 * **Target File:** [hepatitisC_status_model.pkl](./models/hepatitisC_status_model.pkl)
 * **Clinical Goal:** Calculates Mortality Risk Probability.
+* * **Performance:** **71.43% Accuracy**.
 * **Input Dimension:** 18 Features (Includes ALBI Score).
 * **Required Feature Order:**
 `['Bilirubin', 'Cholesterol', 'Albumin', 'Copper', 'Alk_Phos', 'SGOT', 'Tryglicerides', 'Platelets', 'Prothrombin', 'Age', 'Sex', 'Ascites', 'Hepatomegaly', 'Spiders', 'Edema', 'APRI', 'ALBI_Score', 'Bili_Alb_Ratio']`
@@ -136,9 +138,11 @@ The system relies on three specialized models, each requiring a strict mathemati
 
 This model evaluates the probability of developing Hepatocellular Carcinoma (HCC) by analyzing the complex interplay between genetic predisposition and environmental triggers. It utilizes XGBoost weights to determine the impact of each analytical factor.
 
-(Trained Model): [cancer_model.pkl](./models/cancer_model.pkl)
+**Trained Model:** [cancer_model.pkl](./models/cancer_model.pkl)
 
 Core Logic: The model demonstrates that a healthy lifestyle can effectively "neutralize" genetic predisposition; hereditary risk remains a "potential" rather than an "inevitable fate" without environmental catalysts (e.g., smoking and alcohol).
+
+* **Performance:** **94.00% Accuracy**.
 
 Critical Requirement (Positional Logic): The model processes data as an ordered mathematical matrix; therefore, inputs must be entered in the exact following order: `['Age', 'Gender', 'BMI', 'Smoking', 'GeneticRisk', 'PhysicalActivity', 'AlcoholIntake', 'CancerHistory']`.
 
