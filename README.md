@@ -63,7 +63,7 @@ The Gate Model serves as the **first line of defense** in the system, performing
 
 * **Core Logic:** Evaluates user biochemical profiles and identifies potential risk patterns to filter cases needing further analysis.
 
-* **Performance:** **95.24% Accuracy**.
+* **Performance:** **97.41% Accuracy**.
 * **Required Feature Order:**  `['Age', 'Gender', 'Total_Bilirubin', 'Direct_Bilirubin', 'ALP', 'ALT', 'AST', 'Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio']`
 
 
