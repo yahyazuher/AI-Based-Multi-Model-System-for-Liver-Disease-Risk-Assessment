@@ -27,8 +27,8 @@ This framework is specifically designed and optimized for Hepatitis C (HCV) diag
 
 The reliability of the **Hepatitis Diagnostic Framework** is built on a rigorous training pipeline designed to ensure scientific validity and clinical transparency:
 
-* **The  Rule (Generalization):** The processed dataset was split into ** ( records)** for training and ** ( records)** for independent validation. This separation ensures the models do not simply "memorize" the data but learn the underlying clinical patterns necessary to handle new, unseen cases.
-* **Stratified Sampling ():** We utilized **Stratified Splitting** to ensure that the distribution of critical outcomes—specifically **Stage 4 (Cirrhosis)** and **Mortality**—remains identical in both the training and testing sets. This prevents a random split from leaving the test set without enough high-risk cases for a fair evaluation.
+* The processed dataset was split into ** ( records)** for training and ** ( records)** for independent validation. This separation ensures the models do not simply "memorize" the data but learn the underlying clinical patterns necessary to handle new, unseen cases.
+* We utilized **Stratified Splitting** to ensure that the distribution of critical outcomes—specifically **Stage 4 (Cirrhosis)** and **Mortality**—remains identical in both the training and testing sets. This prevents a random split from leaving the test set without enough high-risk cases for a fair evaluation.
 
 #### **Model Performance Results**
 
@@ -73,9 +73,8 @@ This section details the rigorous data engineering strategies applied to ensure 
 
 ### 1.1. Mortality Prediction Model (Status Classification)
 
-* **Objective:** Predict patient survival outcomes (**Deceased** vs. **Alive**).
-* **Initial Baseline:** The preliminary model was trained on the full raw dataset (), achieving an accuracy of **79.76%**. However, a data quality audit revealed that **105 records** contained missing values in critical biomarkers (*Triglycerides, SGOT, Alk_Phos, Copper, and Cholesterol*).
-* **The "False Confidence" Problem:** The initial high accuracy was artificially inflated. The model was learning patterns from imputed or missing data structures rather than actual clinical pathology, leading to unreliable real-world predictions.
+* Predict patient survival outcomes (**Deceased** vs. **Alive**).
+* **Initial Baseline:** Wen the preliminary model was trained on the full raw dataset, achieving an accuracy of **79.76%**. However, a data quality audit revealed that **105 records** contained missing values in critical biomarkers (*Triglycerides, SGOT, Alk_Phos, Copper, and Cholesterol*). The initial high accuracy was artificially inflated. The model was learning patterns from imputed or missing data structures rather than actual clinical pathology, leading to unreliable real-world predictions.
 * **Refinement Strategy (Listwise Deletion):** To ensure the model trains on "Ground Truth" data only, all records with missing critical values were strictly removed.
 * **Final Dataset:**
 * **Size:**  patients.
