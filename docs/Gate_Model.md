@@ -19,7 +19,7 @@ This section is dedicated to the initial triage of users, functioning as the sys
 ---
 ### Training Phase
 
-The system's efficiency depends on a data split of **80% for training** and **20% for testing**, which resulted in a realistic real-world accuracy of **97.41%**. The model was trained on the 'Result' column within the training dataset—which categorizes the patient's status as either 'Sick' or 'Healthy'. This target variable was used to validate the model's performance, ensuring it identifies patterns accurately rather than simply memorizing dat
+The system's efficiency depends on a data split of **80% for training** and **20% for testing**, which resulted in a realistic real-world accuracy of **97.41%**. The model was trained on the 'Result' column within the training dataset—which categorizes the patient's status as either 'Sick' or 'Healthy'. This target variable was used to validate the model's performance, ensuring it identifies patterns accurately rather than simply memorizing data through a process known as Supervised Learning
 
 * **Data Processing:** Unlike standard datasets, **rigorous preprocessing** was performed. Over 11,000 duplicate rows were identified and removed from the original raw file (`data/raw/Liver Pationt Dataset (LPD)_train.csv`).
 * **Training Data:** The model was trained on data from approximately **15,500 patients** extracted from the `Liver_Patient_Dataset_Cleaned_19k.csv` file.
